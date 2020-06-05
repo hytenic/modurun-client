@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, Button, View,
+  StyleSheet, Text, TouchableOpacity, View, ScrollView,
 } from 'react-native';
 
 const Developer = ({ navigation }) => {
@@ -12,7 +12,7 @@ const Developer = ({ navigation }) => {
     'TrackManagerTab',
     'SignUpManager',
     'SignInManager',
-    'Header',
+    'MainHeader',
     'ScheduleList',
     'SideBar',
     'Scheduler',
@@ -24,15 +24,29 @@ const Developer = ({ navigation }) => {
     'MyPage',
   ];
   return (
-    <View>
+    <ScrollView>
       {pages.map((page) => (
-        <Button
+        <TouchableOpacity
+          style={{
+            paddingVertical: 10,
+            backgroundColor: 'green',
+            borderWidth: 1,
+            borderColor: 'darkgreen',
+          }}
           key={page}
           title={page}
           onPress={() => navigation.navigate(page)}
-        />
+        >
+          <Text style={{
+            color: 'white',
+            alignSelf: 'center',
+          }}
+          >
+            {page}
+          </Text>
+        </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

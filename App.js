@@ -45,6 +45,7 @@ export default function App() {
         <Stack.Screen name="TrackManagerTab" component={TrackManagerTab} />
         <Stack.Screen name="SignUpManager" component={SignUpManager} />
         <Stack.Screen name="SignInManager" component={SignInManager} />
+        <Stack.Screen name="MainHeader" component={MainHeader} />
         <Stack.Screen name="ScheduleList" component={ScheduleList} />
         <Stack.Screen name="SideBar" component={SideBar} />
         <Stack.Screen name="Scheduler" component={Scheduler} />
