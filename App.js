@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Location from 'expo-location';
+
 import TrackMaster from './components/modules/TrackMaster';
 import Developer from './components/Developer';
 import FilterModal from './components/modules/FilterModal';
@@ -21,6 +23,9 @@ import CreatedScheduleInfo from './components/modules/CreatedScheduleInfo';
 import TrackCreator from './components/modules/TrackCreator';
 import ScheduleManager from './components/modules/ScheduleManager';
 import MyPage from './components/modules/MyPage';
+
+navigator.geolocation = Location;
+
 
 const styles = StyleSheet.create({
   container: {
