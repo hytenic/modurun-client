@@ -1,14 +1,35 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
+import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as actions from '../../redux/action/MyPage';
 
-const MyPage = () => {
+const MyPage = (props) => {
+  const { exmapleState, dispatchProp } = props;
   return (
     <View>
-      <Text></Text>
+      <TouchableOpacity style={{padding:3, backgroundColor:'green'}} onPress={()=>{dispatchProp(exmapleState)}}>
+        <Text>버튼이라고 침</Text>
+      </TouchableOpacity>
+      <Text>fdsfads</Text>
     </View>
-  )
-}
+  );
+};
 
-export default MyPage
+const mapStateToProps = (state) => {
+  return {
+    exmapleState: state.myPage.exampleKey.exampleKey,
+  };
+};
 
-const styles = StyleSheet.create({})
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatchProp: (num) => {
+      dispatch(actions.exAction1(num));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyPage);
+
+const styles = StyleSheet.create({});
