@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, PermissionsAndroid } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import * as actions from '../../redux/action/MyPage';
+import * as actions from '../../redux/action/myPage';
 
 const MyPage = (props) => {
   const { exmapleState, dispatchProp } = props;

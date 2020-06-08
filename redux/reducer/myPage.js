@@ -1,4 +1,4 @@
-import * as actions from '../action/MyPage';
+import * as actions from '../action/myPage';
 
 const initialState = {
   exampleKey: {
