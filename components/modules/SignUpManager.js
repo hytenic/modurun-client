@@ -18,6 +18,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const EmailInputComponet = ({ email }) => {
+  return (
+    <TextInput
+      style={styles.textInput}
+      placeholder="이메일을 입력해 주세요."
+      defaultValue={email}
+      onTouchStart={() => {
+        setJustAfterEmail(true);
+      }}
+      onChangeText={(text) => {
+        setEmail(text);
+      }}
+    />
+  );
+};
+
 // eslint-disable-next-line react/prop-types
 const SignUpManager = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -41,17 +57,7 @@ const SignUpManager = ({ navigation }) => {
   return (
     <View>
       <Text style={{ alignItems: 'center' }}>회원가입</Text>
-      <TextInput
-        style={styles.textInput}
-        placeholder="이메일을 입력해 주세요."
-        defaultValue={email}
-        onTouchStart={() => {
-          setJustAfterEmail(true);
-        }}
-        onChangeText={(text) => {
-          setEmail(text);
-        }}
-      />
+      <EmailInputComponet email={email} />
       <TextInput
         style={styles.textInput}
         placeholder="비밀번호를 입력해 주세요."
