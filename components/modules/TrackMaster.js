@@ -49,10 +49,12 @@ const TrackMaster = ({ setUserLocation }) => {
 
   return (
     <View onLayout={requestGeoLocationPermission} style={styles.container}>
-      {utils.toggleContainer('FollowUser', followUser, toggleFollowUser)}
-      {utils.toggleContainer('EditMode', editable, toggleEditMode)}
-      {utils.buttonContainer('Add Track', addTrack)}
-      <View style={{ height: '100%', width: '100%' }}>
+      <View>
+        {utils.toggleContainer('FollowUser', followUser, toggleFollowUser)}
+        {utils.toggleContainer('EditMode', editable, toggleEditMode)}
+        {utils.buttonContainer('Add Track', addTrack)}
+      </View>
+      <View style={{ flex: 1 }}>
         {renderMapView()}
       </View>
     </View>
