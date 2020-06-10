@@ -24,7 +24,7 @@ const TrackViewer = ({ curPosCamera }) => {
 
   const renderIfHasLocation = () => {
     if (!curPosCamera) return <></>; // spinner should be here;
-    return <MapView camera={curPosCamera} {...mapViewProps} />;
+    return <MapView initialCamera={curPosCamera} {...mapViewProps} />;
   };
 
   return (
