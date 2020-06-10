@@ -1,12 +1,11 @@
 import React from 'react';
-import {Provider} from 'react-redux';
-import store from './redux/store';
+import { Provider } from 'react-redux';
 
 import { StyleSheet, Text, View, Button } from 'react-native';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Location from 'expo-location';
+import * as Location from 'expo-location';
 
 import TrackMaster from './components/modules/TrackMaster';
 import Developer from './components/Developer';
@@ -27,8 +26,9 @@ import TrackCreator from './components/modules/TrackCreator';
 import ScheduleManager from './components/modules/ScheduleManager';
 import MyPage from './components/modules/MyPage';
 
-navigator.geolocation = Location;
+import store from './redux/store';
 
+navigator.geolocation = Location;
 
 const styles = StyleSheet.create({
   container: {
