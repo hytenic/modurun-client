@@ -4,11 +4,13 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     height: '100%',
+    backgroundColor: 'black',
   },
   mapStyle: {
-    height: '100%',
+    // height: '100%',
+    flex: 1,
   },
   toggleContainer(toggled) {
     return {
@@ -25,6 +27,8 @@ const styles = StyleSheet.create({
   },
   toolBar: {
     position: 'absolute',
+    width: 60,
+    height: 350,
     zIndex: 100,
     left: 0,
     flexDirection: 'row',
@@ -52,18 +56,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: -10,
   },
-  toolBarIcon(color = 'rgba(255,255,255,0.9)') {
+  toolBarIcon(color = 'rgba(255,255,255,0.9)', size = 30) {
     return {
-      width: 50,
-      height: 50,
+      width: size * (5 / 3),
+      height: size * (5 / 3),
       alignItems: 'center',
       justifyContent: 'center',
-      margin: 5,
-      padding: 5,
+      margin: (size * (5 / 3)) / 10,
+      padding: (size * (5 / 3)) / 10,
       backgroundColor: color,
       borderRadius: 100,
       borderWidth: 1,
-      borderColor: 'rgba(0,0,0,0.1)',
+      borderColor: 'rgba(0,0,0,0.4)',
     };
   },
   addMarker(touchPos, correctHiding) {
@@ -72,6 +76,41 @@ const styles = StyleSheet.create({
       left: touchPos.x + correctHiding.x - 17 / 2 || 0,
       top: touchPos.y + correctHiding.y - 30.5 || 0,
     };
+  },
+  completeButtonContainer(isVisible, position) {
+    return {
+      display: isVisible ? 'flex' : 'none',
+      position: 'absolute',
+      zIndex: 100,
+      right: 0,
+      top: 0,
+      marginTop: position || 200,
+    };
+  },
+  titleInputContainer(completeVisible, typingText) {
+    return {
+      display: completeVisible ? 'flex' : 'none',
+      flex: typingText ? 1 : 0.6,
+      backgroundColor: 'white',
+      paddingHorizontal: 20,
+      borderTopWidth: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 100,
+    };
+  },
+  titleInput: {
+    marginBottom: 20,
+    paddingLeft: 9,
+    backgroundColor: 'grey',
+    height: 50,
+    width: '100%',
+  },
+  editCompleteButton: {
+    backgroundColor: 'dodgerblue',
+    padding: 18,
+    width: 100,
+    alignItems: 'center',
   },
 });
 
