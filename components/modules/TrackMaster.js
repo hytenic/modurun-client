@@ -46,7 +46,7 @@ const TrackMaster = () => {
       </View>
       <View>
         <View style={{ position: 'absolute', zIndex: 100, left: 0, backgroundColor: 'white', flexDirection: 'row'}}>
-          <TouchableOpacity onPress={} style={{ padding: 10, backgroundColor: 'red' }}>
+          <TouchableOpacity onPress={() => {}} style={{ padding: 10, backgroundColor: 'red' }}>
             <Text>마커통</Text>
           </TouchableOpacity>
         </View>
