@@ -3,6 +3,7 @@ import {
   Alert, StyleSheet, Modal, Text, View, TouchableHighlight, TouchableOpacity, TextInput,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
 const FilterModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [distance, setDistance] = useState(0);
-  const [datePickerMode, setDatePickerMode] = useState('date');
+  const [pickerMode, setPickerMode] = useState('date');
   const [datePickerShow, setDatePickerShow] = useState(false);
   const [timePickerShow, setTimePickerShow] = useState(false);
   const [dateFrom, setDateFrom] = useState(new Date());
@@ -86,6 +87,32 @@ const FilterModal = () => {
     </TouchableOpacity>
   );
 
+  const DatePickerComponent = ({show, mode, fromTo, value}) => (
+    <TouchableOpacity
+      style={{ marginRight: 5 }}
+      onPress={() => {
+        setDatePickerShow(!show);
+        setPickerMode(mode);
+        setFromTo(fromTo);
+      }}
+    >
+      <Text style={{ color: 'green' }}>{value}</Text>
+    </TouchableOpacity>
+  );
+
+  const TimePickerComponent = ({show, mode, fromTo, value}) => (
+    <TouchableOpacity
+      style={{ marginRight: 5 }}
+      onPress={() => {
+        setTimePickerShow(!show);
+        setPickerMode(mode);
+        setFromTo(fromTo);
+      }}
+    >
+      <Text style={{ color: 'green' }}>{value}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.centeredView}>
       <Modal animationType="slide" visible={modalVisible} transparent={false}>
@@ -106,58 +133,30 @@ const FilterModal = () => {
                     <DateTimePicker
                       value={dateFrom}
                       onChange={onChangeDatePicker}
-                      mode={datePickerMode}
+                      mode={pickerMode}
                     />
                   )
                   : <></>
               }
-              <TouchableOpacity
-                style={{ marginRight: 5 }}
-                onPress={() => {
-                  setDatePickerShow(!datePickerShow);
-                  setDatePickerMode('date');
-                  setFromTo('from');
-                }}
-              >
-                <Text style={{ color: 'green' }}>부터</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ marginRight: 5 }}
-                onPress={() => {
-                  setDatePickerShow(!datePickerShow);
-                  setDatePickerMode('date');
-                  setFromTo('to');
-                }}
-              >
-                <Text style={{ color: 'green' }}>까지</Text>
-              </TouchableOpacity>
+              <DatePickerComponent show={datePickerShow} mode="date" fromTo="from" value="부터" />
+              <DatePickerComponent show={datePickerShow} mode="date" fromTo="to" value="까지" />
             </View>
 
             <View style={styles.row}>
               <Text style={{ marginRight: 5 }}>시간</Text>
               {
-                timePickerShow ? <DateTimePicker value={timeFrom} onChange={onChangeTimePicker} mode={datePickerMode} /> : <></>
+                timePickerShow
+                  ? (
+                    <DateTimePicker
+                      value={timeFrom}
+                      onChange={onChangeTimePicker}
+                      mode={pickerMode}
+                    />
+                  )
+                  : <></>
               }
-              <TouchableOpacity
-                style={{ marginRight: 5 }}
-                onPress={() => {
-                  setTimePickerShow(!timePickerShow);
-                  setFromTo('from');
-                  setDatePickerMode('time');
-                }}
-              >
-                <Text style={{ color: 'green' }}>부터</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ marginRight: 5 }}
-                onPress={() => {
-                  setTimePickerShow(!timePickerShow);
-                  setFromTo('to');
-                  setDatePickerMode('time');
-                }}
-              >
-                <Text style={{ color: 'green' }}>까지</Text>
-              </TouchableOpacity>
+              <TimePickerComponent show={timePickerShow} mode="time" fromTo="from" value="부터" />
+              <TimePickerComponent show={timePickerShow} mode="time" fromTo="to" value="까지" />
             </View>
             <View style={styles.row}>
               <Text style={{ marginRight: 5 }}>길이</Text>
@@ -169,14 +168,14 @@ const FilterModal = () => {
               onPress={() => {
                 const obj = {
                   distance,
-                  dateFrom,
-                  dateTo,
-                  timeFrom,
-                  timeTo,
+                  dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                  dateTo: moment(dateTo).format('YYYY-MM-DD'),
+                  timeFrom: moment(timeFrom).format('HH:mm:ss'),
+                  timeTo: moment(timeTo).format('HH:mm:ss'),
                   totalLength,
                 };
                 setModalVisible(false);
-                console.log(`거리 ${obj.distance} 날짜 ${obj.dateFrom} ~ ${obj.dateTo} 시간 ${obj.timeFrom} ~ ${obj.timeTo} 길이 ${obj.totalLength}`);
+                // console.log(`거리 ${obj.distance} 날짜 ${obj.dateFrom} ~ ${obj.dateTo} 시간 ${obj.timeFrom} ~ ${obj.timeTo} 길이 ${obj.totalLength}`);
               }}
             >
               <Text style={{ color: 'white' }}>검색</Text>
@@ -188,7 +187,6 @@ const FilterModal = () => {
         style={styles.openButton}
         onPress={() => {
           setModalVisible(true);
-          // Alert.alert(`${modalVisible}`);
         }}
       >
         <Text style={{ color: 'white' }}>모달 창</Text>
