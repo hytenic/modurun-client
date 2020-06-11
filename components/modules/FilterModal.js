@@ -67,6 +67,8 @@ const FilterModal = () => {
     } else {
       setDateTo(selectedDate);
     }
+    console.log(dateFrom);
+    console.log(dateTo);
   };
 
   const onChangeTimePicker = (event, selectedTime) => {
@@ -76,6 +78,8 @@ const FilterModal = () => {
     } else {
       setTimeTo(selectedTime);
     }
+    console.log(timeFrom);
+    console.log(timeTo);
   };
 
   const DistanceButtonComponent = ({ dis }) => (
@@ -113,6 +117,28 @@ const FilterModal = () => {
     </TouchableOpacity>
   );
 
+  const initialize = () => {
+    setDistance(0);
+    setDateFrom(new Date());
+    setDateTo(new Date());
+    setTimeFrom(new Date());
+    setTimeTo(new Date());
+    setTotalLength(0);
+  };
+
+  const customizingDateAndTime = (date, time) => {
+    let arr;
+    let result;
+    if (date || !time) {
+      arr = date.split('-');
+      result = `${arr[0]}월 ${arr[1]}일`;
+    } else {
+      arr = time.split(':');
+      result = `${arr[0]}시 ${arr[1]}분`;
+    }
+    return result;
+  };
+
   return (
     <View style={styles.centeredView}>
       <Modal animationType="slide" visible={modalVisible} transparent={false}>
@@ -131,14 +157,16 @@ const FilterModal = () => {
                 datePickerShow
                   ? (
                     <DateTimePicker
-                      value={dateFrom}
+                      value={new Date()}
                       onChange={onChangeDatePicker}
                       mode={pickerMode}
                     />
                   )
                   : <></>
               }
+              <Text>{customizingDateAndTime(moment(dateFrom).format('M-D'), 0)}</Text>
               <DatePickerComponent show={datePickerShow} mode="date" fromTo="from" value="부터" />
+              <Text>{customizingDateAndTime(moment(dateTo).format('M-D'), 0)}</Text>
               <DatePickerComponent show={datePickerShow} mode="date" fromTo="to" value="까지" />
             </View>
 
@@ -148,19 +176,21 @@ const FilterModal = () => {
                 timePickerShow
                   ? (
                     <DateTimePicker
-                      value={timeFrom}
+                      value={new Date()}
                       onChange={onChangeTimePicker}
                       mode={pickerMode}
                     />
                   )
                   : <></>
               }
+              <Text>{customizingDateAndTime(0, moment(timeFrom).format('HH:mm:ss'))}</Text>
               <TimePickerComponent show={timePickerShow} mode="time" fromTo="from" value="부터" />
+              <Text>{customizingDateAndTime(0, moment(timeTo).format('HH:mm:ss'))}</Text>
               <TimePickerComponent show={timePickerShow} mode="time" fromTo="to" value="까지" />
             </View>
             <View style={styles.row}>
               <Text style={{ marginRight: 5 }}>길이</Text>
-              <TextInput style={{ width: 100, height: 40 }} placeholder="길이" onChangeText={(text) => setTotalLength(text)} />
+              <TextInput style={{ width: 100, height: 40 }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
               <Text>km 이내</Text>
             </View>
             <TouchableHighlight
@@ -168,14 +198,15 @@ const FilterModal = () => {
               onPress={() => {
                 const obj = {
                   distance,
-                  dateFrom: moment(dateFrom).format('YYYY-MM-DD'),
+                  dateFrom: moment(dateTo).format('YYYY-MM-DD'),
                   dateTo: moment(dateTo).format('YYYY-MM-DD'),
                   timeFrom: moment(timeFrom).format('HH:mm:ss'),
                   timeTo: moment(timeTo).format('HH:mm:ss'),
                   totalLength,
                 };
                 setModalVisible(false);
-                // console.log(`거리 ${obj.distance} 날짜 ${obj.dateFrom} ~ ${obj.dateTo} 시간 ${obj.timeFrom} ~ ${obj.timeTo} 길이 ${obj.totalLength}`);
+                console.log(`거리 ${obj.distance} 날짜 ${obj.dateFrom} ~ ${obj.dateTo} 시간 ${obj.timeFrom} ~ ${obj.timeTo} 길이 ${obj.totalLength}`);
+                initialize();
               }}
             >
               <Text style={{ color: 'white' }}>검색</Text>
