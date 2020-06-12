@@ -11,7 +11,10 @@ web-build/
 web-report/
 
 client_id.json
+<<<<<<< HEAD
 .env
+=======
+>>>>>>> 9c3c614a497fbef29d6885dbc83e07a6572a154d
 
 # macOS
 .DS_Store
