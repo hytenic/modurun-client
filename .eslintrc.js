@@ -26,4 +26,5 @@ module.exports = {
       extensions: ['.js', '.jsx'],
     }],
   },
+  parser: "babel-eslint"
 };
