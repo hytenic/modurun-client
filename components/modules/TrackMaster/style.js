@@ -4,8 +4,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    height: '100%',
+    flex: 1,
     backgroundColor: 'black',
   },
   mapStyle: {
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
   },
-  markerOrder: {
+  markerTag: {
     paddingBottom: 0,
     backgroundColor: '#545454',
     textAlign: 'center',
@@ -105,12 +104,58 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     height: 50,
     width: '100%',
+    color: 'white',
   },
   editCompleteButton: {
     backgroundColor: 'dodgerblue',
     padding: 18,
     width: 100,
     alignItems: 'center',
+  },
+  calloutView: {
+    width: 250,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    alignContent: 'center',
+    backgroundColor: 'rgba(255,255,255,0.95)',
+    borderRadius: 10,
+    borderWidth: 3,
+    borderColor: 'rgba(0,0,0,0.4)',
+  },
+  calloutTitle: {
+    backgroundColor: 'black',
+    color: 'white',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignSelf: 'center',
+    fontWeight: 'bold',
+  },
+  calloutSeperator: {
+    height: 1,
+    backgroundColor: 'grey',
+    marginVertical: 10,
+  },
+  callloutPropRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  callloutPropKey(backgroundColor = 'dodgerblue', color = 'white') {
+    return {
+      padding: 5,
+      marginRight: 5,
+      backgroundColor,
+      borderRadius: 10,
+      color,
+    };
+  },
+  calloutPropValue(backgroundColor = '#edf0ff', color = 'black') {
+    return {
+      padding: 5,
+      backgroundColor,
+      borderRadius: 10,
+      color,
+    };
   },
 });
 
