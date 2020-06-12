@@ -5,9 +5,9 @@ import {
 } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import axios from 'axios';
-import TextInputComponent from './TextInputComponents';
-import ButtonComponent from './ButtonComponent';
-import { installed } from '../../../client_id.json';
+import TextInputComponent from './Login/TextInputComponents';
+import ButtonComponent from './Login/ButtonComponent';
+import { installed } from '../../client_id.json';
 
 const styles = StyleSheet.create({
   container: {
