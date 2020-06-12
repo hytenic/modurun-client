@@ -4,26 +4,25 @@ import React, { useState, useEffect } from 'react';
 import {
   View, Text, KeyboardAvoidingView, Keyboard, BackHandler, Alert,
 } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Polyline } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { TouchableOpacity, TouchableHighlight, TextInput } from 'react-native-gesture-handler';
+import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Track from './Track';
 import styles from './style';
 import utils from './utils';
 import MapMarker from './MapMarker';
-import * as actions from '../../../redux/action/TrackMaster/creators';
+import Route from './Route';
 
 const Icon = {
   FontAwesome,
   MaterialCommunity,
 };
 
-const TrackEditor = ({ curPosCamera, addTrack }) => {
+const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
   const [mapWidth, setMapWidth] = useState(99);
   const [titleInputStyle, setTitleInputStyle] = useState({});
   // const [errorMsg, setErrorMsg] = useState(null);
@@ -32,8 +31,10 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
   const [markerId, setMarkerId] = useState(0);
   const [touchPos, setTouchPos] = useState({ x: -1000, y: 0 });
   const [routes, setRoutes] = useState([]);
+
   const [routeHistory, setRouteHistory] = useState([]);
   const [markerHistory, setMarkerHistory] = useState([]);
+
   const [initialCamera, setInitialCamera] = useState(undefined);
 
   const [layoutInfo, setLayoutInfo] = useState(null);
@@ -46,16 +47,16 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
 
   const [exit, setExit] = useState(false);
 
+  // Output data
+  const [trackTitle, setTrackTitle] = useState('');
+  const [track, setTrack] = useState(undefined);
+
   const setTypingFalse = () => setTypingStatus(false);
   const setTypingTrue = () => setTypingStatus(true);
 
   const setCompleteInvisible = () => {
     setCompleteVisibility(false);
     return true;
-  };
-
-  const setCompleteVisible = () => {
-    setCompleteVisibility(true);
   };
 
   async function goToCurrentLocation() {
@@ -153,9 +154,10 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
     if (markers.length === 0) return;
     const allMarkes = markers.concat(markerPos);
     utils.getRoutes(allMarkes)
-      .then((newRoutes) => {
-        pushRouteHistory(newRoutes);
-        setRoutes(newRoutes);
+      .then(({ routes: newRoute, whole }) => {
+        pushRouteHistory(newRoute);
+        setRoutes(newRoute);
+        setTrack(whole);
       });
   };
 
@@ -171,11 +173,12 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
     });
     const processed = processMarkers(updatedMarkers);
     utils.getRoutes(processed)
-      .then((newRoutes) => {
+      .then(({ routes: newRoute, whole }) => {
         setMarkers(updatedMarkers);
         pushMarkerHistory(updatedMarkers);
-        pushRouteHistory(newRoutes);
-        setRoutes(newRoutes);
+        pushRouteHistory(newRoute);
+        setRoutes(newRoute);
+        setTrack(whole);
       });
   };
 
@@ -206,11 +209,12 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
     const updatedMarkers = [...markers, { chain: true }];
     const processed = processMarkers(updatedMarkers);
     utils.getRoutes(processed)
-      .then((newRoutes) => {
+      .then(({ routes: newRoute, whole }) => {
         setMarkers(updatedMarkers);
         pushMarkerHistory(updatedMarkers);
-        pushRouteHistory(newRoutes);
-        setRoutes(newRoutes);
+        pushRouteHistory(newRoute);
+        setRoutes(newRoute);
+        setTrack(whole);
       });
   };
 
@@ -295,6 +299,25 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
 
   const toolBarIconStyle = (backgroundColor) => styles.toolBarIcon(backgroundColor, toolBarIconSize);
 
+  const exportTrack = () => {
+    // 이 부분 모달창으로 바꿔도 좋을 듯.
+    if (!track || !trackTitle) Alert.alert('내용 채워라', '경고한다');
+
+    const { paths } = track;
+    const { distance, instructions, points } = paths[0];
+    const postData = {
+      origin: routes[0],
+      destination: routes[routes.length - 1],
+      route: routes,
+      trackLength: distance,
+      title: trackTitle,
+    };
+    setCompleteInvisible();
+    onCompleteEdit(postData);
+    setTrackTitle('');
+    Keyboard.dismiss();
+  };
+
   return (
     <View onLayout={updateToolBarParentWidth} style={styles.container}>
       <View>
@@ -321,21 +344,20 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
           </View>
         </View>
         <View style={styles.completeButtonContainer(!completeVisible, layoutInfo ? layoutInfo.height - 60 : 300)}>
-          <TouchableOpacity onPress={toggleCompleteVisible} style={[toolBarIconStyle('#5bc253'), {display: completeVisible ? 'none' : 'flex'}]}>
+          <TouchableOpacity onPress={toggleCompleteVisible} style={[toolBarIconStyle('#5bc253'), { display: completeVisible ? 'none' : 'flex' }]}>
             <Icon.FontAwesome name="check" size={toolBarIconSize} color="white" />
           </TouchableOpacity>
         </View>
-        {/* This is a marker that is following touch */}
       </View>
 
       <MapView {...mapViewProps}>
         {renderMarkers()}
-        <Track data={routes} isPreview visibleMarker={false} />
+        <Route coordinates={routes} />
       </MapView>
 
       <KeyboardAvoidingView style={styles.titleInputContainer(completeVisible, typingText)}>
-        <TextInput onLayout={updateTitleInputStyle} style={[styles.titleInput, titleInputStyle]} placeholder="트랙의 이름을 지어주세요" />
-        <TouchableOpacity style={styles.editCompleteButton}>
+        <TextInput onChange={(e) => { setTrackTitle(e.nativeEvent.text); }} value={trackTitle} onLayout={updateTitleInputStyle} style={[styles.titleInput, titleInputStyle]} placeholder="트랙의 이름을 지어주세요" />
+        <TouchableOpacity onPress={exportTrack} style={styles.editCompleteButton}>
           <Text style={{ color: 'white' }}>제작 완료</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
@@ -346,28 +368,25 @@ const TrackEditor = ({ curPosCamera, addTrack }) => {
 
 TrackEditor.defaultProps = {
   curPosCamera: PropTypes.object.isRequired,
+  onCompleteEdit: () => {},
 };
 
 TrackEditor.propTypes = {
   curPosCamera: PropTypes.shape({
-    altitude: PropTypes.number.isRequired,
+    altitude: PropTypes.number,
     center: PropTypes.shape({
-      latitude: PropTypes.number.isRequired,
-      longitude: PropTypes.number.isRequired,
+      latitude: PropTypes.number,
+      longitude: PropTypes.number,
     }),
-    heading: PropTypes.number.isRequired,
-    pitch: PropTypes.number.isRequired,
-    zoom: PropTypes.number.isRequired,
+    heading: PropTypes.number,
+    pitch: PropTypes.number,
+    zoom: PropTypes.number,
   }),
-  addTrack: PropTypes.func.isRequired,
+  onCompleteEdit: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   curPosCamera: state.trackMaster.userLocation.curPosCamera,
 });
 
-const mapDispatchToProps = {
-  addTrack: actions.addTrack,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrackEditor);
+export default connect(mapStateToProps, null)(TrackEditor);
