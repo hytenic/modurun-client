@@ -30,7 +30,10 @@ const getRoutes = (markers) => {
           longitude,
         });
       }, []);
-      return mappedCoords;
+      return {
+        routes: mappedCoords,
+        whole: json,
+      };
     });
 };
 
@@ -56,9 +59,19 @@ const buttonContainer = (text, callback) => (
   </TouchableOpacity>
 );
 
+const paleColor = (rgbaColor) => {
+  const colorString = rgbaColor.match(/\((.+)\)/)[1];
+  const [r, g, b, a] = colorString.split(/,\s?/);
+  const reconstructedColor = `rgba(${r},${g},${b},${Number(a) * 0.1})`;
+  return reconstructedColor;
+};
+
+const logStringified = (data) => console.log(JSON.stringify(data));
 
 export default {
   getRoutes,
   toggleContainer,
   buttonContainer,
+  logStringified,
+  paleColor,
 };
