@@ -2,40 +2,27 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { Polyline } from 'react-native-maps';
+import PropTypes from 'prop-types';
 import MapMarker from './MapMarker';
+import propShapes from './propShapes';
+import exampleProps from './exampleProps';
+import Route from './Route';
 
-const Track = ({ isPreview, data, tag, visibleMarker = true }) => {
-  const [visibleRoute, setVisibleRoute] = useState(false);
-
-  const polyLineProps = () => ({
-    coordinates: data,
-    strokeColor: 'rgba(45,38,255,0.5)',
-    strokeWidth: 8,
-  });
-
-  const onMarkerPress = () => {
-    setVisibleRoute(!visibleRoute);
-  };
-
-  const renderMarker = () => {
-    if (!visibleMarker) return <></>;
-    return (
-      <MapMarker
-        position={data[0]}
-        onPress={onMarkerPress}
-        tag={tag}
-      />
-    );
-  };
+const Track = ({ data, track, visible, onMarkerPress, callOut }) => {
+  const {trackTitle, route, origin, destination, trackLength} = track;
 
   const renderRoute = () => {
-    if (!isPreview && !visibleRoute) return <></>;
-    return <Polyline {...polyLineProps()} />;
+    if (!visible) return <></>;
+    return <Route coordinates={route} />;
+  };
+
+  const onPress = () => {
+    onMarkerPress(data);
   };
 
   return (
     <>
-      {renderMarker()}
+      <MapMarker title={trackTitle} callOut={callOut} description={"여기에 트랙 정보 넣어야 됨"} onPress={onPress} position={origin} />
       {renderRoute()}
     </>
   );
