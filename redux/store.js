@@ -11,6 +11,4 @@ const unsubscribe = store.subscribe(() => {
   console.log('curState', store.getState());
 });
 
-console.log(store.getState());
-
 export default store;
