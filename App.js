@@ -7,7 +7,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Location from 'expo-location';
 
-import TrackMaster from './components/modules/TrackMaster';
+// import TrackMaster from './components/modules/TrackMaster/TrackMaster';
+import TrackMasterContainer from './components/modules/TrackMasterContainer';
 import Developer from './components/Developer';
 import FilterModal from './components/modules/FilterModal';
 import TrackList from './components/modules/TrackList';
@@ -47,7 +48,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Developer" component={Developer} />
-          <Stack.Screen name="TrackMaster" component={TrackMaster} />
+          <Stack.Screen name="TrackMaster" component={TrackMasterContainer} />
           <Stack.Screen name="FilterModal" component={FilterModal} />
           <Stack.Screen name="TrackList" component={TrackList} />
           <Stack.Screen name="CreatedTrackInfo" component={CreatedTrackInfo} />
