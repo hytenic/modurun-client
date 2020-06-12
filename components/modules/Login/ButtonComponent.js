@@ -4,12 +4,15 @@ import { StyleSheet, Text, Button, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   button: {
-    width: 150,
+    width: 120,
+    height: 50,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    margin: 10,
+    marginBottom: 100,
     padding: 10,
-    backgroundColor: 'green',
+    backgroundColor: '#FBFFB9',
   },
 });
 
@@ -33,7 +36,7 @@ const ButtonComponent = ({ type, title, info, onPressAction }) => {
   if (type === 'google') {
     return (
       <TouchableOpacity
-        style={[styles.button, { backgroundColor: 'red' }]}
+        style={styles.button}
         title={title}
         onPress={() => {
           onPressAction();
