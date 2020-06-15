@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   header: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     backgroundColor: '#f15c5c',
     alignItems: 'center',
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     top: 19,
   },
   suggestion: {
+    flex: 1,
     backgroundColor: 'white',
     borderWidth: 0.5,
     padding: 5,
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
 const Main = ({navigation}) => {
   const [destination, setDestination] = useState('');
   const [predictions, setPredictions] = useState([]);
+  const [searching, setSearching] = useState(false);
   const { apiKey } = getEnvVars('prod');
 
   const toggleSideBar = ({navigation}) => {
@@ -105,14 +107,28 @@ const Main = ({navigation}) => {
         style={styles.search}
         placeholder='검색'
         value={destination}
+        onTouchStart={() => {
+          setSearching(true);
+        }}
         onChangeText={(text) => {
           onChangeDestination(text);
         }}
+        onSubmitEditing={() => {
+          setSearching(false);
+        }}
       />
       </View>
-      {predictionsList}
       <View style={styles.main}>
+      {
+        searching === true ? 
+        (
+          <View style={styles.main}>
+            {predictionsList}
+          </View>
+        ) :
         <TrackMasterContainer mode='scheduleViewer' />
+      }
+        
         
           <View style={styles.filterButton}>
             <FilterModal style={styles.main}/>
