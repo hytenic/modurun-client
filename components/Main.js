@@ -59,7 +59,6 @@ const Main = ({navigation}) => {
   };
 
   const onChangeDestination = async (text) => {
-    // call place api
     setDestination(text);
     const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${apiKey}&language=ko&input=${text}`;
     try {
@@ -84,6 +83,8 @@ const Main = ({navigation}) => {
         const result = await fetch(apiUrl);
         const json = await result.json();
         console.log(json.result.geometry.location);
+        setSearching(false);
+        // onChangeDestination(json.result.geometry.location);
       }}
     >
       <Text>{prediction.description}</Text>

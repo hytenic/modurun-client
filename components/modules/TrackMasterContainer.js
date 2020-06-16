@@ -44,7 +44,7 @@ const styles = {
   },
 };
 
-export default function TrackMasterContainer({ mode, region }) {
+export default function TrackMasterContainer({ mode }) {
   const [modeIndex, setModeIndex] = useState(0);
   const modes = ['trackViewer', 'scheduleViewer', 'trackEditor'];
   const curMode = modes[modeIndex];
@@ -64,7 +64,7 @@ export default function TrackMasterContainer({ mode, region }) {
       </TouchableOpacity>
     </View>
   );
-
+  const [region, setRegion] = useState();
   // const renderTrackMaster = (mode) => {
     if (mode === 'trackViewer') {
       return (
@@ -88,6 +88,7 @@ export default function TrackMasterContainer({ mode, region }) {
       return (
         <TrackMaster
           mode={mode}
+          // region={region}
           onRegionChange={(region) => {}} // 화면이 이동할 때마다 "현재 영역에 존재하는 스케줄을 가져오는 액션"이 일어나야 합니다.
           onTrackSelected={(schedules) => { logStringified(schedules); }}
           schedules={dummySchedules}
