@@ -26,6 +26,7 @@ import CreatedScheduleInfo from './components/modules/CreatedScheduleInfo';
 import TrackCreator from './components/modules/TrackCreator';
 import ScheduleManager from './components/modules/ScheduleManager';
 import MyPage from './components/modules/MyPage';
+import Main from './components/Main';
 
 import store from './redux/store';
 
@@ -65,6 +66,7 @@ export default function App() {
           <Stack.Screen name="ScheduleManager" component={ScheduleManager} />
           <Stack.Screen name="ChatRoom" component={ChatRoom} />
           <Stack.Screen name="MyPage" component={MyPage} />
+          <Stack.Screen name="Main" component={Main} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
