@@ -1,12 +1,21 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import PropTypes from 'prop-types';
+import ScheduleListEntry from './ScheduleList/ScheduleListEntry';
 
-const ScheduleList = () => {
+const ScheduleList = ({schedules}) => {
+
+  if (!schedules.length) return <></>;
+
   return (
-    <View>
-      <Text></Text>
-    </View>
+    <ScrollView style={{borderTopWidth:1}}>
+      {schedules.map((schedule) => <ScheduleListEntry data={schedule} />)}
+    </ScrollView>
   )
+}
+
+ScheduleList.defaultProps = {
+  schedules: [],
 }
 
 export default ScheduleList
