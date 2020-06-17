@@ -15,16 +15,15 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 11,
+    ecmaVersion: 2018,
     sourceType: 'module',
   },
   plugins: [
     'react',
   ],
   rules: {
-    'react/jsx-filename-extension': [1, {
-      extensions: ['.js', '.jsx'],
-    }],
+    "react/jsx-filename-extension": [1, {
+      "extensions": [".js", ".jsx"]
+    }]
   },
-  parser: "babel-eslint"
 };
