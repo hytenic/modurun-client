@@ -68,10 +68,19 @@ const paleColor = (rgbaColor) => {
 
 const logStringified = (data) => console.log(JSON.stringify(data));
 
+const makeCamera = (location) => ({
+  altitude: 50.19999694824219,
+  center: location,
+  zoom: 15,
+  pitch: 0,
+  heading: 0,
+});
+
 export default {
   getRoutes,
   toggleContainer,
   buttonContainer,
   logStringified,
   paleColor,
+  makeCamera,
 };

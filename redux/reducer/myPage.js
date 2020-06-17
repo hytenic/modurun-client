@@ -14,7 +14,7 @@ const initialState = {
 };
 
 const myPageRudecuer = (state = initialState, action) => {
-  console.log(action);
+  // console.log(action);
   if (action.type === actions.EX_ACTION1) {
     const newState = Object.assign(initialState,
       {

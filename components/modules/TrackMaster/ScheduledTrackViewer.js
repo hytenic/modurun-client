@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import * as Location from 'expo-location';
 import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import { Text, View, Platform } from 'react-native';
@@ -10,9 +10,17 @@ import utils from './utils';
 
 const { paleColor } = utils;
 
-const ScheduledTrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, schedules }) => {
+const ScheduledTrackViewer = ({
+  curPosCamera,
+  onRegionChange,
+  onTrackSelected,
+  schedules,
+  initialCamera,
+}) => {
   const [mapWidth, setMapWidth] = useState('99%');
   const [selectedTrack, setSelectedTrack] = useState(null);
+
+  const mapView = useRef();
 
   const reducedSchedules = schedules.reduce((acc, { track, schedule }) => {
     const { trackTitle } = track;
@@ -32,6 +40,8 @@ const ScheduledTrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, s
     setMapWidth('100%');
   };
 
+  const syntheticInitialCamera = utils.makeCamera(initialCamera);
+
   const mapViewProps = {
     rotateEnabled: false,
     style: [styles.mapStyle, {
@@ -41,6 +51,16 @@ const ScheduledTrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, s
     onMapReady: () => {
       updateMapStyle();
     },
+    moveOnMarkerPress: false,
+    onRegionChange: (region) => {
+      // onTouchEnd로 콜백 위치 변경됨.
+    },
+    onTouchEnd: () => {
+      // eslint-disable-next-line no-underscore-dangle
+      const lastRegion = mapView.current.__lastRegion;
+      onRegionChange(lastRegion);
+    },
+    initialCamera: initialCamera ? syntheticInitialCamera : curPosCamera,
   };
 
   const onMarkerPress = ({ schedules: relatedSchedules, track }) => {
@@ -52,12 +72,15 @@ const ScheduledTrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, s
 
   const renderCalloutProps = (calloutProps) => {
     const decideMarginBottom = (index) => (index < calloutProps.length - 1 ? 10 : 0);
-    return calloutProps.map(([key, value, keyBackgroundColor, keyColor, valueBackgroundColor, valueColor], i) => (
-      <View style={[styles.callloutPropRow, { marginBottom: decideMarginBottom(i) }]}>
-        <Text style={styles.callloutPropKey(keyBackgroundColor, keyColor)}>{key}</Text>
-        <Text style={styles.calloutPropValue(valueBackgroundColor, valueColor)}>{value}</Text>
-      </View>
-    ));
+    return calloutProps.map((prop, i) => {
+      const [key, value, keyBackgroundColor, keyColor, valueBackgroundColor, valueColor] = prop;
+      return (
+        <View style={[styles.callloutPropRow, { marginBottom: decideMarginBottom(i) }]}>
+          <Text style={styles.callloutPropKey(keyBackgroundColor, keyColor)}>{key}</Text>
+          <Text style={styles.calloutPropValue(valueBackgroundColor, valueColor)}>{value}</Text>
+        </View>
+      );
+    });
   };
 
   const colors = {
@@ -98,7 +121,7 @@ const ScheduledTrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, s
   };
 
   return (
-    <MapView moveOnMarkerPress={false} onRegionChange={onRegionChange} initialCamera={curPosCamera} {...mapViewProps}>
+    <MapView ref={mapView} {...mapViewProps}>
       {mappedSchedules.map((trackSchedules) => {
         const { track } = trackSchedules;
         return (

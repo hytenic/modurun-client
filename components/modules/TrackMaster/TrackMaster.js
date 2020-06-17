@@ -22,6 +22,7 @@ const TrackMaster = ({
   tracks,
   onTrackSelected,
   onCompleteEdit,
+  initialCamera
 }) => {
   // const [editable, setEditable] = useState(false);
   // const [followUser, setFollowUser] = useState(false);
@@ -56,6 +57,7 @@ const TrackMaster = ({
       return (
         <TrackEditor
           onCompleteEdit={onCompleteEdit}
+          initialCamera={initialCamera}
         />
       );
     }
@@ -66,6 +68,7 @@ const TrackMaster = ({
           onRegionChange={onRegionChange}
           onTrackSelected={onTrackSelected}
           schedules={schedules}
+          initialCamera={initialCamera}
         />
       );
     }
@@ -76,6 +79,7 @@ const TrackMaster = ({
           onRegionChange={onRegionChange}
           onTrackSelected={onTrackSelected}
           tracks={tracks}
+          initialCamera={initialCamera}
         />
       );
     }

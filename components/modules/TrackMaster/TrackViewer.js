@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { connect } from 'react-redux';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import * as Location from 'expo-location';
 import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import { Text, View } from 'react-native';
@@ -10,12 +10,17 @@ import utils from './utils';
 
 const { paleColor } = utils;
 
-const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks }) => {
+const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, initialCamera }) => {
   const [mapWidth, setMapWidth] = useState('99%');
   const [selectedTrack, setSelectedTrack] = useState(null);
+
+  const mapView = useRef();
+
   const updateMapStyle = () => {
     setMapWidth('100%');
   };
+
+  const syntheticInitialCamera = utils.makeCamera(initialCamera);
 
   const mapViewProps = {
     rotateEnabled: false,
@@ -26,6 +31,16 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks }) 
     onMapReady: () => {
       updateMapStyle();
     },
+    onRegionChange: (region) => {
+      // onRegionChange(region)
+      // onTouchEnd로 콜백 위치가 바뀜.
+    },
+    onTouchEnd: () => {
+      // eslint-disable-next-line no-underscore-dangle
+      const lastRegion = mapView.current.__lastRegion;
+      onRegionChange(lastRegion);
+    },
+    initialCamera: initialCamera ? syntheticInitialCamera : curPosCamera,
   };
 
   const onMarkerPress = (track) => {
@@ -94,11 +109,11 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks }) 
   };
 
   return (
-    <MapView onRegionChange={onRegionChange} initialCamera={curPosCamera} {...mapViewProps}>
+    <MapView ref={mapView} {...mapViewProps}>
       {tracks.map((track) => (
         <Track
           key={track.trackTitle}
-          visible={track === selectedTrack}
+          visible={initialCamera ? true : track === selectedTrack}
           callOut={callOut(track)}
           onMarkerPress={onMarkerPress}
           track={track}

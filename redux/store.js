@@ -7,8 +7,8 @@ const store = createStore(
   applyMiddleware(thunk),
 );
 
-const unsubscribe = store.subscribe(() => {
-  console.log('curState', store.getState());
-});
+// const unsubscribe = store.subscribe(() => {
+//   console.log('curState', store.getState());
+// });
 
 export default store;

@@ -70,9 +70,10 @@ export default function TrackMasterContainer({ mode }) {
       return (
         <TrackMaster
           mode={mode}
-          onRegionChange={(region) => {}} // 화면이 이동할 때마다 "현재 영역에 존재하는 트랙을 가져오는 액션"이 일어나야 합니다.
+          onRegionChange={(region) => {console.log(region)}} // 화면이 이동할 때마다 "현재 영역에 존재하는 트랙을 가져오는 액션"이 일어나야 합니다.
           onTrackSelected={(track) => { logStringified(track); }}
           tracks={dummyTracks}
+          // initialRegion={}
         />
       );
     }
@@ -88,8 +89,7 @@ export default function TrackMasterContainer({ mode }) {
       return (
         <TrackMaster
           mode={mode}
-          // region={region}
-          onRegionChange={(region) => {}} // 화면이 이동할 때마다 "현재 영역에 존재하는 스케줄을 가져오는 액션"이 일어나야 합니다.
+          onRegionChange={(region) => {console.log(region)}} // 화면이 이동할 때마다 "현재 영역에 존재하는 스케줄을 가져오는 액션"이 일어나야 합니다.
           onTrackSelected={(schedules) => { logStringified(schedules); }}
           schedules={dummySchedules}
         />
