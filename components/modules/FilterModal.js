@@ -8,15 +8,17 @@ import moment from 'moment';
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   modalView: {
+    width: '80%',
+    height: '70%',
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
+    // justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -26,6 +28,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  modalStyle: {
+    alignItems: 'center',
   },
   openButton: {
     backgroundColor: 'blue',
@@ -47,7 +52,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const FilterModal = () => {
+const FilterModal = ({modal}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [distance, setDistance] = useState(0);
   const [pickerMode, setPickerMode] = useState('date');
@@ -59,6 +64,10 @@ const FilterModal = () => {
   const [timeFrom, setTimeFrom] = useState(new Date());
   const [timeTo, setTimeTo] = useState(new Date());
   const [totalLength, setTotalLength] = useState(0);
+
+  const show = () => {
+    setModalVisible(modal);
+  }
 
   const onChangeDatePicker = (event, selectedDate) => {
     setDatePickerShow(!datePickerShow);
@@ -141,7 +150,7 @@ const FilterModal = () => {
 
   return (
     <View style={styles.centeredView}>
-      <Modal animationType="slide" visible={modalVisible} transparent={false}>
+      <Modal animationType="slide" visible={modalVisible} transparent={true}>
         <View stlye={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.row}>
