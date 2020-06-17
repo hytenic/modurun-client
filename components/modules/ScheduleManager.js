@@ -1,14 +1,12 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { View, Text } from 'react-native';
+import MyScheduleList from './ScheduleManager/MyScheduleList';
+import dummySchedules from './TrackMaster/dummyData/dummySchedules.json';
 
-const ScheduleManager = () => {
-  return (
-    <View>
-      <Text></Text>
-    </View>
-  )
-}
+const ScheduleManager = () => (
+  <View>
+    <MyScheduleList schedules={dummySchedules} />
+  </View>
+);
 
-export default ScheduleManager
-
-const styles = StyleSheet.create({})
+export default ScheduleManager;
