@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useNavigation } from 'react';
 import {
-    StyleSheet, View, Text, TouchableOpacity, Image, TextInput,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput,
 } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Scheduler from './modules/Scheduler';
@@ -45,16 +45,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 0.5,
     padding: 5,
-  }
+  },
 });
 
-const Main = ({navigation}) => {
+const Main = () => {
+  const navigation = useNavigation();
   const [destination, setDestination] = useState('');
   const [predictions, setPredictions] = useState([]);
   const [searching, setSearching] = useState(false);
-  const { apiKey } = getEnvVars('prod');
+  const { apiKey } = getEnvVars('dev');
 
-  const toggleSideBar = ({navigation}) => {
+  const toggleSideBar = () => {
     navigation.openDrawer();
   };
 
@@ -68,72 +69,69 @@ const Main = ({navigation}) => {
     } catch (e) {
       console.error(e);
     }
-    
-  }
+  };
 
   const predictionsList = predictions.map((prediction) => {
-    console.log(prediction);
     return (
-    <TouchableOpacity
-      key={prediction.id}
-      style={styles.suggestion}
-      onPress={async () => {
-        console.log('hello');
-        const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${prediction.place_id}&key=${apiKey}`
-        const result = await fetch(apiUrl);
-        const json = await result.json();
-        console.log(json.result.geometry.location);
-        setSearching(false);
+      <TouchableOpacity
+        key={prediction.id}
+        style={styles.suggestion}
+        onPress={async () => {
+          const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${prediction.place_id}&key=${apiKey}`;
+          const result = await fetch(apiUrl);
+          const json = await result.json();
+          // console.log(json.result.geometry.location);
+          setSearching(false);
         // onChangeDestination(json.result.geometry.location);
-      }}
-    >
-      <Text>{prediction.description}</Text>
-    </TouchableOpacity>
+        }}
+      >
+        <Text>{prediction.description}</Text>
+      </TouchableOpacity>
     );
-  })
+  });
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => {
-        toggleSideBar({navigation});
-      }}
-      >
-        <Image
-          source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
-          style={{ width: 25, height: 25, marginLeft: 15 }}
+          toggleSideBar({ navigation });
+        }}
+        >
+          <Image
+            source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
+            style={{ width: 25, height: 25, marginLeft: 15 }}
+          />
+        </TouchableOpacity>
+        <TextInput
+          style={styles.search}
+          placeholder="검색"
+          value={destination}
+          onTouchStart={() => {
+            setSearching(true);
+          }}
+          onChangeText={(text) => {
+            onChangeDestination(text);
+          }}
+          onSubmitEditing={() => {
+            setSearching(false);
+          }}
         />
-      </TouchableOpacity>
-      <TextInput
-        style={styles.search}
-        placeholder='검색'
-        value={destination}
-        onTouchStart={() => {
-          setSearching(true);
-        }}
-        onChangeText={(text) => {
-          onChangeDestination(text);
-        }}
-        onSubmitEditing={() => {
-          setSearching(false);
-        }}
-      />
       </View>
       <View style={styles.main}>
-      {
-        searching === true ? 
-        (
-          <View style={styles.main}>
-            {predictionsList}
-          </View>
-        ) :
-        <TrackMasterContainer mode='scheduleViewer' />
+        {
+        searching === true
+          ? (
+            <View style={styles.main}>
+              {predictionsList}
+            </View>
+          )
+          : <TrackMasterContainer mode="scheduleViewer" />
       }
-        
-        
-          <View style={styles.filterButton}>
-            <FilterModal style={styles.main}/>
-          </View>
+
+
+        <View style={styles.filterButton}>
+          <FilterModal style={styles.main} />
+        </View>
       </View>
     </View>
   );
@@ -154,4 +152,3 @@ function SideBar() {
 }
 
 export default SideBar;
-
