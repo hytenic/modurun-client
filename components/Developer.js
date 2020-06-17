@@ -12,17 +12,21 @@ const Developer = ({ navigation }) => {
     'CreatedTrackInfo',
     'TrackManagerTab',
     'SignUpManager',
-    'SignInManager',
+    // 'SignInManager',
+    'TrackManager',
+    'ScheduleManager',
     'MainHeader',
     'ScheduleList',
     'SideBar',
     'Scheduler',
-    'SeletedTrackInfo',
+    'SelectedTrackInfo',
+    'SingleTrackViewer',
     'CreatedScheduleInfo',
     'TrackCreator',
     'ScheduleManager',
     'ChatRoom',
     'MyPage',
+    'MainScheduleListTest',
   ];
   return (
     <ScrollView>
