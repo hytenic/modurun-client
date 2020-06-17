@@ -44,7 +44,7 @@ const styles = {
   },
 };
 
-export default function TrackMasterContainer() {
+export default function TrackMasterContainer({ mode }) {
   const [modeIndex, setModeIndex] = useState(0);
   const modes = ['trackViewer', 'scheduleViewer', 'trackEditor'];
   const curMode = modes[modeIndex];
@@ -64,8 +64,8 @@ export default function TrackMasterContainer() {
       </TouchableOpacity>
     </View>
   );
-
-  const renderTrackMaster = (mode) => {
+  const [region, setRegion] = useState();
+  // const renderTrackMaster = (mode) => {
     if (mode === 'trackViewer') {
       return (
         <TrackMaster
@@ -95,12 +95,9 @@ export default function TrackMasterContainer() {
         />
       );
     }
-  };
+  // };
 
-  return (
-    <View style={{ flex: 1 }}>
-      {modeSelector}
-      {renderTrackMaster(curMode)}
-    </View>
-  );
+  // return (
+  //   <TrackMasterContainer mode={mode} />
+  // );
 }
