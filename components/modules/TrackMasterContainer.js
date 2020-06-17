@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import {
-  StyleSheet, Text, View, TouchableOpacity,
+  StyleSheet, Text, View, TouchableOpacity, StatusBar,
 } from 'react-native';
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -65,7 +65,7 @@ export default function TrackMasterContainer({ mode }) {
     </View>
   );
   const [region, setRegion] = useState();
-  // const renderTrackMaster = (mode) => {
+  const renderTrackMaster = (mode) => {
     if (mode === 'trackViewer') {
       return (
         <TrackMaster
@@ -73,7 +73,7 @@ export default function TrackMasterContainer({ mode }) {
           onRegionChange={(region) => {console.log(region)}} // 화면이 이동할 때마다 "현재 영역에 존재하는 트랙을 가져오는 액션"이 일어나야 합니다.
           onTrackSelected={(track) => { logStringified(track); }}
           tracks={dummyTracks}
-          // initialRegion={}
+          // initialCamera={{}}
         />
       );
     }
@@ -92,12 +92,19 @@ export default function TrackMasterContainer({ mode }) {
           onRegionChange={(region) => {console.log(region)}} // 화면이 이동할 때마다 "현재 영역에 존재하는 스케줄을 가져오는 액션"이 일어나야 합니다.
           onTrackSelected={(schedules) => { logStringified(schedules); }}
           schedules={dummySchedules}
+          // initialCamera={{}}
         />
       );
     }
-  // };
+  };
 
-  // return (
-  //   <TrackMasterContainer mode={mode} />
-  // );
+  return (
+    <View style={{ flex: 1 }}>
+      <StatusBar />
+      {modeSelector}
+      <View style={{ flex:1 }}>
+        {renderTrackMaster(curMode)}
+      </View>
+    </View>
+  );
 }
