@@ -121,7 +121,7 @@ const ScheduledTrackViewer = ({
   };
 
   return (
-    <MapView {...mapViewProps}>
+    <MapView ref={mapView} {...mapViewProps}>
       {mappedSchedules.map((trackSchedules) => {
         const { track } = trackSchedules;
         return (
