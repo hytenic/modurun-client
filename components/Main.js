@@ -1,7 +1,8 @@
-import React, { useState, useNavigation } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, View, Text, TouchableOpacity, Image, TextInput,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Scheduler from './modules/Scheduler';
 import TrackManager from './modules/TrackManagerTab';
