@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const Scheduler = () => {
   return (
     <View>
-      <Text></Text>
+      <Text>스케줄러</Text>
     </View>
   )
 }

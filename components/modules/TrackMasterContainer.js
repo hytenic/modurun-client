@@ -44,7 +44,7 @@ const styles = {
   },
 };
 
-export default function TrackMasterContainer() {
+export default function TrackMasterContainer({ mode }) {
   const [modeIndex, setModeIndex] = useState(0);
   const modes = ['trackViewer', 'scheduleViewer', 'trackEditor'];
   const curMode = modes[modeIndex];
@@ -64,8 +64,8 @@ export default function TrackMasterContainer() {
       </TouchableOpacity>
     </View>
   );
-
-  const renderTrackMaster = (mode) => {
+  const [region, setRegion] = useState();
+  // const renderTrackMaster = (mode) => {
     if (mode === 'trackViewer') {
       return (
         <TrackMaster
@@ -88,18 +88,16 @@ export default function TrackMasterContainer() {
       return (
         <TrackMaster
           mode={mode}
+          // region={region}
           onRegionChange={(region) => {}} // 화면이 이동할 때마다 "현재 영역에 존재하는 스케줄을 가져오는 액션"이 일어나야 합니다.
           onTrackSelected={(schedules) => { logStringified(schedules); }}
           schedules={dummySchedules}
         />
       );
     }
-  };
+  // };
 
-  return (
-    <View style={{ flex: 1 }}>
-      {modeSelector}
-      {renderTrackMaster(curMode)}
-    </View>
-  );
+  // return (
+  //   <TrackMasterContainer mode={mode} />
+  // );
 }
