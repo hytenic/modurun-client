@@ -5,6 +5,7 @@ import {
 
 const Developer = ({ navigation }) => {
   const pages = [
+    'Main',
     'TrackMaster',
     'FilterModal',
     'TrackList',
