@@ -100,9 +100,9 @@ const Scheduler = () => {
   const [pickerMode, setPickerMode] = useState('date');
   const [courseSelected, setCourseSelected] = useState(false);
 
-  const DatePickerCompoment = ({ style, value }) => (
+  const DatePickerCompoment = ({ value }) => (
     <TouchableOpacity
-      style={style}
+      style={styles.picker}
       onPress={() => {
         setPickerMode('date');
         setDatePickerShow(true);
@@ -144,7 +144,7 @@ const Scheduler = () => {
       />
       <View style={styles.pickerView}>
         <Text style={styles.pickerTitle}>시작 일시</Text>
-        <DatePickerCompoment value={customizingDateAndTime(moment(date).format('M-D'), 0)} style={styles.picker} />
+        <DatePickerCompoment value={customizingDateAndTime(moment(date).format('M-D'), 0)} />
         <TimePickerComponent value={customizingDateAndTime(0, moment(startTime).format('HH:mm:ss'))} />
       </View>
       <View style={styles.pickerView}>
