@@ -10,7 +10,7 @@ import utils from './utils';
 
 const { paleColor } = utils;
 
-const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, initialCamera }) => {
+const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, initialCamera, scrollEnabled }) => {
   const [mapWidth, setMapWidth] = useState('99%');
   const [selectedTrack, setSelectedTrack] = useState(null);
 
@@ -21,6 +21,10 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, in
   };
 
   const syntheticInitialCamera = utils.makeCamera(initialCamera);
+
+  if (mapView.current && initialCamera) {
+    mapView.current.setCamera(syntheticInitialCamera);
+  }
 
   const mapViewProps = {
     rotateEnabled: false,
@@ -41,6 +45,7 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, in
       onRegionChange(lastRegion);
     },
     initialCamera: initialCamera ? syntheticInitialCamera : curPosCamera,
+    scrollEnabled: (scrollEnabled === undefined) ? true : scrollEnabled,
   };
 
   const onMarkerPress = (track) => {
