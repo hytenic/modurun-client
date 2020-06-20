@@ -6,9 +6,9 @@ const TrackCreator = () => {
     <View>
       <Text></Text>
     </View>
-  )
-}
+  );
+};
 
-export default TrackCreator
+export default TrackCreator;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
