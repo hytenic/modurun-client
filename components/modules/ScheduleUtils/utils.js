@@ -39,7 +39,7 @@ const prettyHour = (hour) => {
 
 const monthToKor = (month) => `${month + 1}월`;
 
-export const convertDate = (parsedDate) => {
+export const convertDate = (parsedDate, type = 'short') => {
   const dateObj = new Date(parsedDate);
   const year = `${dateObj.getFullYear()}년`;
   const month = monthToKor(dateObj.getMonth());
@@ -48,5 +48,7 @@ export const convertDate = (parsedDate) => {
   const hour = prettyHour(dateObj.getHours());
   const minute = `${dateObj.getMinutes()}분`;
   // return `${year} ${month} ${date} ${day} ${hour} ${minute}`;
+  if (type === 'compact') return `${dateObj.getFullYear()}.${dateObj.getMonth()}.${dateObj.getDate()}(${day[0]}) ${dateObj.getHours()}:${dateObj.getMinutes()}`;
+  if (type === 'short') return `${month} ${date}(${day[0]}) ${dateObj.getHours()}:${dateObj.getMinutes()}`;
   return `${month} ${date} ${day} ${hour} ${minute}`;
 };
