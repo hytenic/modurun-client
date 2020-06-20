@@ -69,6 +69,15 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
     );
   };
 
+  const renderCompactDetail = () => {
+    if (showMoreVisible) return <></>;
+    return (
+      <View>
+        <Text>자 이제 시작이야</Text>
+      </View>
+    );
+  };
+
   const renderShowMore = () => {
     if (!showMoreVisible) return <></>;
     return (
@@ -78,7 +87,7 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
         <PrettyProp name="길이" value={utils.prettyLength(trackLength)} color="rgba(94, 39, 176, 1)" />
         <PrettyProp name="시간(남)" value={utils.predictDuration(trackLength, 'm')} color="rgba(196, 82, 179, 1)" />
         <PrettyProp name="시간(여)" value={utils.predictDuration(trackLength, 'f')} color="rgba(196, 175, 82, 1)" />
-        <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.2)', marginVertical: 10 }} />
+        <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.1)', marginVertical: 10 }} />
         <View style={{ alignItems: 'center' }}>
           <View style={{ flexDirection: 'row', width: '55%', justifyContent: 'space-between' }}>
             <TouchableOpacity onPress={viewTrackOnMap} style={styles.showDetail}>
@@ -93,6 +102,11 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
     );
   };
 
+  const renderDetail = () => {
+    if (showMoreVisible) return renderShowMore();
+    return renderCompactDetail();
+  };
+
   return (
     <View style={styles.entryContainer}>
       <View style={styles.titleContainer}>
@@ -101,11 +115,11 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
           {renderAdd()}
           {renderBookMark()}
           <TouchableOpacity onPress={toggleShowMore} style={styles.chevron}>
-            <Icon name={showMoreVisible ? 'chevron-up' : 'chevron-down'} color="white" size={20} />
+            <Icon name={showMoreVisible ? 'chevron-up' : 'chevron-down'} color="grey" size={20} />
           </TouchableOpacity>
         </View>
       </View>
-      {renderShowMore()}
+      {renderDetail()}
       <Modal visible={false}>
         <Text>Alert를 모달로 바꾸기</Text>
       </Modal>
