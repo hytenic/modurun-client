@@ -1,11 +1,9 @@
-import getEnvVars from '../../../environment';
-
-const { bareURL } = getEnvVars('dev');
+/* eslint-disable no-undef */
+const url = 'https://modurun.xyz';
 
 const postSchedule = async (createdScheduleInfo) => {
-  console.log('hello');
   try {
-    const result = await fetch(`${bareURL}/schedules`, {
+    const result = await fetch(`${url}/schedules`, {
       method: 'POST',
       //   withCredentials, true,
       credentials: 'include',
@@ -16,8 +14,20 @@ const postSchedule = async (createdScheduleInfo) => {
         'Content-Type': 'application/json',
       },
     });
-    console.log(result);
+    // console.log(result);
     if (result.status === 400) return false;
+
+    const json = result.json();
+    return json;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const postFilter = async ({ filter, userposition, area }) => {
+  try {
+    const result = await fetch(`${url}/schedules/${filter}/${userposition}/${area}`);
+    if (result.status === 404) return false; // 검색하는 일정이 없음
 
     const json = result.json();
     return json;
@@ -28,4 +38,5 @@ const postSchedule = async (createdScheduleInfo) => {
 
 module.exports = {
   postSchedule,
+  postFilter,
 };

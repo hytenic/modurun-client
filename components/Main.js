@@ -8,7 +8,7 @@ import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManagerTab';
 import MyPage from './modules/MyPage';
 import TrackMasterContainer from './modules/TrackMasterContainer';
-import FilterModal from './modules/FilterModal';
+import FilterModal from './modules/Modal';
 import getEnvVars from '../environment';
 
 const styles = StyleSheet.create({

@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 import styles from './style';
 import TrackMaster from '../TrackMaster/TrackMaster';
-import customizingDateAndTime from '../utils';
+import { customizingDateAndTime } from '../utils';
 import DateTimePickerCompoment from '../DateTimePicker';
 import postSchedule from '../API/schedule';
 
