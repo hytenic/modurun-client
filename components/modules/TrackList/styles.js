@@ -3,19 +3,20 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   entryContainer: {
     margin: 10,
-    elevation: 2,
-    borderWidth: 0,
+    // elevation: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.2)',
   },
   titleContainer: {
     padding: 10,
-    backgroundColor: 'dodgerblue',
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
     fontSize: 20,
-    color: 'white',
+    color: 'black',
     flex: 75,
   },
   titleButtonContainer: {
@@ -44,7 +45,6 @@ export default StyleSheet.create({
   },
   chevron: {
     padding: 5,
-    color: 'white',
     alignContent: 'center',
   },
   delete: {
