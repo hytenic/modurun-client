@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { connect } from 'react-redux';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import * as Location from 'expo-location';
 import MapView, { Polyline, Marker, Callout } from 'react-native-maps';
 import { Text, View } from 'react-native';
@@ -21,6 +21,10 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, in
   };
 
   const syntheticInitialCamera = utils.makeCamera(initialCamera);
+
+  if (mapView.current && initialCamera) {
+    mapView.current.setCamera(syntheticInitialCamera);
+  }
 
   const mapViewProps = {
     rotateEnabled: false,
