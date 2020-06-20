@@ -34,11 +34,12 @@ import Main from './components/Main';
 import store from './redux/store';
 import SingleTrackViewer from './components/modules/SingleTrackViewer';
 import Main_ScheduleList_Test from './components/modules/Main_ScheduleList_Test';
+import TestLogin from './components/modules/TestLogin';
+import Rate from './components/modules/Rate';
 
 navigator.geolocation = Location;
 
 const Stack = createStackNavigator();
-
 export default function App() {
   return (
     <Provider store={store}>
@@ -48,6 +49,7 @@ export default function App() {
           <Stack.Screen options={{ headerShown: false }} name="TrackMaster" component={TrackMasterContainer} />
           <Stack.Screen name="FilterModal" component={FilterModal} />
           <Stack.Screen name="TrackList" component={TrackList} />
+          <Stack.Screen name="Rate" component={Rate} />
           <Stack.Screen name="CreatedTrackInfo" component={CreatedTrackInfo} />
           <Stack.Screen name="TrackManagerTab" component={TrackManagerTab} />
           <Stack.Screen name="SignUpManager" component={SignUpManager} />
@@ -57,6 +59,7 @@ export default function App() {
           <Stack.Screen name="SideBar" component={SideBar} />
           <Stack.Screen name="Scheduler" component={Scheduler} />
           <Stack.Screen name="SelectedTrackInfo" component={SelectedTrackInfo} />
+          <Stack.Screen name="TestLogin" component={TestLogin} />
           <Stack.Screen name="CreatedScheduleInfo" component={CreatedScheduleInfo} />
           <Stack.Screen name="TrackCreator" component={TrackCreator} />
           <Stack.Screen options={{ headerShown: false }} name="TrackManager" component={TrackManager} />

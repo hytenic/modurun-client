@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, View, ScrollView,
+  StyleSheet, Text, TouchableOpacity, View, ScrollView, Alert,
 } from 'react-native';
 
 const Developer = ({ navigation }) => {
   const pages = [
+    'TestLogin',
     'Main',
     'TrackMaster',
     'FilterModal',
@@ -27,7 +28,9 @@ const Developer = ({ navigation }) => {
     'ChatRoom',
     'MyPage',
     'MainScheduleListTest',
+    'Rate',
   ];
+
   return (
     <ScrollView>
       {pages.map((page) => (
