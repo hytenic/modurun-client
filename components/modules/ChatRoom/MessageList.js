@@ -1,22 +1,33 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { View, Text, KeyboardAvoidingView } from 'react-native';
+import { View, Keyboard } from 'react-native';
 import Message from './Message';
 
-const MessageList = ({messages}) => {
+const MessageList = ({ messages }) => {
   const [scrollOffset, setScrollOffset] = useState(0);
   const scrollView = useRef();
+
+  const avoidKeyboard = () => {
+    if (scrollOffset < 300) return;
+    scrollView.current.scrollTo({
+      x: 0,
+      y: scrollOffset + 300,
+      animated: true,
+    });
+  };
+
   useEffect(() => {
-    console.log(Object.keys(scrollView.current));
-    // scrollView.current.scrollToEnd();
-  }, []);
+    Keyboard.addListener('keyboardDidShow', avoidKeyboard);
+    return () => {
+      Keyboard.removeListener('keyboardDidShow', avoidKeyboard);
+    };
+  }, [scrollOffset]);
 
   const updateScrollOffset = (e) => {
-    console.log(Object.keys(e.nativeEvent));
-    console.log(e.nativeEvent.layoutMeasurement);
-    console.log(e.nativeEvent.contentSize.height);
-    console.log(scrollOffset);
-    setScrollOffset(e.nativeEvent.contentOffset);
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+    const maxScroll = contentSize.height - layoutMeasurement.height;
+    const curScroll = contentOffset.y;
+    setScrollOffset(curScroll);
   };
 
   return (

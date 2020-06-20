@@ -1,4 +1,4 @@
-import axios from 'axios';
+import io from 'socket.io-client';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TextInput, TouchableHighlight } from 'react-native-gesture-handler';
@@ -7,19 +7,21 @@ import MessageList from './ChatRoom/MessageList';
 import dummyChat from './ChatRoom/dummyChat.json';
 
 const ChatRoom = () => {
-  const [dummyCount, setDummyCount] = useState(0);
-  const addDummyCount = () => setDummyCount(dummyCount + 1);
+  const [curChat, setCurChat] = useState(dummyChat);
+  const [input, setInput] = useState('');
 
   const sendMessage = () => {
-    addDummyCount();
-    console.log(`여기서 채팅 보내는 거 해야됨 ${dummyCount}`);
+    console.log('채팅 보내는 액션');
+    addChat(input);
   };
+
+  const setCurInput = (e) => setInput(e.nativeEvent.text);
 
   return (
     <View style={{ flex: 1 }}>
-      <MessageList messages={dummyChat} />
+      <MessageList messages={curChat} />
       <View style={{ height: 50, flexDirection: 'row', borderTopWidth: 1 }}>
-        <TextInput style={{ paddingLeft: 10, flex: 1 }} placeholderTextColor="rgba(0,0,0,0.5)" placeholder="채팅해라" />
+        <TextInput value={input} onChange={setCurInput} style={{ paddingLeft: 10, flex: 1 }} placeholderTextColor="rgba(0,0,0,0.5)" placeholder="채팅해라" />
         <TouchableHighlight underlayColor="skyblue" onPress={sendMessage} style={{ width: 50, alignItems: 'center', height: '100%', justifyContent: 'center', backgroundColor: 'dodgerblue' }}>
           <Icon name="send" color="white" size={30} />
         </TouchableHighlight>
