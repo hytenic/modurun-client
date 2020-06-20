@@ -10,6 +10,8 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
+    "fetch": false,
+    "WebSocket": false,
   },
   parserOptions: {
     ecmaFeatures: {
