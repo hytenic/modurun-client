@@ -22,7 +22,8 @@ const TrackMaster = ({
   tracks,
   onTrackSelected,
   onCompleteEdit,
-  initialCamera
+  initialCamera,
+  scrollEnabled
 }) => {
   // const [editable, setEditable] = useState(false);
   // const [followUser, setFollowUser] = useState(false);
@@ -80,6 +81,7 @@ const TrackMaster = ({
           onTrackSelected={onTrackSelected}
           tracks={tracks}
           initialCamera={initialCamera}
+          scrollEnabled={scrollEnabled}
         />
       );
     }

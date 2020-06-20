@@ -14,6 +14,7 @@ import TrackMasterContainer from './components/modules/TrackMasterContainer';
 import Developer from './components/Developer';
 import FilterModal from './components/modules/FilterModal';
 import TrackList from './components/modules/TrackList';
+import MyTrackList from './components/modules/Scheduler/MyTrackList';
 import CreatedTrackInfo from './components/modules/CreatedTrackInfo';
 import TrackManagerTab from './components/modules/TrackManagerTab';
 import SignUpManager from './components/modules/SignUpManager';
@@ -22,9 +23,9 @@ import MainHeader from './components/modules/MainHeader';
 import ChatRoom from './components/modules/ChatRoom';
 import ScheduleList from './components/modules/ScheduleList';
 import SideBar from './components/modules/SideBar';
-import Scheduler from './components/modules/Scheduler';
+import Scheduler from './components/modules/Scheduler/Scheduler';
 import SelectedTrackInfo from './components/modules/SelectedTrackInfo';
-import CreatedScheduleInfo from './components/modules/CreatedScheduleInfo';
+import CreatedScheduleInfo from './components/modules/Scheduler/CreatedScheduleInfo';
 import TrackCreator from './components/modules/TrackCreator';
 import MyPage from './components/modules/MyPage';
 import TrackManager from './components/modules/TrackManager';
@@ -50,6 +51,7 @@ export default function App() {
           <Stack.Screen name="FilterModal" component={FilterModal} />
           <Stack.Screen name="TrackList" component={TrackList} />
           <Stack.Screen name="Rate" component={Rate} />
+          <Stack.Screen name="MyTrackList" component={MyTrackList} />
           <Stack.Screen name="CreatedTrackInfo" component={CreatedTrackInfo} />
           <Stack.Screen name="TrackManagerTab" component={TrackManagerTab} />
           <Stack.Screen name="SignUpManager" component={SignUpManager} />
