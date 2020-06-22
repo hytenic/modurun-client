@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Alert, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -8,12 +8,30 @@ import styles from './styles';
 import * as actions from '../../../redux/action/SingleTrackViewer/creator';
 import PrettyProp from '../PrettyProp/PrettyProp';
 import * as utils from '../TrackUtils/utils';
+import googlePlaceApi from '../googleapis/place';
 
 const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
   // 아 북마크 처리는 api에 안 돼 있네.
   const {
-    trackLength, trackTitle, origin, destination, bookmarked,
+    trackLength, trackTitle, route, bookmarked,
   } = data;
+
+  const origin = route[0];
+  const destination = route[route.length - 1];
+
+  const [originInfo, setOriginInfo] = useState('');
+  const [destinationInfo, setDestinationInfo] = useState('');
+  useEffect(() => {
+    googlePlaceApi.nearestPlace(origin)
+      .then((nearestPlace) => {
+        setOriginInfo(nearestPlace.vicinity);
+      });
+    googlePlaceApi.nearestPlace(destination)
+      .then((nearestPlace) => {
+        setDestinationInfo(nearestPlace.vicinity);
+      });
+  }, [data]);
+
   const navigation = useNavigation();
   const [showMoreVisible, setShowMoreVisible] = useState(false);
 
@@ -69,11 +87,26 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
     );
   };
 
+  const compactPropStyle = {
+    padding: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+  };
+
+  const compactProp = (name, value, color) => (
+    <View style={[compactPropStyle, { backgroundColor: color }]}>
+      <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 5}}>{name}</Text>
+      <Text style={{fontSize: 11}}>{value}</Text>
+    </View>
+  );
+
   const renderCompactDetail = () => {
     if (showMoreVisible) return <></>;
     return (
-      <View>
-        <Text>자 이제 시작이야</Text>
+      <View style={{ margin: 10, marginTop: 0, flexDirection: 'row', flexWrap: 'wrap' }}>
+        {compactProp('길이', utils.prettyLength(trackLength))}
+        {compactProp('출발', originInfo)}
+        {compactProp('도착', destinationInfo)}
       </View>
     );
   };
@@ -82,8 +115,8 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
     if (!showMoreVisible) return <></>;
     return (
       <View style={styles.descContainer}>
-        <PrettyProp name="출발지점" value="google api로 처리해야 됨" color="rgba(16, 179, 151, 1)" />
-        <PrettyProp name="도착지점" value="google api로 처리해야 됨" color="rgba(39, 94, 176, 1)" />
+        <PrettyProp name="출발지점" value={originInfo} color="rgba(16, 179, 151, 1)" />
+        <PrettyProp name="도착지점" value={destinationInfo} color="rgba(39, 94, 176, 1)" />
         <PrettyProp name="길이" value={utils.prettyLength(trackLength)} color="rgba(94, 39, 176, 1)" />
         <PrettyProp name="시간(남)" value={utils.predictDuration(trackLength, 'm')} color="rgba(196, 82, 179, 1)" />
         <PrettyProp name="시간(여)" value={utils.predictDuration(trackLength, 'f')} color="rgba(196, 175, 82, 1)" />

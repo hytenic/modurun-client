@@ -34,7 +34,7 @@ const SingleTrackViewer = ({ data }) => {
 };
 
 const mapStateToProps = (state) => ({
-  data: state.SingleTrackViewer.trackData,
+  data: state.singleTrackViewer.trackData,
 });
 
 export default connect(mapStateToProps, null)(SingleTrackViewer);
