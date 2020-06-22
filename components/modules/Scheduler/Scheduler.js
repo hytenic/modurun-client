@@ -3,12 +3,12 @@ import {
   Text, View, TextInput, TouchableOpacity, Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import moment from 'moment';
 import styles from './style';
 import TrackMaster from '../TrackMaster/TrackMaster';
-import { customizingDateAndTime } from '../utils';
+import { customizingDateAndTime, getScheduleData } from '../utils';
 import DateTimePickerCompoment from '../DateTimePicker';
-import postSchedule from '../API/schedule';
+import { getUserTracks } from '../API/trask';
+import { postSchedule } from '../API/schedule';
 
 const Scheduler = () => {
   const navigation = useNavigation();
@@ -60,40 +60,88 @@ const Scheduler = () => {
     </TouchableOpacity>
   );
 
-  const sendInfo = async () => {
+  const sendScheduleInfo = async () => {
     const createdScheduleInfo = {
       title,
-      date: moment(date).format('MM-DD'),
-      startTime: moment(startTime).format('HH:mm'),
+      date,
+      startTime,
       estimateTime,
       estimateMin,
       selectedTrack,
     };
-    // const scheduleInfo = {
-    //   title,
-    //   date: moment(date).format('MM-DD'),
-    //   startTime: moment(startTime).format('HH:mm'),
-    //   estimateTime,
-    //   estimateMin,
-    //   selectedTrack,
-    // };
-    // console.log(date);
-    let scheduleInfo = null;
+    const postData = getScheduleData(createdScheduleInfo);
     try {
-      scheduleInfo = await postSchedule(createdScheduleInfo);
+      const completeData = await postSchedule(postData);
+      console.log('completeData ', completeData);
+      if (completeData) {
+        navigation.navigate('CreatedScheduleInfo', {
+          completeData,
+        });
+      }
     } catch (e) {
-      console.log(e);
+      console.log('Scheduler ', e);
     }
-    console.log(scheduleInfo);
-    navigation.navigate('CreatedScheduleInfo', {
-      scheduleInfo,
+  };
+
+  const toMyTrackList = async () => {
+    const tracks = await getUserTracks();
+    navigation.navigate('MyTrackList', {
+      setAction: setSelectedTrack,
+      tracks,
     });
   };
 
-  const toMyTrackList = () => {
-    navigation.navigate('MyTrackList', {
-      setAction: setSelectedTrack,
-    });
+  const selected = () => {
+    if (selectedTrack) {
+      console.log(selectedTrack.trackId);
+      return (
+        <View style={styles.selectedTrack}>
+          <TrackMaster
+            mode="trackViewer"
+            tracks={[selectedTrack]}
+            initialCamera={selectedTrack.origin}
+          />
+        </View>
+      );
+    }
+  };
+
+  const unSelected = () => {
+    if (!selectedTrack) {
+      return (
+        <View style={styles.unSelectedTrack}>
+          <Image
+            source={require('../../../assets/unselectedTrack_image.png')}
+            style={{ height: 250, width: 260 }}
+          />
+        </View>
+      );
+    }
+  };
+
+  const datePicker = () => {
+    if (datePickerShow && !timePickerShow) {
+      return (
+        <DateTimePickerCompoment
+          setAction={setDate}
+          type={pickerMode}
+          setShow={setDatePickerShow}
+        />
+      );
+    } if (!datePickerShow && timePickerShow) {
+      return (
+        <DateTimePickerCompoment
+          setAction={setStartTime}
+          type={pickerMode}
+          setShow={setTimePickerShow}
+        />
+      );
+    }
+    return (<></>);
+  };
+
+  const onChangeTitle = (text) => {
+    setTitle(text);
   };
 
   return (
@@ -101,9 +149,7 @@ const Scheduler = () => {
       <TextInput
         placeholder="타이틀을 입력해주세요"
         style={styles.titleInputBox}
-        onChangeText={(text) => {
-          setTitle(text);
-        }}
+        onChangeText={onChangeTitle}
       />
       <View style={styles.pickerView}>
         <Text style={styles.pickerTitle}>시작 일시</Text>
@@ -117,54 +163,13 @@ const Scheduler = () => {
         <TextInput style={styles.timeInput} placeholder="분" keyboardType="numeric" onChangeText={(time) => setEstimateMin(time)} />
         <Text style={{ alignSelf: 'center' }}>분</Text>
       </View>
-
-      {
-          selectedTrack
-            ? (
-              <View style={styles.selectedTrack}>
-                <TrackMaster
-                  mode="trackViewer"
-                  tracks={[selectedTrack]}
-                  initialCamera={selectedTrack.origin}
-                />
-              </View>
-            )
-            : (
-              <View style={styles.unSelectedTrack}>
-                <Image
-                  source={require('../../../assets/unselectedTrack_image.png')}
-                  style={{ height: 250, width: 260 }}
-                />
-              </View>
-            )
-        }
-
+      {selected()}
+      {unSelected()}
       <View style={styles.footer}>
         <ButtonComponent value="트랙 선택" pressEvent={toMyTrackList} />
-        <ButtonComponent value="제작 완료" pressEvent={sendInfo} />
+        <ButtonComponent value="제작 완료" pressEvent={sendScheduleInfo} />
       </View>
-      {
-          datePickerShow
-            ? (
-              <DateTimePickerCompoment
-                setAction={setDate}
-                type={pickerMode}
-                setShow={setDatePickerShow}
-              />
-            )
-            : <></>
-        }
-      {
-          timePickerShow
-            ? (
-              <DateTimePickerCompoment
-                setAction={setStartTime}
-                type={pickerMode}
-                setShow={setTimePickerShow}
-              />
-            )
-            : <></>
-        }
+      {datePicker()}
     </View>
   );
 };

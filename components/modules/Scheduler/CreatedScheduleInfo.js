@@ -55,8 +55,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const CreatedScheduleInfo = ({ scheduleInfo }) => {
-  // const { title, scheduleFrom, scheduleTo, track} = scheduleInfo;
+const CreatedScheduleInfo = ({ route }) => {
+  console.log(route);
+  // const { title, scheduleFrom, scheduleTo, track} = route.completeData;
   const {
     title, scheduleFrom, scheduleTo, track,
   } = schedule; // dummy data
@@ -65,7 +66,6 @@ const CreatedScheduleInfo = ({ scheduleInfo }) => {
   const timeTo = customizingDateAndTime(0, scheduleTo);
   const distance = meterToKilo(track.trackLength);
   const navigation = useNavigation();
-  // console.log(`date ${date} 시작 ${timeFrom} 끝 ${timeTo}`);
 
   const goToMainPage = () => {
     navigation.navigate('Main');
@@ -92,12 +92,11 @@ const CreatedScheduleInfo = ({ scheduleInfo }) => {
           mode="trackViewer"
           tracks={[track]}
           initialCamera={track.origin}
-          scrollEnabled={false}
         />
       </View>
       <View style={styles.footer}>
         <TouchableOpacity style={styles.button} onPress={goToMainPage}>
-          <Text>제작 완료</Text>
+          <Text>확인</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -4,11 +4,13 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import TrackListEntry from './MyTrackListEntry';
-import dummyTracks from '../TrackMaster/dummyData/dummyTracks.json';
+import dummyTracks from './dummyTracksData.json';
 
-const MyTrackList = ({ tracks, showBookmark, showAdd, route }) => {
+const MyTrackList = ({ showBookmark, showAdd, route }) => {
+  // const { setAction, scheduleInfo, tracks } = route.params;
   const { setAction, scheduleInfo } = route.params;
-  tracks = dummyTracks;
+  const tracks = dummyTracks;
+  // console.log(getTracks());
   if (!tracks) return <></>;
   if (!tracks.length) return <></>;
   return (
@@ -16,7 +18,7 @@ const MyTrackList = ({ tracks, showBookmark, showAdd, route }) => {
       <StatusBar />
       {tracks.map((track) => (
         <TrackListEntry
-          key={track.trackTitle}
+          key={track.trackId}
           data={track}
           setAction={setAction}
           scheduleInfo={scheduleInfo}
