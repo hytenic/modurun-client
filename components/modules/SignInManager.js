@@ -7,9 +7,8 @@ import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/native';
 import TextInputComponent from './Login/TextInputComponents';
 import ButtonComponent from './Login/ButtonComponent';
-import { installed } from '../../client_id.json';
 import { postEmailLogin } from './API/user';
-import userContext from '../userContext';
+import getEnvVars from '../../environment';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +17,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    flex: 0.2, 
+    flex: 0.2,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'yellow',
@@ -57,7 +56,7 @@ const SignInManager = () => {
   const googleSignIn = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId: installed.client_id,
+        androidClientId: getEnvVars('dev').clientId,
       });
       if (result.type === 'success') {
         console.log(result);
