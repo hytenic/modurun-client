@@ -78,14 +78,14 @@ const TrackRecord = ({ data }) => {
       </View>
       <View style={{display: rateVisible ? 'flex' : 'none', marginTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(0,0,0,0.1)', padding: 20 }}>
         <View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', margin: 10}}>
-            <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-              <Text style={{fontWeight: 'bold', marginRight: 10}}>제 별점은요...!</Text>
-              <Text style={{fontWeight: 'bold', fontSize: 16 }}>{`${curRate}점`}</Text>
+          <View style={{flexDirection: 'column', justifyContent: 'space-between', margin: 10}}>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginBottom: 10 }}>
+              <Text style={{fontWeight: 'bold', marginRight: 10, fontSize: 18 }}>제 별점은요...!</Text>
+              <Text style={{fontWeight: 'bold', fontSize: 20 }}>{`${curRate}점`}</Text>
               <Text>입니다!</Text>
             </View>
-            <View>
-              <Rate onRate={(rate) => {setCurRate(rate)}} />
+            <View style={{ marginBottom: 10, alignItems: 'center' }}>
+              <Rate size={60} onRate={(rate) => { setCurRate(rate); }} />
             </View>
           </View>
           <View>
@@ -95,6 +95,7 @@ const TrackRecord = ({ data }) => {
                 backgroundColor: 'rgba(0,0,0,0.1)',
                 borderRadius: 5,
                 padding: 10,
+                paddingLeft: 10,
               }}
               onChange={(e) => setReason(e.nativeEvent.text)}
               placeholder="이유를 적어주세요"

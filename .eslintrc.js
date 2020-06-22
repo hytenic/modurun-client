@@ -12,6 +12,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
     "fetch": false,
     "WebSocket": false,
+    "FileReader": false,
   },
   parserOptions: {
     ecmaFeatures: {
