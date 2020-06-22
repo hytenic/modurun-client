@@ -58,7 +58,7 @@ const TrackMaster = ({
       return (
         <TrackEditor
           onCompleteEdit={onCompleteEdit}
-          initialCamera={initialCamera}
+          initialLocation={initialCamera}
         />
       );
     }
