@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, TextInput, TouchableOpacity, Alert,
 } from 'react-native';
-const axios = require('axios');
+import { useNavigation } from '@react-navigation/native';
+import { postSignUp, getEmailDupli } from './API/user';
+// const axios = require('axios');
 
 const styles = StyleSheet.create({
   container: {
@@ -57,24 +59,22 @@ const styles = StyleSheet.create({
 });
 
 // eslint-disable-next-line react/prop-types
-const SignUpManager = ({ navigation }) => {
+const SignUpManager = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [justAfterEmail, setJustAfterEmail] = useState(false);
-  const bareURL = 'http://localhost:4000';
   // let duplication = false;
 
   // eslint-disable-next-line func-names
-  const emailDuplication = function (emailCheck) {
-    Alert.alert("이메일 체크");
-    axios.post(`${bareURL}/users/exist`, {
-      emailCheck,
-    }).then((res) => {
-      if (res.statusCode === 201) {
-        Alert.alert('중복된 이메일 입니다.');
-      }
-    });
+  const emailDuplication = async function (emailCheck) {
+    const res = await getEmailDupli(emailCheck);
+    if (res) {
+      console.log('이메일 중복 없음');
+    } else {
+      console.log('이메일 중복');
+    }
   };
 
   return (
@@ -124,15 +124,17 @@ const SignUpManager = ({ navigation }) => {
           <TouchableOpacity
             style={styles.signUpButton}
             title="회원가입"
-            onPress={() => {
+            onPress={async () => {
               if (password === confirmPassword) {
-                Alert.alert('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
-                axios.post(`${bareURL}/users/signup`, {
-                  email,
-                  password,
-                }).then((res) => console.log(res));
+                console.log('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
+                const res = await postSignUp(email, password);
+                if (res) {
+                  navigation.navigate('SignInManager');
+                } else {
+                  console.log('이메일이나 비밀번호가 잘못되었습니다.');
+                }
               } else {
-                Alert.alert('비밀번호가 다릅니다.');
+                console.log('비밀번호가 다릅니다.');
               }
             }}
           >

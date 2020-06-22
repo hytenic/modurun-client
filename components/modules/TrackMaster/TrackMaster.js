@@ -81,7 +81,6 @@ const TrackMaster = ({
           onTrackSelected={onTrackSelected}
           tracks={tracks}
           initialCamera={initialCamera}
-          scrollEnabled={scrollEnabled}
         />
       );
     }

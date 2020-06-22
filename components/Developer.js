@@ -13,7 +13,7 @@ const Developer = ({ navigation }) => {
     'CreatedTrackInfo',
     'TrackManagerTab',
     'SignUpManager',
-    // 'SignInManager',
+    'SignInManager',
     'TrackManager',
     'ScheduleManager',
     'MainHeader',
