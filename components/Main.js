@@ -17,7 +17,6 @@ import { getUserLocation } from './modules/utils';
 import { getUserSchedules } from './modules/API/schedule';
 import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
 import { setUserLocation } from '../redux/action/TrackMaster/creators';
-import userContext from './userContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -59,7 +58,6 @@ const styles = StyleSheet.create({
 
 export const Main = ({ route, info }) => {
   const navigation = useNavigation();
-  const user = useContext(userContext);
   const [typing, setTyping] = useState(false);
   const [destination, setDestination] = useState('');
   const [predictions, setPredictions] = useState([]);
