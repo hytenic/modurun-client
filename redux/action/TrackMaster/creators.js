@@ -15,3 +15,10 @@ export const addTrack = (track) => {
     payload: track,
   };
 };
+
+// export const catchMapView = (mapViewCurrent) => {
+//   return {
+//     type: types.CATCH_MAPVIEW,
+//     payload: mapViewCurrent,
+//   };
+// };

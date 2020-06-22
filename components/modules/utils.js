@@ -1,3 +1,4 @@
+import * as Location from 'expo-location';
 import moment from 'moment';
 
 const customizingDateAndTime = (date, time) => {
@@ -15,11 +16,36 @@ const customizingDateAndTime = (date, time) => {
   return result;
 };
 
-const meterToKilo = (meter) => {
-  return (meter / 1000).toFixed(2);
+const meterToKilo = (meter) => (meter / 1000).toFixed(2);
+
+const getUserLocation = async () => {
+  const { status } = await Location.requestPermissionsAsync();
+  if (status !== 'granted') {
+    return 'Permission to access location was denied';
+  }
+  const { coords } = await Location.getCurrentPositionAsync();
+  return coords;
+};
+
+const getScheduleData = (createdScheduleInfo) => {
+  const {
+    title, date, startTime, estimateTime, estimateMin, selectedTrack,
+  } = createdScheduleInfo;
+  const time = moment(startTime);
+  const from = moment(date).set({ hour: time.get('hour'), minute: time.get('minute') });
+  const to = moment(from).add(estimateTime, 'hours').add(estimateMin, 'minutes');
+  const res = {
+    trackId: selectedTrack.trackId,
+    scheduleTitle: title,
+    from,
+    to,
+  };
+  return res;
 };
 
 module.exports = {
   customizingDateAndTime,
   meterToKilo,
+  getUserLocation,
+  getScheduleData,
 };

@@ -58,7 +58,7 @@ const TrackMaster = ({
       return (
         <TrackEditor
           onCompleteEdit={onCompleteEdit}
-          initialCamera={initialCamera}
+          initialLocation={initialCamera}
         />
       );
     }
@@ -81,7 +81,6 @@ const TrackMaster = ({
           onTrackSelected={onTrackSelected}
           tracks={tracks}
           initialCamera={initialCamera}
-          scrollEnabled={scrollEnabled}
         />
       );
     }

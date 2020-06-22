@@ -18,11 +18,11 @@ import MyTrackList from './components/modules/Scheduler/MyTrackList';
 import CreatedTrackInfo from './components/modules/CreatedTrackInfo';
 import TrackManagerTab from './components/modules/TrackManagerTab';
 import SignUpManager from './components/modules/SignUpManager';
-// import SignInManager from './components/modules/SignInManager';
+import SignInManager from './components/modules/SignInManager';
 import MainHeader from './components/modules/MainHeader';
 import ChatRoom from './components/modules/ChatRoom';
 import ScheduleList from './components/modules/ScheduleList';
-import SideBar from './components/modules/SideBar';
+// import SideBar from './components/modules/SideBar';
 import Scheduler from './components/modules/Scheduler/Scheduler';
 import SelectedTrackInfo from './components/modules/SelectedTrackInfo';
 import CreatedScheduleInfo from './components/modules/Scheduler/CreatedScheduleInfo';
@@ -30,13 +30,15 @@ import TrackCreator from './components/modules/TrackCreator';
 import MyPage from './components/modules/MyPage';
 import TrackManager from './components/modules/TrackManager';
 import ScheduleManager from './components/modules/ScheduleManager';
-import Main from './components/Main';
+import SideBar, { Main } from './components/Main';
 
 import store from './redux/store';
 import SingleTrackViewer from './components/modules/SingleTrackViewer';
 import Main_ScheduleList_Test from './components/modules/Main_ScheduleList_Test';
+import APITester from './components/modules/APITester';
 import TestLogin from './components/modules/TestLogin';
 import Rate from './components/modules/Rate';
+// import SideBar from './components/Main';
 
 navigator.geolocation = Location;
 
@@ -48,6 +50,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Developer" component={Developer} />
           <Stack.Screen options={{ headerShown: false }} name="TrackMaster" component={TrackMasterContainer} />
+          <Stack.Screen name="APITester" component={APITester} />
           <Stack.Screen name="FilterModal" component={FilterModal} />
           <Stack.Screen name="TrackList" component={TrackList} />
           <Stack.Screen name="Rate" component={Rate} />
@@ -55,10 +58,10 @@ export default function App() {
           <Stack.Screen name="CreatedTrackInfo" component={CreatedTrackInfo} />
           <Stack.Screen name="TrackManagerTab" component={TrackManagerTab} />
           <Stack.Screen name="SignUpManager" component={SignUpManager} />
-          {/* <Stack.Screen name="SignInManager" component={SignInManager} /> */}
+          <Stack.Screen name="SignInManager" component={SignInManager} />
           <Stack.Screen name="MainHeader" component={MainHeader} />
           <Stack.Screen name="ScheduleList" component={ScheduleList} />
-          <Stack.Screen name="SideBar" component={SideBar} />
+          {/* <Stack.Screen name="SideBar" component={SideBar} /> */}
           <Stack.Screen name="Scheduler" component={Scheduler} />
           <Stack.Screen name="SelectedTrackInfo" component={SelectedTrackInfo} />
           <Stack.Screen name="TestLogin" component={TestLogin} />
@@ -70,7 +73,7 @@ export default function App() {
           <Stack.Screen name="MyPage" component={MyPage} />
           <Stack.Screen options={{ headerShown: false }} name="MainScheduleListTest" component={Main_ScheduleList_Test} />
           <Stack.Screen options={{ headerShown: false }} name="SingleTrackViewer" component={SingleTrackViewer} />
-          <Stack.Screen name="Main" component={Main} />
+          <Stack.Screen name="Main" component={SideBar} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

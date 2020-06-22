@@ -2,7 +2,10 @@
 import {
   StyleSheet, Text, View, TouchableOpacity, StatusBar,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import * as createdTrackInfoActions from '../../redux/action/CreatedTrackInfo/creator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TrackMaster from './TrackMaster/TrackMaster';
 import utils from './TrackMaster/utils';
@@ -44,7 +47,8 @@ const styles = {
   },
 };
 
-export default function TrackMasterContainer({ mode }) {
+function TrackMasterContainer({ mode, updateCreatedTrack }) {
+  const navigation = useNavigation();
   const [modeIndex, setModeIndex] = useState(0);
   const modes = ['trackViewer', 'scheduleViewer', 'trackEditor'];
   const curMode = modes[modeIndex];
@@ -81,7 +85,10 @@ export default function TrackMasterContainer({ mode }) {
       return (
         <TrackMaster
           mode={mode}
-          onCompleteEdit={(track) => { logStringified(track); }}
+          onCompleteEdit={(track) => {
+            updateCreatedTrack(track);
+            navigation.navigate('CreatedTrackInfo');
+          }}
         />
       );
     }
@@ -90,7 +97,7 @@ export default function TrackMasterContainer({ mode }) {
         <TrackMaster
           mode={mode}
           onRegionChange={(region) => {console.log(region)}} // 화면이 이동할 때마다 "현재 영역에 존재하는 스케줄을 가져오는 액션"이 일어나야 합니다.
-          onTrackSelected={(schedules) => { logStringified(schedules); }}
+          onTrackSelected={(schedules) => {console.log(schedules)}}
           schedules={dummySchedules}
           // initialCamera={{}}
         />
@@ -108,3 +115,11 @@ export default function TrackMasterContainer({ mode }) {
     </View>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCreatedTrack: (track) => dispatch(createdTrackInfoActions.setCreatedTrack(track)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(TrackMasterContainer);

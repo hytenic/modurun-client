@@ -3,13 +3,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { View, Keyboard } from 'react-native';
 import Message from './Message';
 
-const MessageList = ({ messages }) => {
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const scrollView = useRef();
+const MessageList = React.forwardRef(({ messages, scrollOffset, setScrollOffset }, ref) => {
 
   const avoidKeyboard = () => {
     if (scrollOffset < 300) return;
-    scrollView.current.scrollTo({
+    ref.current.scrollTo({
       x: 0,
       y: scrollOffset + 300,
       animated: true,
@@ -31,11 +29,11 @@ const MessageList = ({ messages }) => {
   };
 
   return (
-    <ScrollView onScroll={updateScrollOffset} ref={scrollView} style={{ paddingTop: 10 }}>
+    <ScrollView onScroll={updateScrollOffset} ref={ref} style={{ paddingTop: 10 }}>
       {messages.map((message) => <Message data={message} />)}
       <View style={{ height: 10 }} />
     </ScrollView>
   );
-};
+});
 
 export default MessageList;

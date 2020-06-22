@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View, Text, KeyboardAvoidingView, Keyboard, BackHandler, Alert,
 } from 'react-native';
@@ -16,13 +16,15 @@ import styles from './style';
 import utils from './utils';
 import MapMarker from './MapMarker';
 import Route from './Route';
+import googlePlaceApi from '../googleapis/place';
 
 const Icon = {
   FontAwesome,
   MaterialCommunity,
 };
 
-const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
+const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
+  const mapView = useRef();
   const [mapWidth, setMapWidth] = useState(99);
   const [titleInputStyle, setTitleInputStyle] = useState({});
   // const [errorMsg, setErrorMsg] = useState(null);
@@ -54,10 +56,23 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
   const setTypingFalse = () => setTypingStatus(false);
   const setTypingTrue = () => setTypingStatus(true);
 
+  const [playedAnime, setPlayedAnime] = useState(false);
+
   const setCompleteInvisible = () => {
     setCompleteVisibility(false);
     return true;
   };
+
+  const initialize = () => {
+    setTrackTitle('');
+    setTrack(undefined);
+    setMarkers([]);
+    setRoutes([]);
+    setRouteHistory([]);
+    setMarkerHistory([]);
+  };
+
+  const syntheticCamera = utils.makeCamera(initialLocation);
 
   async function goToCurrentLocation() {
     const {
@@ -89,11 +104,18 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
     Keyboard.addListener('keyboardDidShow', setTypingTrue);
     Keyboard.addListener('keyboardDidHide', setTypingFalse);
     BackHandler.addEventListener('hardwareBackPress', setCompleteInvisible);
+    if (mapView.current && initialLocation) {
+      if (!playedAnime) {
+        mapView.current.animateCamera(syntheticCamera);
+        setPlayedAnime(true);
+      }
+    }
     return () => {
       setExit(true);
       Keyboard.removeListener('keyboardDidShow', setTypingTrue);
       Keyboard.removeListener('keyboardDidHide', setTypingFalse);
       BackHandler.removeEventListener('hardwareBackPress', setCompleteInvisible);
+      setPlayedAnime(false);
     };
   }, []);
 
@@ -142,10 +164,15 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
     return marker;
   });
 
-  const putMarker = (markerPos) => {
+  const putMarker = async (markerPos) => {
+    const nearestPlace = await googlePlaceApi.nearestPlace(markerPos);
+    const nearestPlaceLocation = {
+      latitude: nearestPlace.geometry.location.lat,
+      longitude: nearestPlace.geometry.location.lng,
+    };
     if (markers.length && markers[markers.length - 1].chain) return;
     const updatedMarkers = [...markers, {
-      ...markerPos,
+      ...nearestPlaceLocation,
       id: markerId,
     }];
     pushMarkerHistory(updatedMarkers);
@@ -278,13 +305,14 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
 
   const mapViewProps = {
     rotateEnabled: false,
-    initialCamera: curPosCamera || initialCamera,
+    initialCamera: syntheticCamera || curPosCamera || initialCamera,
     onRegionChangeComplete: (region) => setRegionInfo(region),
     onLayout: (e) => setLayoutInfo(e.nativeEvent.layout),
     style: [styles.mapStyle, { width: mapWidth, flex: typingText ? 0 : 1 }],
     showsUserLocation: true,
     onMapReady: () => {
       updateMapStyle();
+      if (initialLocation) return;
       goToCurrentLocation();
     },
   };
@@ -302,20 +330,19 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
   const exportTrack = () => {
     // 이 부분 모달창으로 바꿔도 좋을 듯.
     if (!track || !trackTitle) Alert.alert('내용 채워라', '경고한다');
-
-    const { paths } = track;
-    const { distance, instructions, points } = paths[0];
+    const { distance } = track.routes[0];
     const postData = {
       origin: routes[0],
       destination: routes[routes.length - 1],
       route: routes,
       trackLength: distance,
-      title: trackTitle,
+      trackTitle,
     };
     setCompleteInvisible();
     onCompleteEdit(postData);
     setTrackTitle('');
     Keyboard.dismiss();
+    initialize();
   };
 
   return (
@@ -350,7 +377,7 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
         </View>
       </View>
 
-      <MapView {...mapViewProps}>
+      <MapView ref={mapView} {...mapViewProps}>
         {renderMarkers()}
         <Route coordinates={routes} />
       </MapView>
@@ -364,7 +391,6 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit }) => {
     </View>
   );
 };
-
 
 TrackEditor.defaultProps = {
   curPosCamera: PropTypes.object.isRequired,
