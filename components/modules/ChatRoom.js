@@ -14,8 +14,28 @@ const ChatRoom = ({ route, data, dispatch }) => {
   const { params } = route;
   const { scheduleId, userId, username } = params;
   const [socket, setSocket] = useState(null);
-  const messageListRef = React.createRef();
+  const [messageListRef, setMessageListRef] = useState(null);
   const [scrollOffset, setScrollOffset] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => setRefreshing(false), 2000);
+  }, [refreshing]);
+
+  const sendMessage = (...args) => {
+    const [msgScheduleId, msgUserId, username, message] = args;
+    const msgObj = { username, message, createdAt: Date.now() };
+    const isMine = userId === msgUserId;
+    const msgCheckedMine = Object.assign(msgObj, { isMine });
+    dispatch(chatRoomActions.addMessage(msgCheckedMine, msgScheduleId));
+    setTimeout(() => messageListRef.current.scrollToEnd(), 100);
+  };
+
+  const appendEventToSocket = (socket) => {
+    socket.emit('joinRoom', scheduleId, username);
+    socket.on('connect_error', (err) => console.log('소켓 연결 안 됨', JSON.stringify(err)));
+    socket.on('chat message', sendMessage);
+  };
 
   useEffect(() => {
     const newSocket = io('https://modurun.xyz', {
@@ -28,32 +48,28 @@ const ChatRoom = ({ route, data, dispatch }) => {
       setSocket(newSocket);
     });
 
-    modurunAPI.messages.getMessages(scheduleId, 0)
-      .then((res) => res.json())
-      .then((json) => {
-        const chatCheckedMine = utils.checkMyMessage(json);
-        dispatch(chatRoomActions.updateChat(chatCheckedMine, scheduleId));
-        newSocket.emit('joinRoom', scheduleId, username);
-        newSocket.on('connect_error', (err) => console.log('소켓 연결 안 됨', JSON.stringify(err)));
-        newSocket.on('chat message', (...args) => {
-          const [msgScheduleId, msgUserId, username, message] = args;
-          const msgObj = { username, message, createdAt: Date.now() };
-          const isMine = userId === msgUserId;
-          const msgCheckedMine = Object.assign(msgObj, { isMine });
-          dispatch(chatRoomActions.addMessage(msgCheckedMine, msgScheduleId));
+    if (!data[scheduleId]) {
+      modurunAPI.messages.getMessages(scheduleId, 0)
+        .then((res) => res.json())
+        .then((json) => {
+          const chatCheckedMine = utils.checkMyMessage(json);
+          dispatch(chatRoomActions.updateChat(chatCheckedMine, scheduleId));
+          appendEventToSocket(newSocket);
         });
-      });
+    } else {
+      appendEventToSocket(newSocket);
+    }
+
     return () => {
       newSocket.disconnect();
       newSocket.removeAllListeners();
     };
-  }, [scheduleId]);
+  }, [scheduleId, messageListRef]);
 
-  const sendMessage = (message) => {
+  const onSend = (message) => {
     if (!message) return;
     if (!socket.connected) return;
     socket.emit('chat message', scheduleId, userId, username, message);
-    messageListRef.current.scrollToEnd();
   };
 
   return (
@@ -63,8 +79,11 @@ const ChatRoom = ({ route, data, dispatch }) => {
         messages={data[scheduleId] || []}
         scrollOffset={scrollOffset}
         setScrollOffset={setScrollOffset}
+        onRefReady={(ref) => { setMessageListRef(ref); }}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
       />
-      <SendMessage onSend={sendMessage} />
+      <SendMessage onSend={onSend} />
     </View>
   );
 };
