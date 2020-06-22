@@ -2,14 +2,24 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 import * as utils from '../ScheduleUtils/utils';
 import PrettyProp from '../PrettyProp/PrettyProp';
 
 const MyScheduleListEntry = ({ data }) => {
+  const navigation = useNavigation();
   const { track, schedule } = data;
   const [showMoreVisible, setShowMoreVisible] = useState(false);
   const toggleShowMore = () => setShowMoreVisible(!showMoreVisible);
+
+  const enterChatRoom = () => {
+    navigation.navigate('ChatRoom', {
+      scheduleId: schedule.scheduleId,
+      userId: 2 || undefined, //리덕스로 가져와야 함
+      username: '하하하하하하' || undefined, //리덕스로 가져와야 함
+    });
+  };
 
   const renderShowMore = () => {
     if (!showMoreVisible) return <></>;
@@ -46,7 +56,7 @@ const MyScheduleListEntry = ({ data }) => {
           </TouchableOpacity>
         </View>
         <View style={styles.titleButtonContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={enterChatRoom}>
             <Icon name="comments" color="white" size={20} />
           </TouchableOpacity>
           <TouchableOpacity onPress={toggleShowMore}>

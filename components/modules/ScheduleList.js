@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import React from 'react';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import ScheduleListEntry from './ScheduleList/ScheduleListEntry';
 
@@ -11,13 +11,13 @@ const ScheduleList = ({schedules}) => {
     <ScrollView style={{borderTopWidth:1}}>
       {schedules.map((schedule) => <ScheduleListEntry data={schedule} />)}
     </ScrollView>
-  )
-}
+  );
+};
 
 ScheduleList.defaultProps = {
   schedules: [],
-}
+};
 
-export default ScheduleList
+export default ScheduleList;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

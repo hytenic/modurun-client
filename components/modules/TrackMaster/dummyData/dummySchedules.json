@@ -101,7 +101,8 @@
     "from": 1591948158230,
     "to": 1591955358230,
     "participants": 5,
-    "userJoined": false
+    "userJoined": false,
+    "scheduleId": 1
   }
 }, {
   "track": {
@@ -254,7 +255,8 @@
     "from": 1591951703090,
     "to": 1591955303090,
     "participants": 3,
-    "userJoined": true
+    "userJoined": true,
+    "scheduleId": 2
   }
 }, {
   "track": {
@@ -503,7 +505,8 @@
     "from": 1591938964621,
     "to": 1591940764621,
     "participants": 6,
-    "userJoined": false
+    "userJoined": false,
+    "scheduleId": 3
   }
 }, {
   "track": {
@@ -713,7 +716,8 @@
     "from": 1591955234861,
     "to": 1591944364621,
     "participants": 7,
-    "userJoined": false
+    "userJoined": false,
+    "scheduleId": 4
   }
 }, {
   "track": {
@@ -1148,7 +1152,8 @@
     "from": 1591941306801,
     "to": 1591953906801,
     "participants": 10,
-    "userJoined": false
+    "userJoined": false,
+    "scheduleId": 5
   }
 }, {
   "track": {
@@ -2222,7 +2227,8 @@
     "from": 1591949798391,
     "to": 1591992998391,
     "participants": 3,
-    "userJoined": false
+    "userJoined": false,
+    "scheduleId": 6
   }
 }, {
   "track": {
@@ -2357,7 +2363,8 @@
     "from": 1591963381002,
     "to": 1591966981002,
     "participants": 10,
-    "userJoined": false
+    "userJoined": false,
+    "scheduleId": 7
   }
 }, {
   "track": {
@@ -2645,6 +2652,7 @@
     "from": 1591936657349,
     "to": 1591943857349,
     "participants": 6,
-    "userJoined": false
+    "userJoined": false,
+    "scheduleId": 8
   }
 }]

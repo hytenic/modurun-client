@@ -6,6 +6,7 @@ import {
 const Developer = ({ navigation }) => {
   const pages = [
     'TestLogin',
+    'APITester',
     'Main',
     'TrackMaster',
     'FilterModal',
@@ -24,7 +25,6 @@ const Developer = ({ navigation }) => {
     'SingleTrackViewer',
     'CreatedScheduleInfo',
     'TrackCreator',
-    'ScheduleManager',
     'ChatRoom',
     'MyPage',
     'MainScheduleListTest',
