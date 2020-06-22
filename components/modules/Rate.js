@@ -3,10 +3,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, Animated, SliderComponent } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaskedView from '@react-native-community/masked-view';
+import { Easing } from 'react-native-reanimated';
 
 const Rate = ({onRate, size, color, score}) => {
   const [rateBoxWidth, setRateBoxWidth] = useState(0);
-  const [slide, setSlide] = useState(200);
+  const [slide, setSlide] = useState(300);
   const [initialized, setInitialized] = useState(false);
 
   const iconProps = {

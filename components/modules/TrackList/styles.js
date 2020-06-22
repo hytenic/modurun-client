@@ -4,6 +4,7 @@ export default StyleSheet.create({
   entryContainer: {
     margin: 10,
     // elevation: 2,
+    backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0,0,0,0.2)',
   },
@@ -18,6 +19,7 @@ export default StyleSheet.create({
     fontSize: 20,
     color: 'black',
     flex: 75,
+    fontWeight: 'bold',
   },
   titleButtonContainer: {
     flex: 25,

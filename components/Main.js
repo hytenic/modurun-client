@@ -5,11 +5,12 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Scheduler from './modules/Scheduler/Scheduler';
-import TrackManager from './modules/TrackManagerTab';
+import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMasterContainer from './modules/TrackMasterContainer';
 import FilterModal from './modules/Modal';
 import getEnvVars from '../environment';
+import ScheduleManager from './modules/ScheduleManager';
 
 const styles = StyleSheet.create({
   container: {
@@ -146,8 +147,9 @@ function SideBar() {
     <Drawer.Navigator initialRouteName="Main">
       <Drawer.Screen name="Main" component={Main} />
       <Drawer.Screen name="Scheduler" component={Scheduler} />
-      <Drawer.Screen name="TrackManager" component={TrackManager} />
-      <Drawer.Screen name="MyPage" component={MyPage} />
+      <Drawer.Screen name="트랙 관리" component={TrackManager} />
+      <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
+      <Drawer.Screen name="마이페이지" component={MyPage} />
     </Drawer.Navigator>
   );
 }
