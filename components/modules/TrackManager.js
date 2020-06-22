@@ -11,7 +11,7 @@ const TrackManager = () => {
   const [selectedMenu, setSelectedMenu] = useState('myTrack');
   const tranlateButtonNameToKor = {
     myTrack: '내 코스',
-    findTrack: '코스 찾기',
+    findTrack: '주변 코스',
     createTrack: '코스 제작',
   };
 
