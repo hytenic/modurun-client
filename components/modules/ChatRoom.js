@@ -1,35 +1,78 @@
 import io from 'socket.io-client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
 import { TextInput, TouchableHighlight } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MessageList from './ChatRoom/MessageList';
-import dummyChat from './ChatRoom/dummyChat.json';
+import chatRoomActions from '../../redux/action/ChatRoom/creator';
+import modurunAPI from '../modules/API/index';
+import SendMessage from './ChatRoom/SendMessage';
+import utils from './ChatRoom/utils';
 
-const ChatRoom = () => {
-  const [curChat, setCurChat] = useState(dummyChat);
-  const [input, setInput] = useState('');
+const ChatRoom = ({ route, data, dispatch }) => {
+  const { params } = route;
+  const { scheduleId, userId, username } = params;
+  const [socket, setSocket] = useState(null);
+  const messageListRef = React.createRef();
+  const [scrollOffset, setScrollOffset] = useState(0);
 
-  const sendMessage = () => {
-    console.log('채팅 보내는 액션');
-    addChat(input);
+  useEffect(() => {
+    const newSocket = io('https://modurun.xyz', {
+      transports: ['websocket'],
+      upgrade: false,
+      forceNew: true,
+    });
+
+    newSocket.on('connect', () => {
+      setSocket(newSocket);
+    });
+
+    modurunAPI.messages.getMessages(scheduleId, 0)
+      .then((res) => res.json())
+      .then((json) => {
+        const chatCheckedMine = utils.checkMyMessage(json);
+        dispatch(chatRoomActions.updateChat(chatCheckedMine, scheduleId));
+        newSocket.emit('joinRoom', scheduleId, username);
+        newSocket.on('connect_error', (err) => console.log('소켓 연결 안 됨', JSON.stringify(err)));
+        newSocket.on('chat message', (...args) => {
+          const [msgScheduleId, msgUserId, username, message] = args;
+          const msgObj = { username, message, createdAt: Date.now() };
+          const isMine = userId === msgUserId;
+          const msgCheckedMine = Object.assign(msgObj, { isMine });
+          dispatch(chatRoomActions.addMessage(msgCheckedMine, msgScheduleId));
+        });
+      });
+    return () => {
+      newSocket.disconnect();
+      newSocket.removeAllListeners();
+    };
+  }, [scheduleId]);
+
+  const sendMessage = (message) => {
+    if (!message) return;
+    if (!socket.connected) return;
+    socket.emit('chat message', scheduleId, userId, username, message);
+    messageListRef.current.scrollToEnd();
   };
-
-  const setCurInput = (e) => setInput(e.nativeEvent.text);
 
   return (
     <View style={{ flex: 1 }}>
-      <MessageList messages={curChat} />
-      <View style={{ height: 50, flexDirection: 'row', borderTopWidth: 1 }}>
-        <TextInput value={input} onChange={setCurInput} style={{ paddingLeft: 10, flex: 1 }} placeholderTextColor="rgba(0,0,0,0.5)" placeholder="채팅해라" />
-        <TouchableHighlight underlayColor="skyblue" onPress={sendMessage} style={{ width: 50, alignItems: 'center', height: '100%', justifyContent: 'center', backgroundColor: 'dodgerblue' }}>
-          <Icon name="send" color="white" size={30} />
-        </TouchableHighlight>
-      </View>
+      <MessageList
+        ref={messageListRef}
+        messages={data[scheduleId] || []}
+        scrollOffset={scrollOffset}
+        setScrollOffset={setScrollOffset}
+      />
+      <SendMessage onSend={sendMessage} />
     </View>
   );
 };
 
-export default ChatRoom;
+const mapStateToProps = (state) => {
+  return {
+    data: state.chatRoom.data,
+  };
+};
 
-const styles = StyleSheet.create({});
+export default connect(mapStateToProps, null)(ChatRoom);

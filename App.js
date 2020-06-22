@@ -35,6 +35,7 @@ import SideBar, { Main } from './components/Main';
 import store from './redux/store';
 import SingleTrackViewer from './components/modules/SingleTrackViewer';
 import Main_ScheduleList_Test from './components/modules/Main_ScheduleList_Test';
+import APITester from './components/modules/APITester';
 import TestLogin from './components/modules/TestLogin';
 import Rate from './components/modules/Rate';
 // import SideBar from './components/Main';
@@ -49,6 +50,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Developer" component={Developer} />
           <Stack.Screen options={{ headerShown: false }} name="TrackMaster" component={TrackMasterContainer} />
+          <Stack.Screen name="APITester" component={APITester} />
           <Stack.Screen name="FilterModal" component={FilterModal} />
           <Stack.Screen name="TrackList" component={TrackList} />
           <Stack.Screen name="Rate" component={Rate} />
