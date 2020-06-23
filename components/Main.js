@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Main = ({ user, trackData }) => {
+export const Main = () => {
   const navigation = useNavigation();
   const [typing, setTyping] = useState(false);
   const [destination, setDestination] = useState('');
@@ -68,10 +68,8 @@ export const Main = ({ user, trackData }) => {
     latitude: 0,
   });
   const { apiKey } = getEnvVars('dev');
-  useEffect(() => {
-    console.log('route ', route);
-    console.log('info ', info);
-  }, []);
+  // useEffect(() => {
+  // }, []);
   
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setTyping(false));
@@ -83,51 +81,6 @@ export const Main = ({ user, trackData }) => {
   }, [typing]);
 
   useEffect(() => {
-    async function initializeLocation() {
-      const { latitude, longitude } = await getUserLocation();
-      setLocation({
-        ...location,
-        latitude,
-        longitude,
-      });
-    }
-    initializeLocation();
-  }, []);
-
-  // useEffect(() => {
-  // 위치가 바뀌면 스케줄도 바뀌어야 한다.
-  // }, [location]);
-
-  const searched = () => {
-    Keyboard.dismiss();
-    setSearching(false);
-    setDestination('');
-  };
-
-  const onSearch = () => {
-    setSearching(true);
-  };
-
-  const pickedSearchedLocation = ({ lat, lng }) => {
-    Keyboard.dismiss();
-    setLocation({
-      ...location,
-      latitude: lat,
-      longitude: lng,
-    });
-  };
-
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setTyping(false));
-    Keyboard.addListener('keyboardDidShow', () => setTyping(true));
-    return () => {
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(false));
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(true));
-    };
-  }, [typing]);
-
-  useEffect(() => {
-    console.log(reduxStore.getState().userInfo.user);
     async function initializeLocation() {
       const { latitude, longitude } = await getUserLocation();
       setLocation({
@@ -266,8 +219,7 @@ export const Main = ({ user, trackData }) => {
 
 const Drawer = createDrawerNavigator();
 
-function SideBar({ route }) {
-  console.log('test : ', route);
+function SideBar() {
   return (
     <Drawer.Navigator initialRouteName="Main">
       <Drawer.Screen name="Main" component={Main} />
