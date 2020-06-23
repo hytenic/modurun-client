@@ -43,9 +43,9 @@ const ScheduledTrackViewer = ({
 
   const syntheticInitialCamera = utils.makeCamera(initialCamera);
 
-  if (mapView.current && initialCamera) {
-    mapView.current.setCamera(syntheticInitialCamera);
-  }
+  // if (mapView.current && initialCamera) {
+  //   mapView.current.setCamera(syntheticInitialCamera);
+  // }
 
   const mapViewProps = {
     rotateEnabled: false,

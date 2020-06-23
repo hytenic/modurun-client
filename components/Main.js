@@ -68,9 +68,10 @@ export const Main = () => {
     latitude: 0,
   });
   const { apiKey } = getEnvVars('dev');
-  // useEffect(() => {
-  // }, []);
-  
+  useEffect(() => {
+    console.log('main ', reduxStore.getState().userInfo.user);
+  }, []);
+
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setTyping(false));
     Keyboard.addListener('keyboardDidShow', () => setTyping(true));
@@ -174,17 +175,20 @@ export const Main = () => {
   const usernameInput = () => {
     const { isFirstLogin } = reduxStore.getState().userInfo.user;
     console.log(isFirstLogin);
-    if (isFirstLogin) {
+    if (!isFirstLogin) {
       return (
-        <InputUsernameModal />
+        <></>
       );
     }
-    return (<></>);
+    return (
+      <InputUsernameModal />
+    );
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        {usernameInput()}
         <TouchableOpacity onPress={() => {
           toggleSideBar({ navigation });
         }}
@@ -222,7 +226,7 @@ const Drawer = createDrawerNavigator();
 function SideBar() {
   return (
     <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="Main" component={Main} />
+      <Drawer.Screen name="메인" component={Main} />
       <Drawer.Screen name="트랙 관리" component={TrackManager} />
       <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
       <Drawer.Screen name="마이페이지" component={MyPage} />
