@@ -14,21 +14,19 @@ const reducer = (state = initialState, action) => {
   if (action.type === types.UPDATE_CHAT) {
     const { scheduleId, newChat } = action.payload;
     newState.data[scheduleId] = newChat;
+    newState.offset[scheduleId] = newChat.length;
   }
 
   if (action.type === types.ADD_MESSAGE) {
     const { scheduleId, newMessage } = action.payload;
     newState.data[scheduleId] = [...state.data[scheduleId].concat(newMessage)];
+    newState.offset[scheduleId] += 1;
   }
 
   if (action.type === types.ADD_MESSAGES_TO_HEAD) {
     const { scheduleId, prevChat } = action.payload;
     newState.data[scheduleId] = [...prevChat.concat(state.data[scheduleId])];
-  }
-
-  if (action.type === types.SET_CHAT_OFFSET) {
-    const { newOffset, scheduleId } = action;
-    newState.offset[scheduleId] = newOffset;
+    newState.offset[scheduleId] += prevChat.length;
   }
 
   return newState;

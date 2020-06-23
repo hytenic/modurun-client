@@ -21,16 +21,8 @@ const addMessagesToHead = (prevChat, scheduleId) => {
   };
 };
 
-const setChatOffset = (newOffset, scheduleId) => {
-  return {
-    type: types.SET_CHAT_OFFSET,
-    payload: { newOffset, scheduleId },
-  };
-};
-
 export default {
   updateChat,
   addMessage,
   addMessagesToHead,
-  setChatOffset,
 };
