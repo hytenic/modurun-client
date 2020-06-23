@@ -10,7 +10,7 @@ import modurunAPI from '../modules/API/index';
 import SendMessage from './ChatRoom/SendMessage';
 import utils from './ChatRoom/utils';
 
-const ChatRoom = ({ route, data, dispatch }) => {
+const ChatRoom = ({ route, data, offset, dispatch }) => {
   const { params } = route;
   const { scheduleId, userId, username } = params;
   const [socket, setSocket] = useState(null);
@@ -19,8 +19,13 @@ const ChatRoom = ({ route, data, dispatch }) => {
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 2000);
-  }, [refreshing]);
+    modurunAPI.messages.getMessages(scheduleId, offset[scheduleId] || 0)
+      .then((res) => res.json())
+      .then((json) => {
+        setRefreshing(false);
+        dispatch(chatRoomActions.addMessagesToHead(json, scheduleId));
+      });
+  }, [refreshing, offset]);
 
   const sendMessage = (...args) => {
     const [msgScheduleId, msgUserId, username, message] = args;
@@ -48,7 +53,9 @@ const ChatRoom = ({ route, data, dispatch }) => {
       setSocket(newSocket);
     });
 
-    if (!data[scheduleId]) {
+    if (data[scheduleId]) {
+      appendEventToSocket(newSocket);
+    } else {
       modurunAPI.messages.getMessages(scheduleId, 0)
         .then((res) => res.json())
         .then((json) => {
@@ -56,8 +63,6 @@ const ChatRoom = ({ route, data, dispatch }) => {
           dispatch(chatRoomActions.updateChat(chatCheckedMine, scheduleId));
           appendEventToSocket(newSocket);
         });
-    } else {
-      appendEventToSocket(newSocket);
     }
 
     return () => {
@@ -91,6 +96,7 @@ const ChatRoom = ({ route, data, dispatch }) => {
 const mapStateToProps = (state) => {
   return {
     data: state.chatRoom.data,
+    offset: state.chatRoom.offset,
   };
 };
 

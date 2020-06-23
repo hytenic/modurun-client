@@ -16,6 +16,7 @@ const ScheduledTrackViewer = ({
   onTrackSelected,
   schedules,
   initialCamera,
+  moveOnMarkerPress,
 }) => {
   const [mapWidth, setMapWidth] = useState('99%');
   const [selectedTrack, setSelectedTrack] = useState(null);
@@ -55,7 +56,7 @@ const ScheduledTrackViewer = ({
     onMapReady: () => {
       updateMapStyle();
     },
-    moveOnMarkerPress: false,
+    moveOnMarkerPress: moveOnMarkerPress || false,
     onRegionChange: (region) => {
       // onTouchEnd로 콜백 위치 변경됨.
     },
