@@ -23,7 +23,7 @@ const TrackMaster = ({
   onTrackSelected,
   onCompleteEdit,
   initialCamera,
-  scrollEnabled
+  moveOnMarkerPress,
 }) => {
   // const [editable, setEditable] = useState(false);
   // const [followUser, setFollowUser] = useState(false);
@@ -70,6 +70,7 @@ const TrackMaster = ({
           onTrackSelected={onTrackSelected}
           schedules={schedules}
           initialCamera={initialCamera}
+          moveOnMarkerPress={moveOnMarkerPress}
         />
       );
     }

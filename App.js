@@ -12,7 +12,7 @@ import * as Location from 'expo-location';
 // import TrackMaster from './components/modules/TrackMaster/TrackMaster';
 import TrackMasterContainer from './components/modules/TrackMasterContainer';
 import Developer from './components/Developer';
-import FilterModal from './components/modules/FilterModal';
+// import FilterModal from './components/modules/FilterModal';
 import TrackList from './components/modules/TrackList';
 import MyTrackList from './components/modules/Scheduler/MyTrackList';
 import CreatedTrackInfo from './components/modules/CreatedTrackInfo';
@@ -51,7 +51,7 @@ export default function App() {
           <Stack.Screen name="Developer" component={Developer} />
           <Stack.Screen options={{ headerShown: false }} name="TrackMaster" component={TrackMasterContainer} />
           <Stack.Screen name="APITester" component={APITester} />
-          <Stack.Screen name="FilterModal" component={FilterModal} />
+          {/* <Stack.Screen name="FilterModal" component={FilterModal} /> */}
           <Stack.Screen name="TrackList" component={TrackList} />
           <Stack.Screen name="Rate" component={Rate} />
           <Stack.Screen name="MyTrackList" component={MyTrackList} />
