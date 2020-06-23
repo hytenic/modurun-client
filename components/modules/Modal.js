@@ -3,6 +3,7 @@ import {
   Alert, StyleSheet, Modal, Text, View, TouchableHighlight, TouchableOpacity, Image, TextInput,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import { customizingDateAndTime } from './utils';
 
@@ -35,7 +36,17 @@ const styles = StyleSheet.create({
   },
   openButton: {
     backgroundColor: '#2196F3',
-    borderRadius: 20,
+    borderRadius: 100,
+    paddingLeft: 15,
+    width: 55,
+    height: 55,
+    elevation: 2,
+  },
+  searchButton: {
+    backgroundColor: '#2196F3',
+    marginTop: 30,
+    width: 100,
+    borderRadius: 10,
     padding: 10,
     elevation: 2,
   },
@@ -44,6 +55,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  filterButton: {
+    alignSelf: 'center',
+    color: 'white',
+    textAlign: 'center',
+    width: 55,
+    height: 55,
+  },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
@@ -51,6 +69,12 @@ const styles = StyleSheet.create({
   distanceButton: {
     marginRight: 5,
     backgroundColor: '#E0E3DA',
+    borderRadius: 5,
+    padding: 5,
+  },
+  pressedButton: {
+    marginRight: 5,
+    backgroundColor: '#FFFFFF',
     borderRadius: 5,
     padding: 5,
   },
@@ -72,7 +96,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   filterTitle: {
-    backgroundColor: '#FFFFF3',
+    // backgroundColor: '#FFFFF3',
+    fontSize: 15,
     borderRadius: 5,
     padding: 5,
     marginRight: 15,
@@ -82,6 +107,7 @@ const styles = StyleSheet.create({
 const FilterModal = ({ modal }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [distance, setDistance] = useState(0);
+  const [buttonPressed, setButtonPressed] = useState(false);
   const [pickerMode, setPickerMode] = useState('date');
   const [datePickerShow, setDatePickerShow] = useState(false);
   const [timePickerShow, setTimePickerShow] = useState(false);
@@ -95,7 +121,9 @@ const FilterModal = ({ modal }) => {
   const DistanceButtonComponent = ({ dis }) => (
     <TouchableOpacity
       style={styles.distanceButton}
-      onPress={() => setDistance(dis)}
+      onPress={() => {
+        setDistance(dis);
+      }}
     >
       <Text>{`${dis}m`}</Text>
     </TouchableOpacity>
@@ -129,7 +157,7 @@ const FilterModal = ({ modal }) => {
         setPickerMode(mode);
         setFromTo(fromTo);
       }}
-    >
+      >
       <Image
         source={require('../../assets/clock_icon.png')}
         style={styles.icon}
@@ -219,12 +247,12 @@ const FilterModal = ({ modal }) => {
 
             <View style={styles.row}>
               <Text style={styles.filterTitle}>길이</Text>
-              <TextInput style={{ width: 100, height: 40 }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
+              <TextInput style={{ width: 100, height: 40, backgroundColor: '#F4F4F4' }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
               <Text>km 이내</Text>
             </View>
 
             <TouchableHighlight
-              style={styles.openButton}
+              style={styles.searchButton}
               onPress={() => {
                 setModalVisible(!modalVisible);
               }}
@@ -237,11 +265,11 @@ const FilterModal = ({ modal }) => {
 
       <TouchableHighlight
         style={styles.openButton}
-        onPress={() => {
-          setModalVisible(true);
-        }}
+        // onPress={() => {
+        //   setModalVisible(true);
+        // }}
       >
-        <Text style={styles.textStyle}>필터</Text>
+        <Icon.Button style={styles.filterButton} name="filter" color="white" size={30} backgroundColor="rgba(52, 52, 52, 0.0)" onPress={() => { setModalVisible(true); }} />
       </TouchableHighlight>
     </View>
   );
