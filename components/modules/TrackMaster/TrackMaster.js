@@ -23,7 +23,6 @@ const TrackMaster = ({
   onTrackSelected,
   onCompleteEdit,
   initialCamera,
-  scrollEnabled,
   moveOnMarkerPress,
 }) => {
   // const [editable, setEditable] = useState(false);
