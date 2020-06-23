@@ -371,7 +371,7 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
           </View>
         </View>
         <View style={styles.completeButtonContainer(!completeVisible, layoutInfo ? layoutInfo.height - 60 : 300)}>
-          <TouchableOpacity onPress={toggleCompleteVisible} style={[toolBarIconStyle('#5bc253'), { display: completeVisible ? 'none' : 'flex' }]}>
+          <TouchableOpacity onPress={toggleCompleteVisible} style={[toolBarIconStyle('#03D6A7'), { display: completeVisible ? 'none' : 'flex' }]}>
             <Icon.FontAwesome name="check" size={toolBarIconSize} color="white" />
           </TouchableOpacity>
         </View>
@@ -385,7 +385,7 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
       <KeyboardAvoidingView style={styles.titleInputContainer(completeVisible, typingText)}>
         <TextInput onChange={(e) => { setTrackTitle(e.nativeEvent.text); }} value={trackTitle} onLayout={updateTitleInputStyle} style={[styles.titleInput, titleInputStyle]} placeholder="트랙의 이름을 지어주세요" />
         <TouchableOpacity onPress={exportTrack} style={styles.editCompleteButton}>
-          <Text style={{ color: 'white' }}>제작 완료</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>제작 완료</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </View>

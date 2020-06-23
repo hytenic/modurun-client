@@ -27,22 +27,23 @@ export default StyleSheet.create({
   propRowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: 'rgba(0,0,0,0.2)',
   },
   propRowKey: {
     padding: 5,
-    borderRadius: 10,
-    color: 'white',
+    color: '#03D6A7',
     textAlignVertical: 'center',
     textAlign: 'center',
     margin: 5,
-    // flex: 1,
+    marginRight: 15,
+    width: '20%',
   },
   propRowValue: {
     padding: 5,
     borderRadius: 10,
-    // marginVertical: 5,
+    color: 'black',
     marginRight: 10,
-    // marginBottom: 5,
   },
   propRowValueContainer: {
     flexDirection: 'row',

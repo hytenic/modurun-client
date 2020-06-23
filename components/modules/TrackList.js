@@ -11,7 +11,11 @@ const TrackList = ({ tracks, showBookmark, showAdd }) => {
   if (!tracks) return <></>;
   if (!tracks.length) return <></>;
   return (
-    <ScrollView style={{backgroundColor: 'rgba(0,0,0,0.05)'}}>
+    <ScrollView
+      style={{
+        backgroundColor: '#1E90FF',
+      }}
+    >
       <StatusBar />
       {tracks.map((track) => (
         <TrackListEntry

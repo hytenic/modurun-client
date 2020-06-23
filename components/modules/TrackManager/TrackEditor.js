@@ -9,6 +9,7 @@ import TrackMaster from '../TrackMaster/TrackMaster';
 import googlePlaceApi from '../googleapis/place';
 import QueryCandidate from './QueryCandidate';
 import modurunAPI from '../API';
+import { color } from 'react-native-reanimated';
 
 const TrackEditor = ({updateCreatedTrack}) => {
   const navigation = useNavigation();
@@ -65,7 +66,7 @@ const TrackEditor = ({updateCreatedTrack}) => {
   const renderRecommendation = () => {
     if (!typing) return <></>;
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: 'white'}}>
         {queryCandidates.map((candidate) => <QueryCandidate data={candidate} onPress={(location) => setMapLocation(location)} />)}
         <View style={{ height: 100 }} />
       </ScrollView>
@@ -74,9 +75,32 @@ const TrackEditor = ({updateCreatedTrack}) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ height: 50, flexDirection: 'row', alignItems: 'center', elevation: 1, borderWidth: 0 }}>
-        <TextInput onTouchStart={setTypingTrue} value={searchQuery} onChange={updateSearchQuery} placeholder="위치를 검색해주세요" style={{ flex: 80, height: 60, paddingLeft: 10 }} />
-        <TouchableOpacity style={{ flex: 20, height: '100%', backgroundColor: 'dodgerblue', justifyContent: 'center', alignItems: 'center' }}>
+      <View
+        style={{
+          height: 50,
+          flexDirection: 'row',
+          alignItems: 'center',
+          elevation: 1,
+          borderWidth: 0,
+          backgroundColor: 'white',
+        }}
+      >
+        <TextInput
+          onTouchStart={setTypingTrue}
+          value={searchQuery}
+          onChange={updateSearchQuery}
+          placeholder="위치를 검색해주세요"
+          style={{ flex: 90, height: 60, paddingLeft: 10 }}
+        />
+        <TouchableOpacity
+          style={{
+            flex: 20,
+            height: '100%',
+            backgroundColor: 'dodgerblue',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Icon name="search" size={20} color="white" />
         </TouchableOpacity>
       </View>

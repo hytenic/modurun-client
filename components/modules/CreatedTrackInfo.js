@@ -25,20 +25,32 @@ const CreatedTrackInfo = ({ data }) => {
 
   const compactDesContainerStyle = {
     flexDirection: 'row',
+    borderBottomWidth: 0.5,
+    borderColor: 'rgba(0,0,0,0.2)',
+    paddingBottom: 3,
+    margin: 5,
   };
   const compactDesTitleStyle = {
     fontSize: 12,
     flexBasis: 80,
+    fontWeight: 'bold',
+    color: '#03D6A7',
   };
   const compactDesContentStyle = {
     fontSize: 12,
-    flex: 1,
+    color: 'black',
+  };
+
+  const compactTitleStyle = {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
   };
 
   return (
     <View style={{ backgroundColor: 'white', elevation: 1, flex: 1 }}>
-      <View style={{ margin: 20, marginBottom: 10 }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{trackTitle}</Text>
+      <View style={{ marginBottom: 10, backgroundColor: '#1E90FF', padding: 10 }}>
+        <Text style={compactTitleStyle}>{trackTitle}</Text>
       </View>
       <View style={{ paddingHorizontal: 20, marginTop: 0, marginBottom: 0, paddingBottom: 20, borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.2)' }}>
         <View style={compactDesContainerStyle}>

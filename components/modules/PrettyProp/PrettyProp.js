@@ -4,12 +4,12 @@ import { View, Text } from 'react-native';
 import * as utils from './utils';
 import styles from './styles';
 
-const PrettyProp = ({ name, value, color, postComponent }) => {
+const PrettyProp = ({ name, value, postComponent }) => {
   return (
-    <View style={styles.propRowContainer}>
-      <Text style={[styles.propRowKey, { backgroundColor: color }]}>{name}</Text>
+    <View style={[styles.propRowContainer]}>
+      <Text style={[styles.propRowKey]}>{name}</Text>
       <View style={styles.propRowValueContainer}>
-        <Text style={[styles.propRowValue, { backgroundColor: utils.paleColor(color) }]}>{value}</Text>
+        <Text style={styles.propRowValue}>{value}</Text>
         {postComponent || <></>}
       </View>
     </View>
