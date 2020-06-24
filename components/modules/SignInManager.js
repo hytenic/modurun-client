@@ -15,6 +15,7 @@ import getEnvVars from '../../environment';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   header: {
     flex: 2,
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   footer: {
     flex: 1.2,
     borderTopWidth: 0.5,
-    width: '80%',
+    width: 250,
     borderColor: 'gray',
     flexDirection: 'row',
     alignItems: 'center',

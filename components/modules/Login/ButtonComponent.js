@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const styles = StyleSheet.create({
   btn: {
-    width: '50%',
+    width: 200,
     height: 40,
     borderRadius: 8,
     alignItems: 'center',
@@ -28,10 +28,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   signupPageBtn: {
-    width: '63%',
-    elevation: 3,
+    // width: '63%',
+    elevation: 5,
     borderColor: '#1E90FF',
     borderWidth: 2,
+    backgroundColor: 'white',
+    shadowOpacity: 10,
   },
 });
 
