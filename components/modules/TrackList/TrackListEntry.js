@@ -56,8 +56,8 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
   const toggleShowMore = () => setShowMoreVisible(!showMoreVisible);
 
   const viewTrackOnMap = () => {
-    dispatch(actions.setSingleTrack(data));
-    navigation.navigate('SingleTrackViewer');
+    setSingleTrack(data);
+    navigation.navigate('SingleTrackViewerInDetail');
   };
 
   const askIfDelete = () => {
@@ -151,18 +151,25 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
 
   const compactProp = (name, value, color) => (
     <View style={[compactPropStyle, { backgroundColor: color }]}>
-      <Text style={{fontSize: 12, fontWeight: 'bold', marginRight: 5}}>{name}</Text>
-      <Text style={{fontSize: 11}}>{value}</Text>
+      <Text style={{ fontSize: 12, marginRight: 5, color: '#03D6A7' }}>{name}</Text>
+      <Text style={{ fontSize: 11 }}>{value}</Text>
     </View>
   );
-
+  const compactPropEnd = (name, value, color) => (
+    <View style={[compactPropStyle, { backgroundColor: color }]}>
+      <Text style={{ fontSize: 12, marginRight: 5, color: '#ef3832' }}>
+        {name}
+      </Text>
+      <Text style={{ fontSize: 11 }}>{value}</Text>
+    </View>
+  );
+  
   const renderCompactDetail = () => {
     if (showMoreVisible) return <></>;
     return (
-      <View style={{ margin: 10, marginTop: 0, flexDirection: 'row', flexWrap: 'wrap' }}>
-        {compactProp('길이', utils.prettyLength(trackLength))}
+      <View style={{ margin: 10, marginTop: 5, flexWrap: 'wrap' }}>
         {compactProp('출발', originInfo)}
-        {compactProp('도착', destinationInfo)}
+        {compactPropEnd('도착', destinationInfo)}
       </View>
     );
   };
@@ -171,16 +178,18 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
     if (!showMoreVisible) return <></>;
     return (
       <View style={styles.descContainer}>
-        <PrettyProp name="출발지점" value={originInfo} color="rgba(16, 179, 151, 1)" />
-        <PrettyProp name="도착지점" value={destinationInfo} color="rgba(39, 94, 176, 1)" />
-        <PrettyProp name="길이" value={utils.prettyLength(trackLength)} color="rgba(94, 39, 176, 1)" />
-        <PrettyProp name="시간(남)" value={utils.predictDuration(trackLength, 'm')} color="rgba(196, 82, 179, 1)" />
-        <PrettyProp name="시간(여)" value={utils.predictDuration(trackLength, 'f')} color="rgba(196, 175, 82, 1)" />
-        <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.1)', marginVertical: 10 }} />
+        <View style={{padding: 15}}>
+          <PrettyProp name="출발지점" value={originInfo} />
+          <PrettyProp name="도착지점" value={destinationInfo} />
+          <PrettyProp name="길이" value={utils.prettyLength(trackLength)} />
+          <PrettyProp name="시간(남)" value={utils.predictDuration(trackLength, 'm')} />
+          <PrettyProp name="시간(여)" value={utils.predictDuration(trackLength, 'f')} />
+        </View>
+        <View style={{ height: 0, backgroundColor: 'rgba(0,0,0,0.1)', marginVertical: 10 }} />
         <View style={{ alignItems: 'center' }}>
           <View style={{ flexDirection: 'row', width: '55%', justifyContent: 'space-between' }}>
             <TouchableOpacity onPress={viewTrackOnMap} style={styles.showDetail}>
-              <Text style={{ color: 'white', fontSize: 16 }}>자세히 보기</Text>
+              <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>자세히 보기</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={askIfDelete} style={styles.delete}>
               <Text style={{ color: 'white', fontSize: 16 }}>삭제하기</Text>
@@ -200,6 +209,7 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
     <View style={styles.entryContainer}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{trackTitle}</Text>
+        <Text style={styles.lengtgTitle}>{utils.prettyLength(trackLength)}</Text>
         <View style={styles.titleButtonContainer}>
           {renderAdd()}
           {renderBookMark()}

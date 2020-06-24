@@ -107,9 +107,13 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   editCompleteButton: {
-    backgroundColor: 'dodgerblue',
+    backgroundColor: '#03D6A7',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     padding: 18,
-    width: 100,
+    width: 200,
     alignItems: 'center',
   },
   calloutView: {

@@ -47,9 +47,9 @@ const TrackManager = ({ myTracks, foundTracks, dispatch }) => {
   };
 
   const colorForMenu = {
-    myTrack: 'white',
-    findTrack: 'white',
-    createTrack: 'white',
+    myTrack: '#1E90FF',
+    findTrack: '#1E90FF',
+    createTrack: '#1E90FF',
   };
 
   const MenuBarButton = (name, onPress = () => {}) => (
@@ -57,8 +57,8 @@ const TrackManager = ({ myTracks, foundTracks, dispatch }) => {
       flex: 1, backgroundColor: selectedMenu === name ? 'white' : 'transparent', zIndex: selectedMenu === name ? 100 : 0,
     }}
     >
-      <TouchableOpacity style={{ padding: 10, backgroundColor: selectedMenu === name ? colorForMenu[name] : 'lightgrey', alignItems: 'center' }} onPress={onPress}>
-        <Text style={{ fontSize: 18, color: selectedMenu === name ? 'black' : 'white' }}>{tranlateButtonNameToKor[name]}</Text>
+      <TouchableOpacity style={{ padding: 10, backgroundColor: selectedMenu === name ? colorForMenu[name] : 'white', alignItems: 'center' }} onPress={onPress}>
+        <Text style={{ fontSize: 18, color: selectedMenu === name ? 'white' : '#1E90FF' }}>{tranlateButtonNameToKor[name]}</Text>
       </TouchableOpacity>
     </View>
   );

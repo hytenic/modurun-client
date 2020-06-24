@@ -1,16 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import MaskedView from '@react-native-community/masked-view';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
 import * as utils from './TrackUtils/utils';
 import TrackMaster from './TrackMaster/TrackMaster';
 import googlePlaceApi from './googleapis/place';
+import PrettyPropInDetail from './PrettyPropInDetail/PrettyPropInDetail';
+
+const styles = StyleSheet.create({
+  compactTitleStyle: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  trackInfo: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    paddingBottom: 5,
+    borderRadius: 15,
+    margin: '2%',
+    shadowColor: '#000',
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 50,
+  },
+  trackTitleStyle: {
+    backgroundColor: 'dodgerblue',
+    height: '12%',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    padding: 5,
+    marginBottom: 5,
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+  editCompleteButton: {
+    position: 'absolute',
+    top: '85%',
+    left: '25%',
+    backgroundColor: '#03D6A7',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    padding: 18,
+    width: 200,
+    shadowColor: '#000',
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 10,
+    alignItems: 'center',
+    zIndex: 10,
+  },
+});
 
 const CreatedTrackInfo = ({ data }) => {
   if (!data) return <Text>트랙 데이터가 없습니다.</Text>;
   const {origin, destination, route, trackLength, trackTitle} = data;
   const [originInfo, setOriginInfo] = useState('');
   const [destinationInfo, setDestinationInfo] = useState('');
+
+  const navigation = useNavigation();
+
+  const confirmTrack = () => {
+    navigation.navigate('TrackManager');
+  };
 
   useEffect(() => {
     googlePlaceApi.getNearestAddr(origin)
@@ -19,52 +78,38 @@ const CreatedTrackInfo = ({ data }) => {
       .then((addr) => setDestinationInfo(addr));
   }, []);
 
-  const compactDesContainerStyle = {
-    flexDirection: 'row',
-  };
-  const compactDesTitleStyle = {
-    fontSize: 12,
-    flexBasis: 80,
-  };
-  const compactDesContentStyle = {
-    fontSize: 12,
-    flex: 1,
-  };
-
   return (
-    <View style={{ backgroundColor: 'white', elevation: 1, flex: 1 }}>
-      <View style={{ margin: 20, marginBottom: 10 }}>
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{trackTitle}</Text>
-      </View>
-      <View style={{ paddingHorizontal: 20, marginTop: 0, marginBottom: 0, paddingBottom: 20, borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.2)' }}>
-        <View style={compactDesContainerStyle}>
-          <Text style={compactDesTitleStyle}>코스 길이</Text>
-          <Text style={compactDesContentStyle}>{utils.prettyLength(trackLength)}</Text>
+    <View style={{ flex: 1 }}>
+      <View style={styles.trackInfo}>
+        <View style={styles.trackTitleStyle}>
+          <Text style={styles.compactTitleStyle}>{trackTitle}</Text>
         </View>
-        <View style={compactDesContainerStyle}>
-          <Text style={compactDesTitleStyle}>소요 시간(남)</Text>
-          <Text style={compactDesContentStyle}>{utils.predictDuration(trackLength, 'm')}</Text>
-        </View>
-        <View style={compactDesContainerStyle}>
-          <Text style={compactDesTitleStyle}>소요 시간(여)</Text>
-          <Text style={compactDesContentStyle}>{utils.predictDuration(trackLength, 'f')}</Text>
-        </View>
-        <View style={compactDesContainerStyle}>
-          <Text style={compactDesTitleStyle}>시작 지점</Text>
-          <Text style={compactDesContentStyle}>{originInfo}</Text>
-        </View>
-        <View style={compactDesContainerStyle}>
-          <Text style={compactDesTitleStyle}>도착 지점</Text>
-          <Text style={compactDesContentStyle}>{destinationInfo}</Text>
+        <View style={{ paddingLeft: 10, paddingRight: 10, width: 180 }}>
+          <PrettyPropInDetail name="거리" value="5km" />
+          <PrettyPropInDetail
+            name="길이"
+            value={utils.prettyLength(trackLength)}
+          />
+          <PrettyPropInDetail name="출발점" value={originInfo} />
+          <PrettyPropInDetail name="도착점" value={destinationInfo} />
+          <PrettyPropInDetail
+            name="시간(남)"
+            value={utils.predictDuration(trackLength, 'm')}
+          />
+          <PrettyPropInDetail
+            name="시간(여)"
+            value={utils.predictDuration(trackLength, 'f')}
+          />
         </View>
       </View>
-      <View style={{ flex: 1 }}>
-        <TrackMaster
-          mode="trackViewer"
-          tracks={[data]}
-          initialCamera={origin}
-        />
+      <View style={styles.editCompleteButton}>
+        <TouchableOpacity onPress={confirmTrack}>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>
+            확인
+          </Text>
+        </TouchableOpacity>
       </View>
+      <TrackMaster mode="trackViewer" tracks={[data]} initialCamera={origin} />
     </View>
   );
 };
@@ -76,5 +121,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, null)(CreatedTrackInfo);
-
-const styles = StyleSheet.create({});

@@ -19,7 +19,11 @@ const TrackList = ({ tracks, showBookmark, showAdd }) => {
   const filteredTracks = tracks.filter((track) => !anyOfKeyIsFalsy(track, ['destination', 'origin', 'route']));
 
   return (
-    <ScrollView style={{backgroundColor: 'rgba(0,0,0,0.05)'}}>
+    <ScrollView
+      style={{
+        backgroundColor: '#1E90FF',
+      }}
+    >
       <StatusBar />
       {filteredTracks.map((track) => (
         <TrackListEntry

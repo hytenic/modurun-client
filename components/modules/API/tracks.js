@@ -4,7 +4,6 @@ const url = 'https://modurun.xyz';
 const getUserTracks = async () => {
   try {
     const response = await fetch(`${url}/users/tracks`);
-    console.log(response.status);
     if (response.status === 200) {
       const tracks = response.json();
       return tracks;

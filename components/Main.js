@@ -4,29 +4,29 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { DrawerNavigator } from 'react-navigation';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
-import FilterModal from './modules/Modal';
+import FilterModal, { InputUsernameModal } from './modules/Modal';
 import getEnvVars from '../environment';
 import ScheduleManager from './modules/ScheduleManager';
 import { getUserLocation } from './modules/utils';
 import { getUserSchedules } from './modules/API/schedule';
 import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
-import { setUserLocation } from '../redux/action/TrackMaster/creators';
+import reduxStore from '../redux/store';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
+    backgroundColor: '#1E90FF',
   },
   header: {
     // flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#f15c5c',
+    backgroundColor: 'white',
     alignItems: 'center',
     padding: 5,
   },
@@ -56,24 +56,22 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Main = ({ route, info }) => {
+export const Main = () => {
   const navigation = useNavigation();
   const [typing, setTyping] = useState(false);
   const [destination, setDestination] = useState('');
   const [predictions, setPredictions] = useState([]);
-  const [searching, setSearching] = useState(false); 
+  const [searching, setSearching] = useState(false);
   const [userSchedules, setUserSchedules] = useState([]);
   const [location, setLocation] = useState({
     longitude: 0,
     latitude: 0,
   });
-  // const { userInfo } = route.params;
   const { apiKey } = getEnvVars('dev');
   useEffect(() => {
-    console.log('route ', route);
-    console.log('info ', info);
+    console.log('main ', reduxStore.getState().userInfo.user);
   }, []);
-  
+
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setTyping(false));
     Keyboard.addListener('keyboardDidShow', () => setTyping(true));
@@ -158,24 +156,39 @@ export const Main = ({ route, info }) => {
         </View>
       );
     }
+    return (<></>);
   };
 
   const renderMainView = () => {
     if (!searching) {
       return (
-        <TrackMaster mode="scheduleViewer" schedules={dummySchedules} initialCamera={location} />
+        <TrackMaster mode="scheduleViewer" schedules={dummySchedules} initialCamera={location} moveOnMarkerPress />
       );
     }
+    return (<></>);
   };
 
   const addSchedule = () => {
-    console.log(user.user);
     navigation.navigate('Scheduler');
+  };
+
+  const usernameInput = () => {
+    const { isFirstLogin } = reduxStore.getState().userInfo.user;
+    console.log(isFirstLogin);
+    if (!isFirstLogin) {
+      return (
+        <></>
+      );
+    }
+    return (
+      <InputUsernameModal />
+    );
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        {usernameInput()}
         <TouchableOpacity onPress={() => {
           toggleSideBar({ navigation });
         }}
@@ -208,19 +221,12 @@ export const Main = ({ route, info }) => {
   );
 };
 
-// const SideBar = DrawerNavigator({
-//   Main: { screen: Main },
-//   TrackManager: { screen: TrackManager },
-//   MyPage: { screen: MyPage },
-// });
-
 const Drawer = createDrawerNavigator();
 
-function SideBar({ route }) {
-  console.log('test : ', route);
+function SideBar() {
   return (
     <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="Main" component={Main} />
+      <Drawer.Screen name="메인" component={Main} />
       <Drawer.Screen name="트랙 관리" component={TrackManager} />
       <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
       <Drawer.Screen name="마이페이지" component={MyPage} />
