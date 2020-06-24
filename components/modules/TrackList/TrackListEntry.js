@@ -39,7 +39,7 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
 
   const viewTrackOnMap = () => {
     setSingleTrack(data);
-    navigation.navigate('SingleTrackViewer');
+    navigation.navigate('SingleTrackViewerInDetail');
   };
 
   const askIfDelete = () => {
