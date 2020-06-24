@@ -1,14 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { StyleSheet, Text, View, Keyboard } from 'react-native';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
-import dummyTracks from './TrackMaster/dummyData/dummyTracks.json';
 import TrackList from './TrackList';
 import FindTrack from './TrackManager/FindTrack';
 import TrackEditor from './TrackManager/TrackEditor';
+import trackManagerActions from '../../redux/action/TrackManager/creator';
+import modurunAPI from './API';
+import trackManagerUtils from './TrackManager/utils';
 
-const TrackManager = () => {
+const TrackManager = ({ myTracks, foundTracks, dispatch }) => {
   const [selectedMenu, setSelectedMenu] = useState('myTrack');
+
+  const getMyTracks = () => {
+    // if (myTracks.length) return;
+    modurunAPI.tracks.getMyTracks()
+      .then((res) => res.json())
+      .then((json) => {
+        dispatch(trackManagerActions.setMyTrack(json));
+      });
+  };
+
+  // trackId: 30,
+
+  const getTracks = (filter) => {
+    // if (foundTracks.length) return;
+    trackManagerUtils.getUserPos()
+      .then((userPos) => {
+        modurunAPI.tracks.getTracks(filter, userPos, trackManagerUtils.getBigArea(userPos))
+          .then((res) => res.json())
+          .then((json) => {
+            dispatch(trackManagerActions.setFoundTracks(json));
+          });
+      });
+  };
+
+  useEffect(() => {
+    getMyTracks();
+  }, []);
+
   const tranlateButtonNameToKor = {
     myTrack: '내 코스',
     findTrack: '주변 코스',
@@ -36,12 +67,12 @@ const TrackManager = () => {
     let renderTarget;
     if (menu === 'myTrack') {
       renderTarget = (
-        <TrackList tracks={dummyTracks} showBookmark />
+        <TrackList tracks={myTracks} showBookmark />
       );
     }
     if (menu === 'findTrack') {
       renderTarget = (
-        <FindTrack tracks={dummyTracks} />
+        <FindTrack onFilterSet={getTracks} tracks={foundTracks} />
       );
     }
     if (menu === 'createTrack') {
@@ -69,6 +100,11 @@ const TrackManager = () => {
   );
 };
 
-export default TrackManager;
+const mapStateToProps = (state) => {
+  return {
+    myTracks: state.trackManager.myTracks,
+    foundTracks: state.trackManager.foundTracks,
+  };
+};
 
-const styles = StyleSheet.create({});
+export default connect(mapStateToProps, null)(TrackManager);
