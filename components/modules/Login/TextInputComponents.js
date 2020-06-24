@@ -14,13 +14,13 @@ const styles = StyleSheet.create({
 });
 
 const TextInputComponent = ({
-  type, placeholder, value, setAction, onTouchStart,
+  type, placeholder, value, setAction, onTouchStart, style,
 }) => {
   const hasTouchEvent = !!onTouchStart;
   if (type === 'email') { // 로그인 : 값만 넘겨줌, 회원가입 : 변수로 여기를 지나간 적이 있는지를 알려줘야함(onTouchStart)
     return (
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, style]}
         placeholder={placeholder}
         defaultValue={value}
         onChangeText={(text) => {
@@ -36,7 +36,7 @@ const TextInputComponent = ({
   if (type === 'password') { // 로그인 : 없음, 회원가입 : 이메일 중복 확인 post를 날려줘야 한다.
     return (
       <TextInput
-        style={styles.textInput}
+        style={[styles.textInput, style]}
         placeholder={placeholder}
         defaultValue={value}
         onChangeText={(text) => {
