@@ -7,7 +7,7 @@ import styles from './style';
 import TrackMaster from '../TrackMaster/TrackMaster';
 import { customizingDateAndTime, getScheduleData } from '../utils';
 import DateTimePickerCompoment from '../DateTimePicker';
-import { getUserTracks } from '../API/trask';
+import { getUserTracks } from '../API/tracks';
 import { postSchedule } from '../API/schedule';
 
 const Scheduler = () => {
@@ -72,7 +72,6 @@ const Scheduler = () => {
     const postData = getScheduleData(createdScheduleInfo);
     try {
       const completeData = await postSchedule(postData);
-      console.log('completeData ', completeData);
       if (completeData) {
         navigation.navigate('CreatedScheduleInfo', {
           completeData,
@@ -93,7 +92,6 @@ const Scheduler = () => {
 
   const selected = () => {
     if (selectedTrack) {
-      console.log(selectedTrack.trackId);
       return (
         <View style={styles.selectedTrack}>
           <TrackMaster
