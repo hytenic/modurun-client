@@ -34,6 +34,7 @@ import SideBar, { Main } from './components/Main';
 
 import store from './redux/store';
 import SingleTrackViewer from './components/modules/SingleTrackViewer';
+import SingleTrackViewerInDetail from './components/modules/SingleTrackViewerInDetail';
 import Main_ScheduleList_Test from './components/modules/Main_ScheduleList_Test';
 import APITester from './components/modules/APITester';
 import TestLogin from './components/modules/TestLogin';
@@ -73,6 +74,7 @@ export default function App() {
           <Stack.Screen name="MyPage" component={MyPage} />
           <Stack.Screen options={{ headerShown: false }} name="MainScheduleListTest" component={Main_ScheduleList_Test} />
           <Stack.Screen options={{ headerShown: false }} name="SingleTrackViewer" component={SingleTrackViewer} />
+          <Stack.Screen options={{ headerShown: false }} name="SingleTrackViewerInDetail" component={SingleTrackViewerInDetail} />
           <Stack.Screen name="Main" component={SideBar} />
         </Stack.Navigator>
       </NavigationContainer>
