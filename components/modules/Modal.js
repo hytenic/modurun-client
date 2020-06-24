@@ -5,6 +5,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
+import { patchUserName } from './API/user';
 import { customizingDateAndTime } from './utils';
 
 const styles = StyleSheet.create({
@@ -133,17 +134,14 @@ const FilterModal = ({ modal }) => {
     show, mode, fromTo, value,
   }) => (
     <TouchableOpacity
-      style={{ marginRight: 15 }}
+      style={{ marginRight: 15, flexDirection: 'row' }}
       onPress={() => {
         setDatePickerShow(!show);
         setPickerMode(mode);
         setFromTo(fromTo);
       }}
     >
-      <Image
-        source={require('../../assets/calendar_icon.png')}
-        style={styles.icon}
-      />
+      <Text style={{alignSelf: 'center'}}>{value}</Text>
     </TouchableOpacity>
   );
 
@@ -157,29 +155,30 @@ const FilterModal = ({ modal }) => {
         setPickerMode(mode);
         setFromTo(fromTo);
       }}
-      >
-      <Image
-        source={require('../../assets/clock_icon.png')}
-        style={styles.icon}
-      />
+    >
+      <Text style={{alignSelf: 'center'}}>{value}</Text>
     </TouchableOpacity>
   );
 
   const onChangeDatePicker = (event, selectedTime) => {
-    setDatePickerShow(!datePickerShow);
-    if (fromTo === 'from') {
-      setDateFrom(selectedTime);
-    } else {
-      setDateTo(selectedTime);
+    setDatePickerShow(false);
+    if (selectedTime) {
+      if (fromTo === 'from') {
+        setDateFrom(selectedTime);
+      } else {
+        setDateTo(selectedTime);
+      }
     }
   };
 
   const onChangeTimePicker = (event, selectedTime) => {
-    setTimePickerShow(!timePickerShow);
-    if (fromTo === 'from') {
-      setTimeFrom(selectedTime);
-    } else {
-      setTimeTo(selectedTime);
+    setTimePickerShow(false);
+    if (selectedTime) {
+      if (fromTo === 'from') {
+        setTimeFrom(selectedTime);
+      } else {
+        setTimeTo(selectedTime);
+      }
     }
   };
 
@@ -220,10 +219,10 @@ const FilterModal = ({ modal }) => {
                   )
                   : <></>
               }
-              <Text>{customizingDateAndTime(dateFrom, 0)}</Text>
-              <DatePickerComponent show={datePickerShow} mode="date" fromTo="from" />
-              <Text>{customizingDateAndTime(dateTo, 0)}</Text>
-              <DatePickerComponent show={datePickerShow} mode="date" fromTo="to" />
+              {/* <Text>{customizingDateAndTime(dateFrom, 0)}</Text> */}
+              <DatePickerComponent show={datePickerShow} mode="date" fromTo="from" value={customizingDateAndTime(dateFrom, 0)} />
+              {/* <Text>{customizingDateAndTime(dateTo, 0)}</Text> */}
+              <DatePickerComponent show={datePickerShow} mode="date" fromTo="to" value={customizingDateAndTime(dateTo, 0)} />
             </View>
 
             <View style={styles.row}>
@@ -239,10 +238,8 @@ const FilterModal = ({ modal }) => {
                   )
                   : <></>
               }
-              <Text>{customizingDateAndTime(0, timeFrom)}</Text>
-              <TimePickerComponent show={timePickerShow} mode="time" fromTo="from" value="부터" />
-              <Text>{customizingDateAndTime(0, timeTo)}</Text>
-              <TimePickerComponent show={timePickerShow} mode="time" fromTo="to" value="까지" />
+              <TimePickerComponent show={timePickerShow} mode="time" fromTo="from" value={customizingDateAndTime(0, timeFrom)} />
+              <TimePickerComponent show={timePickerShow} mode="time" fromTo="to" value={customizingDateAndTime(0, timeTo)} />
             </View>
 
             <View style={styles.row}>
@@ -264,6 +261,7 @@ const FilterModal = ({ modal }) => {
       </Modal>
 
       <TouchableHighlight
+        underlayColor="#ffffff00"
         style={styles.openButton}
         // onPress={() => {
         //   setModalVisible(true);
@@ -271,6 +269,50 @@ const FilterModal = ({ modal }) => {
       >
         <Icon.Button style={styles.filterButton} name="filter" color="white" size={30} backgroundColor="rgba(52, 52, 52, 0.0)" onPress={() => { setModalVisible(true); }} />
       </TouchableHighlight>
+    </View>
+  );
+};
+
+export const InputUsernameModal = ({}) => {
+  // 첫 로그인일 때만 보이는 유저 이름 입력 모달
+  const [modalVisible, setModalVisible] = useState(true);
+  const [username, setUsername] = useState('');
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const postUsername = async () => {
+    setModalVisible(false);
+    try {
+      await patchUserName(username);
+    } catch (e) {
+      console.log('username input modal ', e);
+    }
+  };
+
+  return (
+    <View style={styles.centeredView}>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={modalVisible}
+      >
+        <TouchableOpacity
+          style={styles.modalBackground}
+          onPress={closeModal}
+        >
+          <View style={styles.modalView}>
+            <TextInput placeholder="유저 이름을 입력해 주세요" style={{ borderWidth: 0.5, width: 200, height: 40, marginBottom: 10 }} onChangeText={setUsername} />
+            <TouchableHighlight
+              style={styles.openButton}
+              onPress={postUsername}
+            >
+              <Text style={styles.textStyle}>확인</Text>
+            </TouchableHighlight>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 };

@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
-import React, { useState, useContext, createContext } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, Text, View, NativeModules,
 } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/native';
+import { connect } from 'react-redux';
+import actions from '../../redux/action/User/creator';
 import TextInputComponent from './Login/TextInputComponents';
 import ButtonComponent from './Login/ButtonComponent';
 import { postEmailLogin } from './API/user';
@@ -13,7 +15,6 @@ import getEnvVars from '../../environment';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // alignItems: 'center',
     justifyContent: 'center',
   },
   header: {
@@ -48,10 +49,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignInManager = () => {
+const SignInManager = ({ dispatch }) => {
   const [signedIn, setSignedIn] = useState(false);
   const [accessToken, setAccessToken] = useState('');
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const googleSignIn = async () => {
     try {
@@ -69,67 +72,55 @@ const SignInManager = () => {
     }
   };
 
-  const goToMain = () => (
-    navigation.navigate('Main')
-  );
+  const emailSignIn = async (inputEmail, inputPassword) => {
+    const userInfo = await postEmailLogin(inputEmail, inputPassword);
+    console.log('toString ', actions.toString());
+    dispatch(actions(userInfo))
+    console.log('logged in user info: ', userInfo);
+    if (userInfo) {
+      navigation.navigate({ name: 'Main', params: { test: 'test' } });
+    }
+  };
+
+  const goToMain = () => {
+    if (signedIn) navigation.navigate('Main');
+  };
+
+  const goToSignUpPage = () => {
+    navigation.navigate('SignUpManager');
+  };
+
+  const signin = () => {
+    if (!signedIn) {
+      return (
+        <View style={styles.body}>
+          <View style={styles.inputArea}>
+            <TextInputComponent type="email" placeholder="이메일" value={email} setAction={setEmail} />
+            <TextInputComponent type="password" placeholder="비밀번호" value={password} setAction={setPassword} />
+          </View>
+          <View style={styles.buttonArea}>
+            <ButtonComponent type="email" title="로그인" info={{ email, password }} onPressAction={emailSignIn} />
+            <ButtonComponent type="google" title="구글 로그인" onPressAction={googleSignIn} />
+          </View>
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>혹시 계정이 없으신가요? </Text>
+            <Text style={[styles.footerText, { color: 'blue' }]} onPress={goToSignUpPage}>가입하기</Text>
+          </View>
+        </View>
+      );
+    }
+    return (<></>);
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={{ fontSize: 24 }}>모두의 런 로그인</Text>
       </View>
-      {
-        signedIn ? (
-          // <SignedIn token={accessToken} />
-          goToMain()
-        ) : (
-          <SignIn googleSignIn={googleSignIn} setAction={setUserInfo} value={userInfo} setContext={setUser} />
-        )
-      }
+      {goToMain()}
+      {signin()}
     </View>
   );
 };
 
-const SignedIn = ({ token }) =>
-  // 로그인이 되었다면 메인페이지로 넘어가야 한다.
-  (
-    <View style={styles.body}>
-      <Text>로그인 됨 메인 페이지로 넘어가야 함</Text>
-      {
-        console.log(token)
-      }
-    </View>
-  );
-const SignIn = ({ googleSignIn }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const navigation = useNavigation();
-
-  const emailSignIn = async (inputEmail, inputPassword) => {
-    // console.log(`${inputEmail} ${inputPassword}`);
-    const user = await postEmailLogin(inputEmail, inputPassword);
-    console.log('logged in user info: ', user);
-    if (user) {
-      navigation.navigate({ name: 'Main', params: { test: 'test' } });
-    }
-  };
-
-  return (
-    <View style={styles.body}>
-      <View style={styles.inputArea}>
-        <TextInputComponent type="email" placeholder="이메일" value={email} setAction={setEmail} />
-        <TextInputComponent type="password" placeholder="비밀번호" value={password} setAction={setPassword} />
-      </View>
-      <View style={styles.buttonArea}>
-        <ButtonComponent type="email" title="로그인" info={{ email, password }} onPressAction={emailSignIn} />
-        <ButtonComponent type="google" title="구글 로그인" onPressAction={googleSignIn} />
-      </View>
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>혹시 계정이 없으신가요? </Text>
-        <Text style={[styles.footerText, { color: 'blue' }]} onPress={() => navigation.navigate('SignUpManager')}>가입하기</Text>
-      </View>
-    </View>
-  );
-};
-
-export default SignInManager;
+export default connect(null, null)(SignInManager);
