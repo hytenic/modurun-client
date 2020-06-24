@@ -48,7 +48,7 @@ const MyPage = (props) => {
         <Text style={{ fontSize: 25, margin: 20, marginVertical: 10 }}>My 모두런</Text>
         <View style={{flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.1)', justifyContent: 'space-between' }}>
           <View style={{flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{backgroundColor: 'lightgrey', borderRadius: 100, padding: 2, margin: 10 }}>
+            <View style={{backgroundColor: 'lightgrey', borderRadius: 100, padding: 2, margin: 20 }}>
               <MaskedView style={{backgroundColor: 'transparent' }} maskElement={<View style={{backgroundColor: 'black', width: 40, height: 40, borderRadius: 100 }} />}>
                 <Icon name="user" size={50} color="white" style={{backgroundColor: 'lightgrey', width: 40, height: 40, textAlignVertical: 'center', textAlign: 'center' }} />
               </MaskedView>
@@ -59,12 +59,12 @@ const MyPage = (props) => {
             <Text style={{fontSize: 12, color: 'white', fontWeight: 'bold'}}>내 정보 관리</Text>
           </TouchableHighlight>
         </View>
-        <View style={{padding: 15, flexDirection: 'row', borderBottomColor:'rgba(0,0,0,0.1)', borderBottomWidth: 1 }}>
+        <View style={{padding: 20, flexDirection: 'row', borderBottomColor:'rgba(0,0,0,0.1)', borderBottomWidth: 1 }}>
           <Icon name="envelope" size={15} color="#1E90FF" style={{marginRight: 10}} />
           <Text>{`${dummyUser.email}`}</Text>
         </View>
         <TouchableHighlight onPressIn={()=>{}} underlayColor="rgba(0,0,0,0.1)" style={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
-          <View style={{padding: 15, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{padding: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={{flexDirection: 'row' }}>
               <Icon name="thumbs-up" size={15} color="#1E90FF" style={{marginRight: 10}} />
               <Text>나의 후기</Text>
