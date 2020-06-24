@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity, Alert,
+  StyleSheet, Text, View, TextInput, TouchableOpacity, Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { postSignUp, getEmailDupli } from './API/user';
@@ -9,52 +9,87 @@ import { postSignUp, getEmailDupli } from './API/user';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#1E90FF',
   },
   header: {
-    flex: 0.2,
-    // backgroundColor: 'yellow',
+    flex: 2,
+    backgroundColor: 'yellow',
     justifyContent: 'center',
+  },
+  circle: {
+    borderRadius: 300,
+    width: 700,
+    height: 600,
+    marginLeft: -145,
+    position: 'absolute',
+    top: -180,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  logo: {
+    position: 'absolute',
+    top: 210,
   },
   headerText: {
     fontSize: 30,
     textAlign: 'center',
   },
   body: {
-    flex: 0.7,
-    // backgroundColor: 'green',
-    justifyContent: 'center',
-  },
-  footer: {
-    flex: 0.1,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flex: 6,
+    marginTop: 25,
   },
   inputArea: {
-    flex: 0.55,
-    // backgroundColor: 'green',
-    justifyContent: 'center',
+    flex: 6,
+    marginBottom: 40,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   buttonArea: {
-    flex: 0.45,
-    // backgroundColor: 'blue',
-    alignItems: 'flex-end',
+    flex: 4,
+    alignItems: 'center',
   },
-  textInput: {
-    marginTop: 20,
-    marginLeft: 10,
-    marginRight: 10,
+  footer: {
+    flex: 1.5,
+    borderTopWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.8)',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: 250,
+    alignSelf: 'center',
+  },
+  inputBox: {
+    backgroundColor: 'white',
+    width: 250,
+    margin: 13,
     padding: 10,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderRadius: 8,
+    borderColor: '#1E90FF',
+    elevation: 10,
   },
-  signUpButton: {
-    backgroundColor: '#FADAD8',
-    width: 100,
-    height: 30,
-    marginRight: 10,
+  btn: {
+    backgroundColor: 'white',
+    width: 200,
+    height: 40,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 8,
+    shadowOpacity: 0.5,
+    shadowRadius: 3.84,
+  },
+  signUpBtn: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 8,
+    marginTop: 70,
+    elevation: 8,
+  },
+  signinPageBtn: {
+    backgroundColor: '#03D6A7',
+    marginTop: 20,
   },
 });
 
@@ -77,16 +112,29 @@ const SignUpManager = () => {
     }
   };
 
+  const goToSignInPage = () => {
+    navigation.navigate('SignInManager');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>모두의 런 회원가입</Text>
+        <View style={styles.circle}>
+          <View style={styles.logo}>
+            <Image
+              source={require('../../assets/zolaman_blue.png')}
+              style={{ weight: 60, height: 60 }}
+              resizeMode="contain"
+            />
+            <Text style={{ fontSize: 40, color: '#1E90FF', fontWeight: 'bold', alignSelf: 'center' }}>모두런</Text>
+          </View>
+        </View>
       </View>
       <View style={styles.body}>
         <View style={styles.inputArea}>
           <TextInput
-            style={styles.textInput}
-            placeholder="이메일을 입력해 주세요."
+            style={styles.inputBox}
+            placeholder="이메일"
             defaultValue={email}
             onTouchStart={() => {
               setJustAfterEmail(true);
@@ -96,8 +144,8 @@ const SignUpManager = () => {
             }}
           />
           <TextInput
-            style={styles.textInput}
-            placeholder="비밀번호를 입력해 주세요."
+            style={styles.inputBox}
+            placeholder="비밀번호"
             defaultValue={password}
             secureTextEntry
             onTouchStart={() => {
@@ -111,8 +159,8 @@ const SignUpManager = () => {
             }}
           />
           <TextInput
-            style={styles.textInput}
-            placeholder="비밀번호를 다시 입력해 주세요."
+            style={styles.inputBox}
+            placeholder="비밀번호 확인"
             defaultValue={confirmPassword}
             secureTextEntry
             onChangeText={(confirm) => {
@@ -122,7 +170,7 @@ const SignUpManager = () => {
         </View>
         <View style={styles.buttonArea}>
           <TouchableOpacity
-            style={styles.signUpButton}
+            style={[styles.btn, styles.signUpBtn]}
             title="회원가입"
             onPress={async () => {
               if (password === confirmPassword) {
@@ -138,14 +186,19 @@ const SignUpManager = () => {
               }
             }}
           >
-            <Text>회원가입</Text>
+            <Text style={{ color: '#1E90FF', fontSize: 15, fontWeight: 'bold' }}>회원가입</Text>
           </TouchableOpacity>
         </View>
       </View>
+
       <View style={styles.footer}>
-        <Text>이미 계정이 있으신가요?</Text>
-        <Text>    </Text>
-        <Text style={{color: 'blue'}} onPress={() => navigation.navigate('SignInManager')}>로그인</Text>
+        <TouchableOpacity
+          style={[styles.btn, styles.signinPageBtn]}
+          title="회원가입"
+          onPress={goToSignInPage}
+        >
+          <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>로그인</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
