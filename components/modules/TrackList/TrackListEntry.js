@@ -1,44 +1,62 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, Alert, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState, useRef, useEffect } from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text, Alert, Modal } from 'react-native';
 import { connect } from 'react-redux';
-import styles from './styles';
+import trackManagerActions from '../../../redux/action/TrackManager/creator';
 import * as actions from '../../../redux/action/SingleTrackViewer/creator';
 import PrettyProp from '../PrettyProp/PrettyProp';
-import * as utils from '../TrackUtils/utils';
 import googlePlaceApi from '../googleapis/place';
+import * as utils from '../TrackUtils/utils';
+import modurunAPI from '../API';
+import styles from './styles';
+import store from '../../../redux/store';
 
-const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
+const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
   // 아 북마크 처리는 api에 안 돼 있네.
   const {
-    trackLength, trackTitle, route, bookmarked,
+    trackLength,
+    trackTitle,
+    route,
+    bookmark,
+    id,
+    trackId,
+    createdAt,
+    updatedAt,
+    userId,
+    origin,
+    destination,
+    rateValue,
   } = data;
 
-  const origin = route[0];
-  const destination = route[route.length - 1];
+  // getTracks => id가 트랙 테이블에 있는 아이디;
+  // getMyTracks => trackId가 트랙 테이블에 있는 아이디;
+  // getMyTracks => id가 유저 트랙 테이블에 있는 아이디;
 
   const [originInfo, setOriginInfo] = useState('');
   const [destinationInfo, setDestinationInfo] = useState('');
   useEffect(() => {
-    googlePlaceApi.nearestPlace(origin)
-      .then((nearestPlace) => {
-        setOriginInfo(nearestPlace.vicinity);
-      });
-    googlePlaceApi.nearestPlace(destination)
-      .then((nearestPlace) => {
-        setDestinationInfo(nearestPlace.vicinity);
-      });
+    googlePlaceApi.getNearestAddr(origin)
+      .then((addr) => setOriginInfo(addr));
+    googlePlaceApi.getNearestAddr(destination)
+      .then((addr) => setDestinationInfo(addr));
   }, [data]);
 
   const navigation = useNavigation();
   const [showMoreVisible, setShowMoreVisible] = useState(false);
 
+  const [requesting, setRequestState] = useState({
+    bookmark: false,
+    addTrack: false,
+    findTrack: false,
+    deleteTrack: false,
+  });
+
   const toggleShowMore = () => setShowMoreVisible(!showMoreVisible);
 
   const viewTrackOnMap = () => {
-    setSingleTrack(data);
+    dispatch(actions.setSingleTrack(data));
     navigation.navigate('SingleTrackViewer');
   };
 
@@ -46,7 +64,18 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
     Alert.alert('코스 삭제', '코스를 삭제하시겠습니까?', [
       {
         text: '삭제',
-        onPress: () => { console.log('여기서 삭제하는 동작 수행해야 됨'); },
+        onPress: () => {
+          if (requesting.deleteTrack) return;
+          setRequestState({ ...requesting, deleteTrack: true });
+          modurunAPI.tracks.deleteFromMyTrack(trackId)
+            .then((res) => {
+              if (res.status === 200) {
+                dispatch(trackManagerActions.deleteMyTrack(trackId));
+                setRequestState({ ...requesting, deleteTrack: false });
+                Alert.alert('삭제 완료', '선택한 트랙이 삭제되었습니다');
+              }
+            });
+        },
       },
       {
         text: '취소',
@@ -60,7 +89,26 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
       '코스를 추가하시겠습니까?', [
         {
           text: '예',
-          onPress: () => { console.log('여기서 추가하는 동작 수행해야 됨'); },
+          onPress: () => {
+            if (requesting.addTrack) return;
+            setRequestState({ ...requesting, addTrack: true });
+            modurunAPI.tracks.addToMyTrack(id)
+              .then((res) => {
+                if (res.status === 409) {
+                  Alert.alert('중복된 코스', '이미 추가한 코스입니다.');
+                }
+                if (res.status === 200) {
+                  Alert.alert('추가 완료', '성공적으로 추가되었습니다');
+                  setRequestState({ ...requesting, addTrack: false });
+                  modurunAPI.tracks.getMyTracks()
+                    .then((myTrackRes) => myTrackRes.json())
+                    .then((json) => {
+                      // console.log('이게 여기가 맞나', json);
+                      dispatch(trackManagerActions.setMyTrack(json))
+                    });
+                }
+              });
+          },
         },
         {
           text: '아니오',
@@ -69,11 +117,19 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
     );
   };
 
+  const toggleBookmark = () => {
+    if (requesting.bookmark) return;
+    setRequestState({ ...requesting, bookmark: true });
+    modurunAPI.tracks.toggleBookmark(trackId)
+      .then((res) => (res.ok ? dispatch(trackManagerActions.toggleBookmark(trackId)) : ''))
+      .then(() => setRequestState({ ...requesting, bookmark: false }));
+  };
+
   const renderAdd = () => {
     if (!showAdd) return <></>;
     return (
       <TouchableOpacity onPress={askIfAdd} style={{ alignContent: 'center', padding: 5 }}>
-        <Icon name="plus" color="white" style={{backgroundColor: 'rgba(255,255,255,0.5)', width: 30, height: 30, borderRadius: 100, textAlign: 'center', textAlignVertical: 'center' }} size={20} />
+        <Icon name="plus" color="grey" style={{backgroundColor: 'rgba(255,255,255,0.5)', width: 30, height: 30, borderRadius: 100, textAlign: 'center', textAlignVertical: 'center' }} size={20} />
       </TouchableOpacity>
     );
   };
@@ -81,8 +137,8 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
   const renderBookMark = () => {
     if (!showBookmark) return <></>;
     return (
-      <TouchableOpacity onPress={() => { /* 여기에서 북마크 처리해야됨 */ }} style={{ alignContent: 'center', padding: 5 }}>
-        <Icon name="star" size={20} color={bookmarked ? 'yellow' : 'lightgrey'} />
+      <TouchableOpacity onPress={toggleBookmark} style={{ alignContent: 'center', padding: 5 }}>
+        <Icon name="star" size={20} color={bookmark ? 'orange' : 'lightgrey'} />
       </TouchableOpacity>
     );
   };
@@ -160,4 +216,4 @@ const TrackListEntry = ({ data, showBookmark, setSingleTrack, showAdd }) => {
   );
 };
 
-export default connect(null, { ...actions })(TrackListEntry);
+export default connect(null, null)(TrackListEntry);
