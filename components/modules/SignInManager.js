@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, View, NativeModules,
+  StyleSheet, Text, View, NativeModules, Image,
 } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/native';
@@ -15,37 +15,58 @@ import getEnvVars from '../../environment';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
   },
   header: {
-    flex: 0.2,
+    flex: 2,
+    backgroundColor: 'red',
+    marginBottom: 50,
+  },
+  circle: {
+    borderRadius: 300,
+    width: 700,
+    height: 600,
+    marginLeft: -145,
+    position: 'absolute',
+    top: -220,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'yellow',
+    backgroundColor: '#1E90FF',
   },
   body: {
-    flex: 0.8,
-    justifyContent: 'center',
+    flex: 7,
+    marginTop: 25,
   },
   inputArea: {
-    flex: 0.4,
+    marginBottom: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'green',
+  },
+  inputBox: {
+    backgroundColor: 'white',
+    borderWidth: 0,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 10,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   buttonArea: {
-    flex: 0.5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: 'blue',
+    alignItems: 'center',
   },
   footer: {
-    flex: 0.1,
+    flex: 1.2,
+    borderTopWidth: 0.5,
+    width: '80%',
+    borderColor: 'gray',
     flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
+    paddingBottom: 20,
   },
   footerText: {
     fontSize: 15,
+    elevation: 8,
   },
 });
 
@@ -74,11 +95,9 @@ const SignInManager = ({ dispatch }) => {
 
   const emailSignIn = async (inputEmail, inputPassword) => {
     const userInfo = await postEmailLogin(inputEmail, inputPassword);
-    console.log('toString ', actions.toString());
-    dispatch(actions(userInfo))
-    console.log('logged in user info: ', userInfo);
+    dispatch(actions(userInfo));
     if (userInfo) {
-      navigation.navigate({ name: 'Main', params: { test: 'test' } });
+      navigation.navigate('Main');
     }
   };
 
@@ -90,35 +109,31 @@ const SignInManager = ({ dispatch }) => {
     navigation.navigate('SignUpManager');
   };
 
-  const signin = () => {
-    if (!signedIn) {
-      return (
-        <View style={styles.body}>
-          <View style={styles.inputArea}>
-            <TextInputComponent type="email" placeholder="이메일" value={email} setAction={setEmail} />
-            <TextInputComponent type="password" placeholder="비밀번호" value={password} setAction={setPassword} />
-          </View>
-          <View style={styles.buttonArea}>
-            <ButtonComponent type="email" title="로그인" info={{ email, password }} onPressAction={emailSignIn} />
-            <ButtonComponent type="google" title="구글 로그인" onPressAction={googleSignIn} />
-          </View>
-          <View style={styles.footer}>
-            <Text style={styles.footerText}>혹시 계정이 없으신가요? </Text>
-            <Text style={[styles.footerText, { color: 'blue' }]} onPress={goToSignUpPage}>가입하기</Text>
-          </View>
-        </View>
-      );
-    }
-    return (<></>);
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={{ fontSize: 24 }}>모두의 런 로그인</Text>
+        <View style={styles.circle}>
+          <Image
+            source={require('../../assets/zolaman.png')}
+            style={{ weight: 60, height: 60 }}
+            resizeMode="contain"
+          />
+          <Text style={{ fontSize: 40, color: 'white', fontWeight: 'bold' }}>모두런</Text>
+        </View>
       </View>
-      {goToMain()}
-      {signin()}
+      <View style={styles.body}>
+        <View style={styles.inputArea}>
+          <TextInputComponent style={styles.inputBox} type="email" placeholder="이메일" value={email} setAction={setEmail} />
+          <TextInputComponent style={styles.inputBox} type="password" placeholder="비밀번호" value={password} setAction={setPassword} />
+        </View>
+        <View style={styles.buttonArea}>
+          <ButtonComponent type="email" title="로그인" info={{ email, password }} onPressAction={emailSignIn} />
+          <ButtonComponent type="google" title="구글 로그인" onPressAction={googleSignIn} />
+        </View>
+      </View>
+      <View style={styles.footer}>
+        <ButtonComponent type="signupPage" title="회원가입" onPressAction={goToSignUpPage} />
+      </View>
     </View>
   );
 };
