@@ -72,14 +72,10 @@ const CreatedTrackInfo = ({ data }) => {
   };
 
   useEffect(() => {
-    googlePlaceApi.nearestPlace(origin)
-      .then((nearestPlace) => {
-        setOriginInfo(nearestPlace.vicinity);
-      });
-    googlePlaceApi.nearestPlace(destination)
-      .then((nearestPlace) => {
-        setDestinationInfo(nearestPlace.vicinity);
-      });
+    googlePlaceApi.getNearestAddr(origin)
+      .then((addr) => setOriginInfo(addr));
+    googlePlaceApi.getNearestAddr(destination)
+      .then((addr) => setDestinationInfo(addr));
   }, []);
 
   return (
