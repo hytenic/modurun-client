@@ -1,6 +1,8 @@
 export const prettyLength = (length) => {
-  if (length > 1000) return `${Math.floor(length) / 1000}km`;
-  return `${Math.floor(length)}m`;
+  if (length < 1000) return `${Math.floor(length)}m`;
+  const inKm = Math.floor(length) / 1000;
+  const cleanKm = Math.floor(inKm * 10) / 10;
+  return `${cleanKm}km`;
 };
 
 export const prettyDuration = (durationInMinute) => {
