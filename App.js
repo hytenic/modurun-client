@@ -67,7 +67,7 @@ export default function App() {
           <Stack.Screen name="TestLogin" component={TestLogin} />
           <Stack.Screen name="CreatedScheduleInfo" component={CreatedScheduleInfo} />
           <Stack.Screen name="TrackCreator" component={TrackCreator} />
-          <Stack.Screen options={{ headerShown: false }} name="TrackManager" component={TrackManager} />
+          <Stack.Screen options={{ title: '코스 관리' }} name="TrackManager" component={TrackManager} />
           <Stack.Screen options={{ headerShown: false }} name="ScheduleManager" component={ScheduleManager} />
           <Stack.Screen name="ChatRoom" component={ChatRoom} />
           <Stack.Screen name="MyPage" component={MyPage} />
