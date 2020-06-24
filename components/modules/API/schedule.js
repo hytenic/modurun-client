@@ -7,9 +7,9 @@ const postSchedule = async (createdScheduleInfo) => {
       method: 'POST',
       //   withCredentials, true,
       credentials: 'include',
-      body: JSON.stringify({
+      body: JSON.stringify(
         createdScheduleInfo,
-      }),
+      ),
       headers: {
         'Content-Type': 'application/json',
       },
