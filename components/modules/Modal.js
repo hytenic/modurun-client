@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 30,
+    padding: 20,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -49,7 +49,14 @@ const styles = StyleSheet.create({
     width: 100,
     borderRadius: 10,
     padding: 10,
-    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
   textStyle: {
     color: 'white',
@@ -69,9 +76,17 @@ const styles = StyleSheet.create({
   },
   distanceButton: {
     marginRight: 5,
-    backgroundColor: '#E0E3DA',
+    backgroundColor: '#03D6A7',
     borderRadius: 5,
     padding: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
   pressedButton: {
     marginRight: 5,
@@ -102,6 +117,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     marginRight: 15,
+    color: '#1E90FF',
+    fontWeight: 'bold',
   },
 });
 
@@ -126,7 +143,7 @@ const FilterModal = ({ modal }) => {
         setDistance(dis);
       }}
     >
-      <Text>{`${dis}m`}</Text>
+      <Text style={{color: 'white', fontWeight: 'bold'}}>{`${dis}m`}</Text>
     </TouchableOpacity>
   );
 
@@ -134,7 +151,7 @@ const FilterModal = ({ modal }) => {
     show, mode, fromTo, value,
   }) => (
     <TouchableOpacity
-      style={{ marginRight: 15, flexDirection: 'row' }}
+      style={{ marginRight: 15, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#1E90FF', paddingBottom: 3 }}
       onPress={() => {
         setDatePickerShow(!show);
         setPickerMode(mode);
@@ -149,7 +166,7 @@ const FilterModal = ({ modal }) => {
     show, mode, fromTo, value,
   }) => (
     <TouchableOpacity
-      style={{ marginRight: 5 }}
+      style={{ marginRight: 5, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#1E90FF', paddingBottom: 3 }}
       onPress={() => {
         setTimePickerShow(!show);
         setPickerMode(mode);
@@ -244,7 +261,7 @@ const FilterModal = ({ modal }) => {
 
             <View style={styles.row}>
               <Text style={styles.filterTitle}>길이</Text>
-              <TextInput style={{ width: 100, height: 40, backgroundColor: '#F4F4F4' }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
+              <TextInput style={{ width: 100, height: 40, paddingLeft: 10, backgroundColor: '#F4F4F4', borderRadius: 10 }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
               <Text>km 이내</Text>
             </View>
 
