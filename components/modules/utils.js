@@ -63,10 +63,26 @@ const createdScheduleInfo = (data) => {
   return result;
 };
 
+const getFilterCondition = () => {
+  return {
+    maxLength: 3000,
+    distance: 2000,
+    rate: false,
+    recent: true,
+    date: {
+      from: new Date(),
+      to: new Date(moment().add(1, 'days')),
+      timeFrom: new Date(),
+      timeTo: new Date(moment().set({ hour: 24 }).toDate()),
+    },
+  };
+};
+
 module.exports = {
   customizingDateAndTime,
   meterToKilo,
   getUserLocation,
   getScheduleData,
   createdScheduleInfo,
+  getFilterCondition,
 };

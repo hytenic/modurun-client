@@ -12,10 +12,11 @@ import TrackMaster from './modules/TrackMaster/TrackMaster';
 import FilterModal, { InputUsernameModal } from './modules/Modal';
 import getEnvVars from '../environment';
 import ScheduleManager from './modules/ScheduleManager';
-import { getUserLocation } from './modules/utils';
-import { getUserSchedules } from './modules/API/schedule';
+import { getUserLocation, getFilterCondition } from './modules/utils';
+import { getSchedules } from './modules/API/schedule';
 import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
 import reduxStore from '../redux/store';
+// import schedules from './modules/API/SG/schedules';
 
 const styles = StyleSheet.create({
   container: {
@@ -62,15 +63,31 @@ export const Main = () => {
   const [destination, setDestination] = useState('');
   const [predictions, setPredictions] = useState([]);
   const [searching, setSearching] = useState(false);
-  const [userSchedules, setUserSchedules] = useState([]);
+  const [schedules, setSchedules] = useState([]);
   const [location, setLocation] = useState({
     longitude: 0,
     latitude: 0,
   });
-  const { apiKey } = getEnvVars('dev');
+
   useEffect(() => {
-    console.log('main ', reduxStore.getState().userInfo.user);
+    async function initializeLocation() {
+      try {
+        const { latitude, longitude } = await getUserLocation();
+        setLocation({
+          ...location,
+          latitude,
+          longitude,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    initializeLocation();
   }, []);
+
+  const filter = getFilterCondition();
+  const [filterCondition, setFilterCondition] = useState(filter);
+  const { apiKey } = getEnvVars('dev');
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidShow', () => setTyping(false));
@@ -82,20 +99,16 @@ export const Main = () => {
   }, [typing]);
 
   useEffect(() => {
-    async function initializeLocation() {
-      const { latitude, longitude } = await getUserLocation();
-      setLocation({
-        ...location,
-        latitude,
-        longitude,
-      });
-    }
-    initializeLocation();
-  }, []);
-
-  // useEffect(() => {
-  // 위치가 바뀌면 스케줄도 바뀌어야 한다.
-  // }, [location]);
+    const getSchedulesAPI = async () => {
+      const scheduleData = await getSchedules(filterCondition, location);
+      if (!scheduleData && scheduleData === false) {
+        setSchedules([]);
+      } else {
+        setSchedules(scheduleData);
+      }
+    };
+    getSchedulesAPI();
+  }, [location, filterCondition]);
 
   const searched = () => {
     Keyboard.dismiss();
@@ -162,7 +175,7 @@ export const Main = () => {
   const renderMainView = () => {
     if (!searching) {
       return (
-        <TrackMaster mode="scheduleViewer" schedules={dummySchedules} initialCamera={location} moveOnMarkerPress />
+        <TrackMaster mode="scheduleViewer" schedules={schedules} initialCamera={location} moveOnMarkerPress />
       );
     }
     return (<></>);
@@ -174,7 +187,6 @@ export const Main = () => {
 
   const usernameInput = () => {
     const { isFirstLogin } = reduxStore.getState().userInfo.user;
-    console.log(isFirstLogin);
     if (!isFirstLogin) {
       return (
         <></>
@@ -211,7 +223,7 @@ export const Main = () => {
         {renderRecommendation()}
         {renderMainView()}
         <View style={styles.filterButton}>
-          <FilterModal style={styles.main} />
+          <FilterModal style={styles.main} value={filterCondition} setAction={setFilterCondition} />
         </View>
         <View style={{ alignSelf: 'center', alignItems: 'center' }}>
           <Icon.Button name="add-circle" color="black" size={30} backgroundColor="rgba(52, 52, 52, 0.0)" onPress={addSchedule} />
