@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContent } from '@react-navigation/drawer';
@@ -27,16 +27,13 @@ const styles = StyleSheet.create({
     // flex: 1,
     flexDirection: 'row',
     // backgroundColor: '#1E90FF',
-    backgroundColor: 'white',
     alignItems: 'center',
-    width: 340,
-    padding: 5,
+    width: Dimensions.get('screen').width - 20,
+    marginHorizontal: 10,
+    top: 10,
     borderRadius: 3,
     position: 'absolute',
-    top: 8,
-    left: 5,
     zIndex: 1,
-    elevation: 3,
   },
   main: {
     zIndex: 0,
@@ -45,30 +42,27 @@ const styles = StyleSheet.create({
   search: {
     backgroundColor: 'white',
     marginLeft: 10,
-    width: 250,
+    flex: 1,
     padding: 5,
     borderRadius: 2,
   },
   plusButton: {
-    // borderRadius: 100,
-    // width: 70,
-    // justifyContent: 'center',
+    backgroundColor: '#03D6A7',
+    borderRadius: 100,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
   },
   filterButton: {
-    position: 'absolute',
+    flex: 25,
     zIndex: 5,
-    right: 5,
-    top: 5,
   },
   addButton: {
     alignSelf: 'center',
     alignItems: 'center',
-    backgroundColor: '#03D6A7',
     borderRadius: 100,
     position: 'absolute',
-    top: 510,
-    width: 66,
-    height: 66,
+    top: Dimensions.get('screen').height - 170,
   },
   suggestion: {
     flex: 1,
@@ -213,26 +207,28 @@ export const Main = () => {
     <View style={styles.container}>
       <View style={styles.main}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => {
-            toggleSideBar({ navigation });
-          }}
-          >
-            <Image
-              source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
-              style={{ width: 25, height: 25, marginLeft: 10 }}
+          <View style={{ flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3 }}>
+            <TouchableOpacity
+              onPress={() => toggleSideBar({ navigation })}
+              style={{alignItems: 'center', justifyContent: 'center'}}
+            >
+              <Image
+                source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
+                style={{ width: 25, height: 25, marginLeft: 10 }}
+              />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.search}
+              placeholder="검색"
+              value={destination}
+              onTouchStart={onSearch}
+              onChangeText={onChangeDestination}
+              onSubmitEditing={searched}
             />
-          </TouchableOpacity>
-          <TextInput
-            style={styles.search}
-            placeholder="검색"
-            value={destination}
-            onTouchStart={onSearch}
-            onChangeText={onChangeDestination}
-            onSubmitEditing={searched}
-          />
-        </View>
-        <View style={styles.filterButton}>
-          <FilterModal style={styles.main} />
+          </View>
+          <View style={styles.filterButton}>
+            <FilterModal style={styles.main} />
+          </View>
         </View>
         {renderRecommendation()}
         {renderMainView()}
@@ -240,7 +236,9 @@ export const Main = () => {
           <FilterModal style={styles.main} />
         </View> */}
         <View style={styles.addButton}>
-          <Icon.Button style={styles.plusButton} name="plus" color="white" size={50} backgroundColor="rgba(52, 52, 52, 0.0)" onPress={addSchedule} />
+          <TouchableOpacity onPress={addSchedule} style={styles.plusButton}>
+            <Icon style={{textAlign: 'center', textAlignVertical: 'center'}} name="plus" color="white" size={50} />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
