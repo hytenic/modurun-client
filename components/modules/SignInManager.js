@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, NativeModules, Image,
+  StyleSheet, Text, View, Image, Animated, Easing,
 } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/native';
@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 2,
-    backgroundColor: 'red',
     marginBottom: 50,
   },
   circle: {
@@ -77,6 +76,7 @@ const SignInManager = ({ dispatch }) => {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [typing, setTyping] = useState(false);
 
   const googleSignIn = async () => {
     try {
@@ -110,6 +110,37 @@ const SignInManager = ({ dispatch }) => {
     navigation.navigate('SignUpManager');
   };
 
+  const setTypingFalse = () => {
+    setTyping(false);
+  };
+
+  const setTypingTrue = () => {
+    setTyping(true);
+  };
+
+  const btnRendering = () => {
+    if (!typing) {
+      return (
+        <View style={styles.buttonArea}>
+          <ButtonComponent type="email" title="로그인" info={{ email, password }} onPressAction={emailSignIn} />
+          <ButtonComponent type="google" title="구글 로그인" onPressAction={googleSignIn} />
+        </View>
+      );
+    }
+    return (<></>);
+  };
+
+  const footerRendering = () => {
+    if (!typing) {
+      return (
+        <View style={styles.footer}>
+          <ButtonComponent type="signupPage" title="회원가입" onPressAction={goToSignUpPage} />
+        </View>
+      );
+    }
+    return (<></>);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -123,18 +154,13 @@ const SignInManager = ({ dispatch }) => {
         </View>
       </View>
       <View style={styles.body}>
-        <View style={styles.inputArea}>
-          <TextInputComponent style={styles.inputBox} type="email" placeholder="이메일" value={email} setAction={setEmail} />
-          <TextInputComponent style={styles.inputBox} type="password" placeholder="비밀번호" value={password} setAction={setPassword} />
-        </View>
-        <View style={styles.buttonArea}>
-          <ButtonComponent type="email" title="로그인" info={{ email, password }} onPressAction={emailSignIn} />
-          <ButtonComponent type="google" title="구글 로그인" onPressAction={googleSignIn} />
-        </View>
+        <Animated.View style={[styles.inputArea]}>
+          <TextInputComponent style={styles.inputBox} type="email" placeholder="이메일" value={email} setAction={setEmail} onTouchStart={setTypingTrue} onSubmitEditing={setTypingFalse} />
+          <TextInputComponent style={styles.inputBox} type="password" placeholder="비밀번호" value={password} setAction={setPassword} onTouchStart={setTypingTrue} onSubmitEditing={setTypingFalse} />
+        </Animated.View>
+        {btnRendering()}
       </View>
-      <View style={styles.footer}>
-        <ButtonComponent type="signupPage" title="회원가입" onPressAction={goToSignUpPage} />
-      </View>
+      {footerRendering()}
     </View>
   );
 };
