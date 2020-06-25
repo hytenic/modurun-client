@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   entryContainer: {
-    // backgroundColor: 'dodgerblue',
     margin: 10,
     elevation: 2,
     borderWidth: 0,
@@ -10,10 +9,10 @@ export default StyleSheet.create({
   titleContainer: {
     flex: 75,
     padding: 10,
-    backgroundColor: 'dodgerblue',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    borderRadius: 10,
   },
   title: {
     fontSize: 20,
@@ -25,6 +24,11 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  moreButtonContainer: {
+    marginLeft: 40,
+    width: 300,
+    flexDirection: 'row',
   },
   propRowContainer: {
     flexDirection: 'row',
@@ -42,6 +46,11 @@ export default StyleSheet.create({
     margin: 5,
   },
   descContainer: {
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    margin: 10,
+    // marginLeft: 10,
+    // marginRight: 10,
     backgroundColor: 'rgba(250,250,250,1)',
     padding: 5,
   },
@@ -51,13 +60,16 @@ export default StyleSheet.create({
     alignContent: 'center',
   },
   showMore: {
-    padding: 5,
-    paddingHorizontal: 10,
-    backgroundColor: 'dodgerblue',
-    borderRadius: 20,
+    backgroundColor: '#03d6a7',
+    padding: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginLeft: 30,
+    width: 130,
   },
   cancel: {
-    backgroundColor: 'firebrick',
+    backgroundColor: '#ef3832',
     padding: 10,
     paddingHorizontal: 15,
     alignSelf: 'center',

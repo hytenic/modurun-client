@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContent } from '@react-navigation/drawer';
 import { DrawerNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 import Scheduler from './modules/Scheduler/Scheduler';
@@ -252,7 +252,7 @@ const Drawer = createDrawerNavigator();
 function SideBar() {
   return (
     <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="메인" component={Main} />
+      <Drawer.Screen name="mainBar" component={Main} />
       <Drawer.Screen name="트랙 관리" component={TrackManager} />
       <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
       <Drawer.Screen name="마이페이지" component={MyPage} />

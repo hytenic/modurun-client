@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    // padding: 30,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -34,6 +34,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  roof: {
+    width: 300,
+    height: 30,
+    backgroundColor: '#2196f3',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   openButton: {
     backgroundColor: '#2196F3',
@@ -46,6 +53,7 @@ const styles = StyleSheet.create({
   searchButton: {
     backgroundColor: '#2196F3',
     marginTop: 30,
+    marginBottom: 30,
     width: 100,
     borderRadius: 10,
     padding: 10,
@@ -86,22 +94,21 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: 250,
     height: 40,
-    padding: 2,
+    paddingRight: 10,
     margin: 10,
   },
   icon: {
-    // backgroundColor: 'blue',
     width: 25,
     height: 25,
     marginTop: 2,
     marginRight: 10,
   },
   filterTitle: {
-    // backgroundColor: '#FFFFF3',
-    fontSize: 15,
+    color: '#2196f3',
+    fontSize: 16,
     borderRadius: 5,
     padding: 5,
-    marginRight: 15,
+    marginRight: 10,
   },
 });
 
@@ -134,7 +141,7 @@ const FilterModal = ({ modal }) => {
     show, mode, fromTo, value,
   }) => (
     <TouchableOpacity
-      style={{ marginRight: 15, flexDirection: 'row' }}
+      style={{ marginRight: 15, flexDirection: 'row', borderBottomColor: '#2196f3', borderBottomWidth: 1, paddingBottom: 3 }}
       onPress={() => {
         setDatePickerShow(!show);
         setPickerMode(mode);
@@ -149,7 +156,7 @@ const FilterModal = ({ modal }) => {
     show, mode, fromTo, value,
   }) => (
     <TouchableOpacity
-      style={{ marginRight: 5 }}
+      style={{ marginRight: 5, borderBottomColor: '#2196f3', borderBottomWidth: 1, paddingBottom: 3 }}
       onPress={() => {
         setTimePickerShow(!show);
         setPickerMode(mode);
@@ -199,6 +206,7 @@ const FilterModal = ({ modal }) => {
           }}
         >
           <View style={styles.modalView}>
+            <View style={styles.roof} />
             <View style={styles.row}>
               <Text style={styles.filterTitle}>거리</Text>
               <DistanceButtonComponent dis={1000} />
@@ -244,7 +252,7 @@ const FilterModal = ({ modal }) => {
 
             <View style={styles.row}>
               <Text style={styles.filterTitle}>길이</Text>
-              <TextInput style={{ width: 100, height: 40, backgroundColor: '#F4F4F4' }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
+              <TextInput style={{ width: 100, height: 40, borderBottomColor: '#2196f3', borderBottomWidth: 1, paddingBottom: 3 }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
               <Text>km 이내</Text>
             </View>
 
