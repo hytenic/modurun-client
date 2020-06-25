@@ -87,6 +87,8 @@ const MyTrackListEntry = ({
   const {
     trackLength, trackTitle, origin, destination, bookmarked,
   } = data;
+  if (!origin || !destination) return <></>;
+
   const navigation = useNavigation();
 
   const selectTrack = () => {

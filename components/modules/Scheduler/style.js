@@ -1,27 +1,28 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    width: Dimensions.get('window').width - 40,
+    height: Dimensions.get('window').height - 120,
+    backgroundColor: 'white',
+    margin: 20,
+    elevation: 3,
+    borderRadius: 10,
+  },
   roof: {
-    marginLeft: 20,
-    marginTop: 20,
-    height: 35,
-    width: 370,
+    minHeight: 30,
     backgroundColor: '#2196f3',
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
   },
   infoWrapper: {
-    // borderBottomWidth: 1,
-    elevation: 1,
-    width: 370,
-    marginLeft: 20,
-    paddingBottom: 5,
-    marginBottom: 10,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   header: {
     flexDirection: 'row',
-    width: 350,
-    marginTop: 5,
+    marginVertical: 10,
   },
   titleIcon: {
     color: '#2196f3',
@@ -33,16 +34,13 @@ const styles = StyleSheet.create({
   titleInputBox: {
     borderBottomColor: '#2196f3',
     borderBottomWidth: 1,
-    width: 300,
     height: 45,
     fontSize: 16,
   },
   pickerView: {
     flexDirection: 'row',
-    padding: 10,
-    marginTop: 5,
-    marginRight: 15,
-    height: 50,
+    marginTop: 10,
+    marginLeft: 10,
   },
   pickerTitle: {
     backgroundColor: '#2196f3',
@@ -57,14 +55,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#2196f3',
-    borderRadius: 8,
-    width: 120,
     marginLeft: 15,
   },
   pickerText: {
     padding: 5,
-    marginLeft: 10,
-    width: 80,
+    marginHorizontal: 10,
   },
   icon: {
     width: 25,
@@ -74,21 +69,23 @@ const styles = StyleSheet.create({
   },
   selectedTrack: {
     backgroundColor: '#e3dede',
-    margin: 10,
-    width: 300,
-    height: 290,
     alignSelf: 'center',
+    width: '100%',
+    height: '100%',
   },
   unSelectedTrack: {
     backgroundColor: '#e3dede',
-    margin: 30,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+    height: '100%',
+    width: '100%',
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   trackButton: {
     borderRadius: 8,
@@ -111,12 +108,12 @@ const styles = StyleSheet.create({
   },
   timeInput: {
     marginLeft: 15,
-    width: 100,
     height: 30,
     alignSelf: 'center',
     padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#2196f3',
+    textAlign: 'center',
   },
 });
 
