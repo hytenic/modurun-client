@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 30,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -141,7 +141,7 @@ const FilterModal = ({ modal }) => {
         setFromTo(fromTo);
       }}
     >
-      <Text style={{alignSelf: 'center'}}>{value}</Text>
+      <Text style={{ alignSelf: 'center' }}>{value}</Text>
     </TouchableOpacity>
   );
 
@@ -156,7 +156,7 @@ const FilterModal = ({ modal }) => {
         setFromTo(fromTo);
       }}
     >
-      <Text style={{alignSelf: 'center'}}>{value}</Text>
+      <Text style={{ alignSelf: 'center' }}>{value}</Text>
     </TouchableOpacity>
   );
 
@@ -303,10 +303,48 @@ export const InputUsernameModal = ({}) => {
           onPress={closeModal}
         >
           <View style={styles.modalView}>
-            <TextInput placeholder="유저 이름을 입력해 주세요" style={{ borderWidth: 0.5, width: 200, height: 40, marginBottom: 10 }} onChangeText={setUsername} />
+            <TextInput
+              placeholder="유저 이름을 입력해 주세요"
+              style={{
+                borderWidth: 0.5, width: 200, height: 40, marginBottom: 10,
+              }}
+              onChangeText={setUsername}
+            />
             <TouchableHighlight
               style={styles.openButton}
               onPress={postUsername}
+            >
+              <Text style={styles.textStyle}>확인</Text>
+            </TouchableHighlight>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </View>
+  );
+};
+
+export const ScheduleValidationModal = ({ visible, setVisible ,value}) => {
+  // const [modalVisible, setModalVisible] = useState(visible);
+
+  const closeModal = () => {
+    setVisible(false);
+  };
+  return (
+    <View style={styles.centeredView}>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={visible}
+      >
+        <TouchableOpacity
+          style={styles.modalBackground}
+          onPress={closeModal}
+        >
+          <View style={styles.modalView}>
+            <Text>{`${value}을 지정해 주세요.`}</Text>
+            <TouchableHighlight
+              style={styles.openButton}
+              onPress={closeModal}
             >
               <Text style={styles.textStyle}>확인</Text>
             </TouchableHighlight>

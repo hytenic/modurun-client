@@ -38,6 +38,34 @@ function photos(options) {
   return utils.convertApiToFunction(baseUrl, options, true);
 }
 
+function getNearestAddr(location) {
+  return nearestPlace(location)
+    .then((place) => {
+      return details({
+        place_id: place.place_id,
+        language: 'ko',
+        fields: 'formatted_address,icon,name,address_component',
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          const region = json.result.formatted_address.replace(/대한민국 /, '');
+          const postalCode = json.result.address_components.reduce((acc, ele) => {
+            let isPostalCode = false;
+            ele.types.forEach((type) => {
+              if (type === 'postal_code') isPostalCode = true;
+            });
+            if (isPostalCode) return ele.long_name;
+            return acc;
+          }, '');
+          const { name } = json.result;
+          // const composedAddr = `${region} ${postalCode} ${name}`;
+          const composedAddr = `${region} ${name}`;
+          // console.log(composedAddr);
+          return composedAddr;
+        });
+    });
+}
+
 export default {
   search,
   autoComplete,
@@ -45,4 +73,5 @@ export default {
   photos,
   nearby,
   nearestPlace,
+  getNearestAddr,
 };

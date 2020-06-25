@@ -4,13 +4,9 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import TrackListEntry from './MyTrackListEntry';
-import dummyTracks from './dummyTracksData.json';
 
 const MyTrackList = ({ showBookmark, showAdd, route }) => {
-  // const { setAction, scheduleInfo, tracks } = route.params;
-  const { setAction, scheduleInfo } = route.params;
-  const tracks = dummyTracks;
-  // console.log(getTracks());
+  const { setAction, scheduleInfo, tracks } = route.params;
   if (!tracks) return <></>;
   if (!tracks.length) return <></>;
   return (

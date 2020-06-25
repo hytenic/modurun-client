@@ -3,9 +3,8 @@ import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import schedule from './dummyData.json';
 import TrackMaster from '../TrackMaster/TrackMaster';
-import { customizingDateAndTime, meterToKilo } from '../utils';
+import { customizingDateAndTime, meterToKilo, createdScheduleInfo } from '../utils';
 
 const styles = StyleSheet.create({
   container: {
@@ -77,14 +76,11 @@ const styles = StyleSheet.create({
 });
 
 const CreatedScheduleInfo = ({ route }) => {
-  console.log(route);
-  // const { title, scheduleFrom, scheduleTo, track} = route.completeData;
-  const {
-    title, scheduleFrom, scheduleTo, track,
-  } = schedule; // dummy data
-  const date = customizingDateAndTime(scheduleFrom, 0);
-  const timeFrom = customizingDateAndTime(0, scheduleFrom);
-  const timeTo = customizingDateAndTime(0, scheduleTo);
+  const { schedule, track } = createdScheduleInfo(route.params.completeData);
+
+  const date = customizingDateAndTime(schedule.scheduleFrom, 0);
+  const timeFrom = customizingDateAndTime(0, schedule.scheduleFrom);
+  const timeTo = customizingDateAndTime(0, schedule.scheduleTo);
   const distance = meterToKilo(track.trackLength);
   const navigation = useNavigation();
 
@@ -116,20 +112,6 @@ const CreatedScheduleInfo = ({ route }) => {
           </View>
         </View>
       </View>
-      {/* <View style={styles.title}>
-        <Text style={styles.scheduleTitle}>{title}</Text>
-        <Text style={styles.trackTitle}>{track.trackTitle}</Text>
-      </View>
-      <View style={styles.scheduleInfo}>
-        <View style={styles.infoDetail}>
-          <Text style={styles.infoTitle}>일시</Text>
-          <Text>{`${date} ${timeFrom} ~ ${timeTo}`}</Text>
-        </View>
-        <View style={styles.infoDetail}>
-          <Text style={styles.infoTitle}>거리</Text>
-          <Text>{distance}km</Text>
-        </View>
-      </View> */}
       <View style={styles.mapView}>
         <TrackMaster
           mode="trackViewer"
