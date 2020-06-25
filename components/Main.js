@@ -103,18 +103,27 @@ export const Main = () => {
     initializeLocation();
   }, []);
 
+  const setTypingFalse = () => {
+    setSearching(false);
+  };
+
+  const setTypingTrue = () => {
+    setSearching(true);
+  };
+
   const filter = getFilterCondition();
   const [filterCondition, setFilterCondition] = useState(filter);
   const { apiKey } = getEnvVars('dev');
 
+
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setTyping(false));
-    Keyboard.addListener('keyboardDidShow', () => setTyping(true));
+    Keyboard.addListener('keyboardDidHide', setTypingFalse);
+    Keyboard.addListener('keyboardDidShow', setTypingTrue);
     return () => {
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(false));
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(true));
+      Keyboard.removeListener('keyboardDidHide', setTypingFalse);
+      Keyboard.removeListener('keyboardDidShow', setTypingTrue);
     };
-  }, [typing]);
+  }, []);
 
   useEffect(() => {
     const getSchedulesAPI = async () => {

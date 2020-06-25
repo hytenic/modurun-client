@@ -14,9 +14,8 @@ const styles = StyleSheet.create({
 });
 
 const TextInputComponent = ({
-  type, placeholder, value, setAction, onTouchStart, style,
+  type, placeholder, value, setAction, onTouchStart, onSubmitEditing, style,
 }) => {
-  const hasTouchEvent = !!onTouchStart;
   if (type === 'email') { // 로그인 : 값만 넘겨줌, 회원가입 : 변수로 여기를 지나간 적이 있는지를 알려줘야함(onTouchStart)
     return (
       <TextInput
@@ -27,9 +26,8 @@ const TextInputComponent = ({
           console.log(text);
           setAction(text);
         }}
-        onTouchStart={
-          hasTouchEvent ? onTouchStart() : null
-        }
+        onTouchStart={onTouchStart}
+        onSubmitEditing={onSubmitEditing}
       />
     );
   }
@@ -39,12 +37,12 @@ const TextInputComponent = ({
         style={[styles.textInput, style]}
         placeholder={placeholder}
         defaultValue={value}
+        secureTextEntry
         onChangeText={(text) => {
           setAction(text);
         }}
-        onTouchStart={
-          hasTouchEvent ? onTouchStart() : null
-        }
+        onTouchStart={onTouchStart}
+        onSubmitEditing={onSubmitEditing}
       />
     );
   }
