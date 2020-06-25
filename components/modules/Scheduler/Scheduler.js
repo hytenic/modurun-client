@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, View, TextInput, TouchableOpacity, Image,
+  Text, View, TextInput, TouchableOpacity, Image, Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import { ScheduleValidationModal } from '../Modal';
 import styles from './style';
 import TrackMaster from '../TrackMaster/TrackMaster';
 import { customizingDateAndTime, getScheduleData } from '../utils';
 import DateTimePickerCompoment from '../DateTimePicker';
-import { getUserTracks } from '../API/trask';
+import { getUserTracks } from '../API/tracks';
 import { postSchedule } from '../API/schedule';
 
 const Scheduler = () => {
@@ -22,6 +23,7 @@ const Scheduler = () => {
   const [timePickerShow, setTimePickerShow] = useState(false);
   const [pickerMode, setPickerMode] = useState('date');
   const [selectedTrack, setSelectedTrack] = useState(false);
+  const [modal, setModal] = useState(false);
 
   const PickerComponent = ({ value, mode, setAction }) => (
     <TouchableOpacity
@@ -70,10 +72,19 @@ const Scheduler = () => {
       estimateMin,
       selectedTrack,
     };
+    if (title === '') {
+      setModal(true);
+      return;
+    } if (estimateTime === 0 || estimateMin === 0) {
+      setModal(true);
+      return;
+    } if (!selectedTrack) {
+      setModal(true);
+      return;
+    }
     const postData = getScheduleData(createdScheduleInfo);
     try {
       const completeData = await postSchedule(postData);
-      console.log('completeData ', completeData);
       if (completeData) {
         navigation.navigate('CreatedScheduleInfo', {
           completeData,
@@ -92,9 +103,24 @@ const Scheduler = () => {
     });
   };
 
+  const scheduleValidation = () => {
+    if (title === '') {
+      return (
+        <ScheduleValidationModal visible={modal} setVisible={setModal} value="일정 제목" />
+      );
+    } if (estimateTime === 0 || estimateMin === 0) {
+      return (
+        <ScheduleValidationModal visible={modal} setVisible={setModal} value="소요 시간" />
+      );
+    } if (!selectedTrack) {
+      return (
+        <ScheduleValidationModal visible={modal} setVisible={setModal} value="달리고 싶은 트랙" />
+      );
+    }
+  };
+
   const selected = () => {
     if (selectedTrack) {
-      console.log(selectedTrack.trackId);
       return (
         <View style={styles.selectedTrack}>
           <TrackMaster
@@ -178,6 +204,7 @@ const Scheduler = () => {
         <ButtonComponent value="제작 완료" pressEvent={sendScheduleInfo} />
       </View>
       {datePicker()}
+      {scheduleValidation()}
     </View>
   );
 };

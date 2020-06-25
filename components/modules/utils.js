@@ -43,9 +43,30 @@ const getScheduleData = (createdScheduleInfo) => {
   return res;
 };
 
+const createdScheduleInfo = (data) => {
+  const track = {
+    trackTitle: data[0].trackTitle,
+    origin: data[0].origin,
+    destination: data[0].destination,
+    trackLength: data[0].trackLength,
+    route: data[0].route,
+  };
+  const schedule = {
+    title: data[0].title,
+    scheduleFrom: data[0].scheduleFrom,
+    scheduleTo: data[0].scheduleTo,
+  };
+  const result = {
+    track,
+    schedule,
+  };
+  return result;
+};
+
 module.exports = {
   customizingDateAndTime,
   meterToKilo,
   getUserLocation,
   getScheduleData,
+  createdScheduleInfo,
 };
