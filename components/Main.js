@@ -72,14 +72,22 @@ export const Main = () => {
     console.log('main ', reduxStore.getState().userInfo.user);
   }, []);
 
+  const setTypingFalse = () => {
+    setSearching(false);
+  };
+
+  const setTypingTrue = () => {
+    setSearching(true);
+  };
+
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setTyping(false));
-    Keyboard.addListener('keyboardDidShow', () => setTyping(true));
+    Keyboard.addListener('keyboardDidHide', setTypingFalse);
+    Keyboard.addListener('keyboardDidShow', setTypingTrue);
     return () => {
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(false));
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(true));
+      Keyboard.removeListener('keyboardDidHide', setTypingFalse);
+      Keyboard.removeListener('keyboardDidShow', setTypingTrue);
     };
-  }, [typing]);
+  }, []);
 
   useEffect(() => {
     async function initializeLocation() {

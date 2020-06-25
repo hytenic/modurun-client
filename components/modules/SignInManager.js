@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Image, Animated, Easing,
+  StyleSheet, Text, View, Image, Animated, Easing, Keyboard,
 } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/native';
@@ -78,6 +78,23 @@ const SignInManager = ({ dispatch }) => {
   const [password, setPassword] = useState('');
   const [typing, setTyping] = useState(false);
 
+  const setTypingFalse = () => {
+    setTyping(false);
+  };
+
+  const setTypingTrue = () => {
+    setTyping(true);
+  };
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', setTypingFalse);
+    Keyboard.addListener('keyboardDidShow', setTypingTrue);
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', setTypingFalse);
+      Keyboard.removeListener('keyboardDidShow', setTypingTrue);
+    };
+  }, []);
+
   const googleSignIn = async () => {
     try {
       const result = await Google.logInAsync({
@@ -108,14 +125,6 @@ const SignInManager = ({ dispatch }) => {
 
   const goToSignUpPage = () => {
     navigation.navigate('SignUpManager');
-  };
-
-  const setTypingFalse = () => {
-    setTyping(false);
-  };
-
-  const setTypingTrue = () => {
-    setTyping(true);
   };
 
   const btnRendering = () => {

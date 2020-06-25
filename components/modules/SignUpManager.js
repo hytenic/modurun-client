@@ -1,6 +1,6 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity, Image,
+  StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Keyboard,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { postSignUp, getEmailDupli } from './API/user';
@@ -101,7 +101,24 @@ const SignUpManager = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [justAfterEmail, setJustAfterEmail] = useState(false);
   const [typing, setTyping] = useState(false);
-  // eslint-disable-next-line func-names
+
+  const setTypingFalse = () => {
+    setTyping(false);
+  };
+
+  const setTypingTrue = () => {
+    setTyping(true);
+  };
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', setTypingFalse);
+    Keyboard.addListener('keyboardDidShow', setTypingTrue);
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', setTypingFalse);
+      Keyboard.removeListener('keyboardDidShow', setTypingTrue);
+    };
+  }, []);
+  
   const emailDuplication = async function (emailCheck) {
     const res = await getEmailDupli(emailCheck);
     if (res) {
