@@ -4,8 +4,9 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { DrawerNavigator } from 'react-navigation';
+import Icon from 'react-native-vector-icons/Entypo';
+import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
@@ -20,36 +21,59 @@ import reduxStore from '../redux/store';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5,
-    backgroundColor: '#1E90FF',
+    // padding: 5,
   },
   header: {
     // flex: 1,
     flexDirection: 'row',
+    // backgroundColor: '#1E90FF',
     backgroundColor: 'white',
     alignItems: 'center',
+    width: 340,
     padding: 5,
+    borderRadius: 3,
+    position: 'absolute',
+    top: 8,
+    left: 5,
+    zIndex: 1,
+    elevation: 3,
   },
   main: {
+    zIndex: 0,
     flex: 10,
-    // backgroundColor: 'yellow',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    padding: 5,
   },
   search: {
     backgroundColor: 'white',
     marginLeft: 10,
-    width: 320,
+    width: 250,
     padding: 5,
+    borderRadius: 2,
+  },
+  plusButton: {
+    // borderRadius: 100,
+    // width: 70,
+    // justifyContent: 'center',
   },
   filterButton: {
     position: 'absolute',
-    right: 60,
-    top: 19,
+    zIndex: 5,
+    right: 5,
+    top: 5,
+  },
+  addButton: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    backgroundColor: '#03D6A7',
+    borderRadius: 100,
+    position: 'absolute',
+    top: 510,
+    width: 66,
+    height: 66,
   },
   suggestion: {
     flex: 1,
+    // position: 'absolute',
+    // top: 100,
     backgroundColor: 'white',
     borderWidth: 0.5,
     padding: 5,
@@ -187,34 +211,36 @@ export const Main = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        {usernameInput()}
-        <TouchableOpacity onPress={() => {
-          toggleSideBar({ navigation });
-        }}
-        >
-          <Image
-            source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
-            style={{ width: 25, height: 25, marginLeft: 15 }}
-          />
-        </TouchableOpacity>
-        <TextInput
-          style={styles.search}
-          placeholder="검색"
-          value={destination}
-          onTouchStart={onSearch}
-          onChangeText={onChangeDestination}
-          onSubmitEditing={searched}
-        />
-      </View>
       <View style={styles.main}>
-        {renderRecommendation()}
-        {renderMainView()}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => {
+            toggleSideBar({ navigation });
+          }}
+          >
+            <Image
+              source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
+              style={{ width: 25, height: 25, marginLeft: 10 }}
+            />
+          </TouchableOpacity>
+          <TextInput
+            style={styles.search}
+            placeholder="검색"
+            value={destination}
+            onTouchStart={onSearch}
+            onChangeText={onChangeDestination}
+            onSubmitEditing={searched}
+          />
+        </View>
         <View style={styles.filterButton}>
           <FilterModal style={styles.main} />
         </View>
-        <View style={{ alignSelf: 'center', alignItems: 'center' }}>
-          <Icon.Button name="add-circle" color="black" size={30} backgroundColor="rgba(52, 52, 52, 0.0)" onPress={addSchedule} />
+        {renderRecommendation()}
+        {renderMainView()}
+        {/* <View style={styles.filterButton}>
+          <FilterModal style={styles.main} />
+        </View> */}
+        <View style={styles.addButton}>
+          <Icon.Button style={styles.plusButton} name="plus" color="white" size={50} backgroundColor="rgba(52, 52, 52, 0.0)" onPress={addSchedule} />
         </View>
       </View>
     </View>
