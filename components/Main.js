@@ -1,11 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { createDrawerNavigator, DrawerContent } from '@react-navigation/drawer';
+import { DrawerNavigator } from 'react-navigation';
+import Icon from 'react-native-vector-icons/Entypo';
+import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
@@ -21,36 +22,53 @@ import reduxStore from '../redux/store';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 5,
-    backgroundColor: '#1E90FF',
+    // padding: 5,
   },
   header: {
     // flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'white',
+    // backgroundColor: '#1E90FF',
     alignItems: 'center',
-    padding: 5,
+    width: Dimensions.get('screen').width - 20,
+    marginHorizontal: 10,
+    top: 10,
+    borderRadius: 3,
+    position: 'absolute',
+    zIndex: 1,
   },
   main: {
+    zIndex: 0,
     flex: 10,
-    // backgroundColor: 'yellow',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    padding: 5,
   },
   search: {
     backgroundColor: 'white',
     marginLeft: 10,
-    width: 320,
+    flex: 1,
     padding: 5,
+    borderRadius: 2,
+  },
+  plusButton: {
+    backgroundColor: '#03D6A7',
+    borderRadius: 100,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
   },
   filterButton: {
+    flex: 25,
+    zIndex: 5,
+  },
+  addButton: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderRadius: 100,
     position: 'absolute',
-    right: 60,
-    top: 19,
+    top: Dimensions.get('screen').height - 170,
   },
   suggestion: {
     flex: 1,
+    // position: 'absolute',
+    // top: 100,
     backgroundColor: 'white',
     borderWidth: 0.5,
     padding: 5,
@@ -199,34 +217,40 @@ export const Main = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        {usernameInput()}
-        <TouchableOpacity onPress={() => {
-          toggleSideBar({ navigation });
-        }}
-        >
-          <Image
-            source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
-            style={{ width: 25, height: 25, marginLeft: 15 }}
-          />
-        </TouchableOpacity>
-        <TextInput
-          style={styles.search}
-          placeholder="검색"
-          value={destination}
-          onTouchStart={onSearch}
-          onChangeText={onChangeDestination}
-          onSubmitEditing={searched}
-        />
-      </View>
       <View style={styles.main}>
+        <View style={styles.header}>
+          <View style={{ flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3 }}>
+            <TouchableOpacity
+              onPress={() => toggleSideBar({ navigation })}
+              style={{alignItems: 'center', justifyContent: 'center'}}
+            >
+              <Image
+                source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
+                style={{ width: 25, height: 25, marginLeft: 10 }}
+              />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.search}
+              placeholder="검색"
+              value={destination}
+              onTouchStart={onSearch}
+              onChangeText={onChangeDestination}
+              onSubmitEditing={searched}
+            />
+          </View>
+          <View style={styles.filterButton}>
+            <FilterModal style={styles.main} />
+          </View>
+        </View>
         {renderRecommendation()}
         {renderMainView()}
-        <View style={styles.filterButton}>
-          <FilterModal style={styles.main} value={filterCondition} setAction={setFilterCondition} />
-        </View>
-        <View style={{ alignSelf: 'center', alignItems: 'center' }}>
-          <Icon.Button name="add-circle" color="black" size={30} backgroundColor="rgba(52, 52, 52, 0.0)" onPress={addSchedule} />
+        {/* <View style={styles.filterButton}>
+          <FilterModal style={styles.main} />
+        </View> */}
+        <View style={styles.addButton}>
+          <TouchableOpacity onPress={addSchedule} style={styles.plusButton}>
+            <Icon style={{textAlign: 'center', textAlignVertical: 'center'}} name="plus" color="white" size={50} />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -238,7 +262,7 @@ const Drawer = createDrawerNavigator();
 function SideBar() {
   return (
     <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="메인" component={Main} />
+      <Drawer.Screen name="mainBar" component={Main} />
       <Drawer.Screen name="트랙 관리" component={TrackManager} />
       <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
       <Drawer.Screen name="마이페이지" component={MyPage} />

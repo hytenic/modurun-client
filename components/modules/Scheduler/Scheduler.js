@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Text, View, TextInput, TouchableOpacity, Image, Alert,
+  Text, View, TextInput, TouchableOpacity, Image, Alert, Keyboard, Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/EvilIcons';
 import { ScheduleValidationModal } from '../Modal';
 import styles from './style';
 import TrackMaster from '../TrackMaster/TrackMaster';
@@ -16,7 +17,7 @@ const Scheduler = () => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(new Date());
   const [startTime, setStartTime] = useState(new Date());
-  const [estimateTime, setEstimiateTime] = useState(0);
+  const [estimateTime, setEstimiateTime] = useState(1);
   const [estimateMin, setEstimateMin] = useState(0);
   const [datePickerShow, setDatePickerShow] = useState(false);
   const [timePickerShow, setTimePickerShow] = useState(false);
@@ -33,32 +34,17 @@ const Scheduler = () => {
       }}
     >
       <Text style={styles.pickerText}>{value}</Text>
-      {
-        mode === 'date'
-          ? (
-            <Image
-              source={require('../../../assets/calendar_icon.png')}
-              style={styles.icon}
-            />
-          )
-          : (
-            <Image
-              source={require('../../../assets/clock_icon.png')}
-              style={styles.icon}
-            />
-          )
-      }
     </TouchableOpacity>
   );
 
   const ButtonComponent = ({ value, pressEvent }) => (
     <TouchableOpacity
-      style={styles.button}
+      style={[{ justifyContent: 'center' }, value === '코스 선택' ? styles.trackButton : styles.submitButton]}
       onPress={() => {
         pressEvent();
       }}
     >
-      <Text style={{ color: 'white' }}>{value}</Text>
+      <Text style={{ color: 'white', fontSize: 16 }}>{value}</Text>
     </TouchableOpacity>
   );
 
@@ -116,6 +102,7 @@ const Scheduler = () => {
         <ScheduleValidationModal visible={modal} setVisible={setModal} value="달리고 싶은 트랙" />
       );
     }
+    return <></>;
   };
 
   const selected = () => {
@@ -130,19 +117,18 @@ const Scheduler = () => {
         </View>
       );
     }
+    return <></>;
   };
 
   const unSelected = () => {
     if (!selectedTrack) {
       return (
         <View style={styles.unSelectedTrack}>
-          <Image
-            source={require('../../../assets/unselectedTrack_image.png')}
-            style={{ height: 250, width: 260 }}
-          />
+          <Text>선택된 코스가 없습니다.</Text>
         </View>
       );
     }
+    return <></>;
   };
 
   const datePicker = () => {
@@ -163,7 +149,7 @@ const Scheduler = () => {
         />
       );
     }
-    return (<></>);
+    return <></>;
   };
 
   const onChangeTitle = (text) => {
@@ -171,32 +157,61 @@ const Scheduler = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <TextInput
-        placeholder="타이틀을 입력해주세요"
-        style={styles.titleInputBox}
-        onChangeText={onChangeTitle}
-      />
-      <View style={styles.pickerView}>
-        <Text style={styles.pickerTitle}>시작 일시</Text>
-        <PickerComponent value={customizingDateAndTime(date, 0)} mode="date" setAction={setDatePickerShow} />
-        <PickerComponent value={customizingDateAndTime(0, startTime)} mode="time" setAction={setTimePickerShow} />
-      </View>
-      <View style={styles.pickerView}>
-        <Text style={styles.pickerTitle}>소요 시간</Text>
-        <TextInput style={styles.timeInput} placeholder="시간" keyboardType="numeric" onChangeText={(time) => setEstimiateTime(time)} />
-        <Text style={{ alignSelf: 'center' }}>시간</Text>
-        <TextInput style={styles.timeInput} placeholder="분" keyboardType="numeric" onChangeText={(time) => setEstimateMin(time)} />
-        <Text style={{ alignSelf: 'center' }}>분</Text>
-      </View>
-      {selected()}
-      {unSelected()}
-      <View style={styles.footer}>
-        <ButtonComponent value="트랙 선택" pressEvent={toMyTrackList} />
-        <ButtonComponent value="제작 완료" pressEvent={sendScheduleInfo} />
+    <View style={styles.container}>
+      <View style={styles.roof} />
+
+      <View style={styles.infoWrapper}>
+        <View>
+          <View style={styles.header}>
+            <Icon name="pencil" style={styles.titleIcon} size={40} />
+            <TextInput
+              placeholder="제목을 입력해주세요"
+              placeholderTextColor="black"
+              style={styles.titleInputBox}
+              onChangeText={onChangeTitle}
+            />
+          </View>
+          <View style={{ paddingHorizontal: 10, marginBottom: 10 }}>
+            <View style={styles.pickerView}>
+              <Text style={styles.pickerTitle}>시작 일시</Text>
+              <PickerComponent value={customizingDateAndTime(date, 0)} mode="date" setAction={setDatePickerShow} />
+              <PickerComponent value={customizingDateAndTime(0, startTime)} mode="time" setAction={setTimePickerShow} />
+            </View>
+            <View style={styles.pickerView}>
+              <Text style={styles.pickerTitle}>소요 시간</Text>
+              <TextInput
+                style={styles.timeInput}
+                placeholder="1"
+                keyboardType="numeric"
+                onChangeText={(time) => setEstimiateTime(time)}
+              />
+              <Text style={{ alignSelf: 'center' }}>시간</Text>
+              <TextInput
+                style={styles.timeInput}
+                placeholder="0"
+                keyboardType="numeric"
+                onChangeText={(time) => setEstimateMin(time)}
+              />
+              <Text style={{ alignSelf: 'center' }}>분</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, backgroundColor: 'black', marginVertical: 20 }}>
+            {selected()}
+            {unSelected()}
+          </View>
+          <View style={styles.footer}>
+            <ButtonComponent value="코스 선택" pressEvent={toMyTrackList} />
+            <ButtonComponent value="제작 완료" pressEvent={sendScheduleInfo} />
+          </View>
+        </View>
       </View>
       {datePicker()}
-      {scheduleValidation()}
+      <View style={{ flex: modal ? 1 : 0 }}>
+        {scheduleValidation()}
+      </View>
     </View>
   );
 };
