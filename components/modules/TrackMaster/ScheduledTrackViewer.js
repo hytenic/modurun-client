@@ -80,7 +80,7 @@ const ScheduledTrackViewer = ({
     return calloutProps.map((prop, i) => {
       const [key, value, keyBackgroundColor, keyColor, valueBackgroundColor, valueColor] = prop;
       return (
-        <View style={[styles.callloutPropRow, { marginBottom: decideMarginBottom(i) }]}>
+        <View key={key} style={[styles.callloutPropRow, { marginBottom: decideMarginBottom(i) }]}>
           <Text style={styles.callloutPropKey(keyBackgroundColor, keyColor)}>{key}</Text>
           <Text style={styles.calloutPropValue(valueBackgroundColor, valueColor)}>{value}</Text>
         </View>
