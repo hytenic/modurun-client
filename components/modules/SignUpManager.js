@@ -115,35 +115,6 @@ const SignUpManager = () => {
     navigation.navigate('SignInManager');
   };
 
-  const signupBtnRendering = () => {
-    if (!typing) {
-      return (
-        <View style={styles.buttonArea}>
-          <TouchableOpacity
-            style={[styles.btn, styles.signUpBtn]}
-            title="회원가입"
-            onPress={async () => {
-              if (password === confirmPassword) {
-                console.log('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
-                const res = await postSignUp(email, password);
-                if (res) {
-                  navigation.navigate('SignInManager');
-                } else {
-                  console.log('이메일이나 비밀번호가 잘못되었습니다.');
-                }
-              } else {
-                console.log('비밀번호가 다릅니다.');
-              }
-            }}
-          >
-            <Text style={{ color: '#1E90FF', fontSize: 15, fontWeight: 'bold' }}>회원가입</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-    return (<></>);
-  };
-
   const signinBtnRendering = () => {
     if (!typing) {
       return (
