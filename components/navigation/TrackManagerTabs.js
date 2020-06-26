@@ -13,7 +13,7 @@ const TrackManagerTabs = () => {
   const [index, setIndex] = React.useState(0);
   const [swipeEnabled, setSwipeEnabled] = React.useState(true);
   const [routes] = React.useState([
-    { key: 'myTrackScreen', title: '코스 제작' },
+    { key: 'myTrackScreen', title: '내 코스' },
     { key: 'findTrackScreen', title: '코스 찾기' },
     { key: 'trackEditorScreen', title: '코스 제작' },
   ]);

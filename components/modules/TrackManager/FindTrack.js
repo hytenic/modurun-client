@@ -60,7 +60,7 @@ const FindTrack = ({ tracks, onFilterSet }) => {
             placeholder="1km이내"
             onChange={makeInputUpdater('distance', /\D/)}
             onEndEditing={makeTrackFilterUpdater('distance')}
-            style={[styles.filterInput, { marginRight: 30 }]}
+            style={[styles.filterInput, { marginRight: 10 }]}
           />
           <TextInput
             keyboardType="numeric"
