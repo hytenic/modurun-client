@@ -11,6 +11,7 @@ import ChatRoom from './modules/ChatRoom';
 import SingleTrackViewerInDetail from './modules/SingleTrackViewerInDetail';
 import CreatedScheduleInfo from './modules/Scheduler/CreatedScheduleInfo';
 import MyTrackList from './modules/Scheduler/MyTrackList';
+import MyInfoManager from './modules/MyInfoManger';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ const ProductionApp = ({chatRoomTitle}) => {
       <Stack.Screen name="SingleTrackViewerScreen" component={SingleTrackViewerInDetail} />
       <Stack.Screen name="CreatedScheduleInfoScreen" component={CreatedScheduleInfo} />
       <Stack.Screen options={{title: '내 코스'}} name="MyTrackListScreen" component={MyTrackList} />
+      <Stack.Screen name="MyInfoManager" component={MyInfoManager} />
     </Stack.Navigator>
   );
 };
