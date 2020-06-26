@@ -16,6 +16,7 @@ import ScheduleManager from './modules/ScheduleManager';
 import { getUserLocation, getFilterCondition } from './modules/utils';
 import { getSchedules } from './modules/API/schedule';
 import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
+import ScheduleList from './modules/ScheduleList';
 import reduxStore from '../redux/store';
 // import schedules from './modules/API/SG/schedules';
 
@@ -82,10 +83,21 @@ export const Main = () => {
   const [predictions, setPredictions] = useState([]);
   const [searching, setSearching] = useState(false);
   const [schedules, setSchedules] = useState([]);
+  const [selectedSchedules, setSelectedSchedules] = useState([]);
+  const [clickedTrack, setClickedTrack] = useState(false);
   const [location, setLocation] = useState({
     longitude: 0,
     latitude: 0,
   });
+  const [tabStartPosition, setTabStartPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [tabFinishedPosition, setTabFinishedPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [isMoving, setIsMoving] = useState(false);
 
   useEffect(() => {
     async function initializeLocation() {
@@ -114,7 +126,6 @@ export const Main = () => {
   const filter = getFilterCondition();
   const [filterCondition, setFilterCondition] = useState(filter);
   const { apiKey } = getEnvVars('dev');
-
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidHide', setTypingFalse);
@@ -199,17 +210,70 @@ export const Main = () => {
     return (<></>);
   };
 
-  const renderMainView = () => {
-    if (!searching) {
-      return (
-        <TrackMaster mode="scheduleViewer" schedules={schedules} initialCamera={location} moveOnMarkerPress />
-      );
-    }
-    return (<></>);
+  const scheduleSelecting = (selectedSchedule) => {
+    setClickedTrack(true);
+    console.log('selected Schedule ', selectedSchedule);
+    setSelectedSchedules(selectedSchedule);
   };
 
   const addSchedule = () => {
     navigation.navigate('Scheduler');
+  };
+
+  const renderScheduleList = () => {
+    if (clickedTrack) {
+      return (
+        <View style={{ flex: 4 }}>
+          <ScheduleList schedules={selectedSchedules} />
+        </View>
+      );
+    }
+    return (
+      <View style={styles.addButton}>
+        <TouchableOpacity onPress={addSchedule} style={styles.plusButton}>
+          <Icon style={{ textAlign: 'center', textAlignVertical: 'center' }} name="plus" color="white" size={50} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const startingTab = (e) => {
+    setTabStartPosition({
+      ...tabStartPosition,
+      x: e.nativeEvent.locationX,
+      y: e.nativeEvent.locationY,
+    });
+  };
+
+  const finishedTab = (e) => {
+    const newFinishedLocation = {
+      x: e.nativeEvent.locationX,
+      y: e.nativeEvent.locationY,
+    };
+    setTabFinishedPosition({ ...tabFinishedPosition, ...newFinishedLocation });
+    const distance = Math.sqrt(Math.pow((tabStartPosition.x - newFinishedLocation.x), 2) + Math.pow((tabStartPosition.y - newFinishedLocation.y), 2));
+    if (distance < 40) {
+      setClickedTrack(false);
+    } else {
+      setClickedTrack(clickedTrack);
+    }
+  };
+
+  const renderMainView = () => {
+    if (!searching) {
+      return (
+        <View style={{ flex: 1 }} onTouchStart={startingTab} onTouchEnd={finishedTab}>
+          <TrackMaster
+            mode="scheduleViewer"
+            schedules={schedules}
+            initialCamera={location}
+            moveOnMarkerPress
+            onTrackSelected={scheduleSelecting}
+          />
+        </View>
+      );
+    }
+    return (<></>);
   };
 
   const usernameInput = () => {
@@ -226,12 +290,16 @@ export const Main = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.main}>
+      <View style={[styles.main, clickedTrack ? { flex: 6 } : null]}>
         <View style={styles.header}>
-          <View style={{ flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3 }}>
+          {usernameInput()}
+          <View style={{
+            flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3,
+          }}
+          >
             <TouchableOpacity
               onPress={() => toggleSideBar({ navigation })}
-              style={{alignItems: 'center', justifyContent: 'center'}}
+              style={{ alignItems: 'center', justifyContent: 'center' }}
             >
               <Image
                 source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
@@ -248,20 +316,13 @@ export const Main = () => {
             />
           </View>
           <View style={styles.filterButton}>
-            <FilterModal style={styles.main} />
+            <FilterModal style={styles.main} setAction={setFilterCondition} />
           </View>
         </View>
         {renderRecommendation()}
         {renderMainView()}
-        {/* <View style={styles.filterButton}>
-          <FilterModal style={styles.main} />
-        </View> */}
-        <View style={styles.addButton}>
-          <TouchableOpacity onPress={addSchedule} style={styles.plusButton}>
-            <Icon style={{textAlign: 'center', textAlignVertical: 'center'}} name="plus" color="white" size={50} />
-          </TouchableOpacity>
-        </View>
       </View>
+      {renderScheduleList()}
     </View>
   );
 };
