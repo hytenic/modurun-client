@@ -40,26 +40,24 @@ import mapBoxApi from '../mapboxapis/direction';
 //     });
 // };
 
-const getRoutes = (markers) => {
-  return mapBoxApi.findRoute(markers)
-    .then((res) => res.json())
-    .then((json) => {
-      const coords = json.routes[0].geometry.coordinates;
-      const mappedCoords = coords.reduce((acc, latLongArr) => {
-        const [longitude, latitude] = latLongArr;
-        return acc.concat({
-          latitude,
-          longitude,
-        });
-      }, []);
-      return {
-        routes: mappedCoords,
-        whole: json,
-      };
-    });
-  // eslint-disable-next-line no-undef
-};
-
+const getRoutes = (markers) => mapBoxApi.findRoute(markers)
+  .then((res) => res.json())
+  .then((json) => {
+    const coords = json.routes[0].geometry.coordinates;
+    const mappedCoords = coords.reduce((acc, latLongArr) => {
+      const [longitude, latitude] = latLongArr;
+      return acc.concat({
+        latitude,
+        longitude,
+      });
+    }, []);
+    return {
+      routes: mappedCoords,
+      whole: json,
+    };
+  })
+// eslint-disable-next-line no-undef
+;
 
 const toggleContainer = (name, state, toggleAction) => (
   <TouchableOpacity
@@ -100,6 +98,20 @@ const makeCamera = (location) => ({
   heading: 0,
 });
 
+const prettyDuration = (durationInMinute) => {
+  const prettyMinute = Math.floor(durationInMinute);
+  const hour = Math.floor(prettyMinute / 60);
+  const minute = prettyMinute - hour * 60;
+  if (!hour) return `${prettyMinute}분`;
+  return `${hour}시간 ${minute}분`;
+};
+
+const predictDuration = (length, sex = 'm') => {
+  if (sex === 'm') return prettyDuration(length / 90);
+  if (sex === 'f') return prettyDuration(length / 70);
+  return prettyDuration(length / 90);
+};
+
 export default {
   getRoutes,
   toggleContainer,
@@ -107,4 +119,5 @@ export default {
   logStringified,
   paleColor,
   makeCamera,
+  predictDuration,
 };

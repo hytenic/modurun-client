@@ -96,8 +96,8 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, in
 
     const calloutProps = [
       ['길이', `${trackLength}m`, colors.trackLength, 'white', paleColor(colors.trackLength)],
-      ['시간(남)', '계산해야 됨', colors.maleSpan, 'white', paleColor(colors.maleSpan)],
-      ['시간(여)', '계산해야 됨', colors.femaleSpan, 'white', paleColor(colors.femaleSpan)],
+      ['시간(남)', utils.predictDuration(trackLength, 'm'), colors.maleSpan, 'white', paleColor(colors.maleSpan)],
+      ['시간(여)', utils.predictDuration(trackLength, 'm'), colors.femaleSpan, 'white', paleColor(colors.femaleSpan)],
     ];
 
     return (
