@@ -10,9 +10,13 @@ import trackManagerActions from '../../redux/action/TrackManager/creator';
 import modurunAPI from './API';
 import trackManagerUtils from './TrackManager/utils';
 
-const TrackManager = ({ myTracks, foundTracks, dispatch }) => {
-  const [selectedMenu, setSelectedMenu] = useState('myTrack');
-
+const TrackManager = ({
+  myTracks,
+  foundTracks,
+  dispatch,
+  type,
+  setSwipeEnabled
+}) => {
   const getMyTracks = () => {
     // if (myTracks.length) return;
     modurunAPI.tracks.getMyTracks()
@@ -63,26 +67,26 @@ const TrackManager = ({ myTracks, foundTracks, dispatch }) => {
     </View>
   );
 
-  const renderMenuBody = (menu) => {
+  const renderMenuBody = (screenType) => {
     let renderTarget;
-    if (menu === 'myTrack') {
+    if (screenType === 'myTrack') {
       renderTarget = (
         <TrackList tracks={myTracks} showBookmark />
       );
     }
-    if (menu === 'findTrack') {
+    if (screenType === 'findTrack') {
       renderTarget = (
         <FindTrack onFilterSet={getTracks} tracks={foundTracks} />
       );
     }
-    if (menu === 'createTrack') {
+    if (screenType === 'createTrack') {
       renderTarget = (
-        <TrackEditor />
+        <TrackEditor getMyTracks={getMyTracks} setSwipeEnabled={setSwipeEnabled} />
       );
     }
 
     return (
-      <View style={{ flex: 1, backgroundColor: colorForMenu[menu] }}>
+      <View style={{ flex: 1, backgroundColor: colorForMenu[screenType] }}>
         {renderTarget}
       </View>
     );
@@ -90,12 +94,7 @@ const TrackManager = ({ myTracks, foundTracks, dispatch }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-        {MenuBarButton('myTrack', () => setSelectedMenu('myTrack'))}
-        {MenuBarButton('findTrack', () => setSelectedMenu('findTrack'))}
-        {MenuBarButton('createTrack', () => setSelectedMenu('createTrack'))}
-      </View>
-      {renderMenuBody(selectedMenu)}
+      {renderMenuBody(type)}
     </View>
   );
 };

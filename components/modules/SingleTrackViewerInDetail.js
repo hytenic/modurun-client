@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import TrackMaster from './TrackMaster/TrackMaster';
 import PrettyPropInDetail from './PrettyPropInDetail/PrettyPropInDetail';
@@ -9,26 +9,26 @@ import googlePlaceApi from './googleapis/place';
 
 const trackInfo = {
   position: 'absolute',
+  width: Dimensions.get('screen').width - 100,
+  marginHorizontal: 25,
+  height: 220,
+  top: 30,
+  left: '6%',
   backgroundColor: 'white',
-  paddingBottom: 5,
   borderRadius: 15,
-  margin: 10,
   shadowColor: '#000',
   shadowOffset: { width: 3, height: 3 },
   shadowOpacity: 0.4,
   shadowRadius: 3,
-  elevation: 50,
+  elevation: 10,
+  paddingBottom: 10,
 };
 
 const trackTitleStyle = {
   backgroundColor: 'dodgerblue',
-  height: '12%',
+  flex: 20,
   borderTopLeftRadius: 15,
   borderTopRightRadius: 15,
-  padding: 5,
-  marginBottom: 5,
-  textAlignVertical: 'center',
-  textAlign: 'center',
 };
 
 const SingleTrackViewerInDetail = ({ data }) => {
@@ -54,9 +54,9 @@ const SingleTrackViewerInDetail = ({ data }) => {
       />
       <View style={trackInfo}>
         <View style={trackTitleStyle}>
-          <Text style={{ fontSize: 13, color: 'white', textAlign: 'center', fontWeight: 'bold'}}>{trackTitle}</Text>
+          <Text style={{ fontSize: 13, color: 'white', textAlign: 'center', textAlignVertical: 'center', height: '100%', fontWeight: 'bold'}}>{trackTitle}</Text>
         </View>
-        <View style={{ paddingLeft: 10, paddingRight: 10, width: 180 }}>
+        <View style={{ flex: 90 }}>
           <PrettyPropInDetail name="거리" value="5km" />
           <PrettyPropInDetail name="길이" value={trackUtils.prettyLength(trackLength)} />
           <PrettyPropInDetail name="출발점" value={originInfo} />

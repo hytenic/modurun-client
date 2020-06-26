@@ -2,11 +2,11 @@ import React, { useRef, useState, useContext } from 'react';
 import { StyleSheet, Text, View, Animated, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaskedView from '@react-native-community/masked-view';
 import { TouchableOpacity, TouchableHighlight, FlatList } from 'react-native-gesture-handler';
 import * as actions from '../../redux/action/myPage';
 import TrackRecord from './MyPage/TrackRecord';
-import dummySchedules from './TrackMaster/dummyData/dummySchedules.json';
-import MaskedView from '@react-native-community/masked-view';
+import modurunAPI from './API/index';
 
 const styles = StyleSheet.create({
   compactTitleStyle: {
@@ -20,11 +20,7 @@ const styles = StyleSheet.create({
     margin: 20,
     marginVertical: 10,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 3, height: 3 },
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-    elevation: 50,
+    elevation: 20,
     backgroundColor: 'white',
   },
 });
@@ -35,15 +31,26 @@ const MyPage = (props) => {
     email: 'dummyEmail@gmail.com',
   };
 
-  const dummyTrackRecord = dummySchedules.map((track) => {
-    const mappedTrackRecord = {
-      ...track,
-    };
-    return mappedTrackRecord;
-  });
+  const [completedTracks, setCompletedTracks] = useState([]);
+
+  React.useEffect(() => {
+    modurunAPI.schedules.getCompletedScheduleTracks()
+      .then((res) => res.json())
+      .then((json) => setCompletedTracks(json));
+    return () => {};
+  }, []);
+
+  const checker = {};
+  const tracksReducedDuplicate = completedTracks.reduce((acc, ele) => {
+    const { trackId } = ele;
+    if (checker[trackId]) return acc;
+    checker[trackId] = true;
+    return acc.concat(ele);
+  }, []);
 
   return (
     <ScrollView style={{ flex: 3, backgroundColor: '#1E90FF'}}>
+      <View style={{ height: 20 }} />
       <View style={styles.userInfoContainerStyle}>
         <Text style={{ fontSize: 25, margin: 20, marginVertical: 10 }}>My 모두런</Text>
         <View style={{flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: 'rgba(0,0,0,0.1)', justifyContent: 'space-between' }}>
@@ -75,14 +82,15 @@ const MyPage = (props) => {
           </View>
         </TouchableHighlight>
       </View>
-      <View style={{ padding: 5}}>
-        <Text style={{marginLeft: 20, fontSize: 25, fontWeight:'bold', color: 'white'}}>내가 뛰었던 코스</Text>
+      <View style={{ padding: 5 }}>
+        <Text style={{ marginLeft: 20, fontSize: 25, fontWeight:'bold', color: 'white' }}>내가 뛰었던 코스</Text>
       </View>
       <View>
-        {dummyTrackRecord.map((trackRecord) => (
+        {tracksReducedDuplicate.map((trackRecord) => (
           <TrackRecord key={trackRecord.trackId} data={trackRecord} />
         ))}
       </View>
+      <View style={{ height: 50 }} />
     </ScrollView>
   );
 };

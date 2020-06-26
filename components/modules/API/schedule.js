@@ -39,7 +39,7 @@ const getSchedules = async (filterCondition, userposition) => {
     const json = response.json();
     return json;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 };
 

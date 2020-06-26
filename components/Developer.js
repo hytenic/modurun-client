@@ -5,8 +5,10 @@ import {
 
 const Developer = ({ navigation }) => {
   const pages = [
+    'ProductionApp',
     'TestLogin',
     'APITester',
+    'MyInfoManager',
     'Main',
     'TrackMaster',
     'FilterModal',
@@ -37,9 +39,9 @@ const Developer = ({ navigation }) => {
         <TouchableOpacity
           style={{
             paddingVertical: 10,
-            backgroundColor: 'green',
+            backgroundColor: page === 'ProductionApp' ? 'dodgerblue' : 'green',
             borderWidth: 1,
-            borderColor: 'darkgreen',
+            borderColor: page === 'ProductionApp' ? 'red' : 'darkgreen',
           }}
           key={page}
           title={page}

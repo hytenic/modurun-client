@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, KeyboardAvoidingView, ScrollView,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerContent } from '@react-navigation/drawer';
-import { DrawerNavigator } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Entypo';
-import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
@@ -16,6 +14,7 @@ import ScheduleManager from './modules/ScheduleManager';
 import { getUserLocation, getFilterCondition } from './modules/utils';
 import { getSchedules } from './modules/API/schedule';
 import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
+import ScheduleList from './modules/ScheduleList';
 import reduxStore from '../redux/store';
 // import schedules from './modules/API/SG/schedules';
 
@@ -37,8 +36,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   main: {
-    zIndex: 0,
-    flex: 10,
+    zIndex: 1,
+    height: '100%',
   },
   search: {
     backgroundColor: 'white',
@@ -63,29 +62,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     position: 'absolute',
-    top: Dimensions.get('screen').height - 170,
+    bottom: 30,
   },
   suggestion: {
-    flex: 1,
-    // position: 'absolute',
-    // top: 100,
+    height: '15%',
     backgroundColor: 'white',
     borderWidth: 0.5,
-    padding: 5,
+    borderBottomColor: 'lightgray',
+    paddingBottom: 20,
+    paddingTop: 10,
+    paddingLeft: 15,
+    zIndex: 10,
   },
 });
 
-export const Main = () => {
+const Main = () => {
   const navigation = useNavigation();
   const [typing, setTyping] = useState(false);
   const [destination, setDestination] = useState('');
   const [predictions, setPredictions] = useState([]);
   const [searching, setSearching] = useState(false);
   const [schedules, setSchedules] = useState([]);
+  const [selectedSchedules, setSelectedSchedules] = useState([]);
+  const [clickedTrack, setClickedTrack] = useState(false);
   const [location, setLocation] = useState({
     longitude: 0,
     latitude: 0,
   });
+  const [tabStartPosition, setTabStartPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [tabFinishedPosition, setTabFinishedPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [isMoving, setIsMoving] = useState(false);
 
   useEffect(() => {
     async function initializeLocation() {
@@ -114,7 +126,6 @@ export const Main = () => {
   const filter = getFilterCondition();
   const [filterCondition, setFilterCondition] = useState(filter);
   const { apiKey } = getEnvVars('dev');
-
 
   useEffect(() => {
     Keyboard.addListener('keyboardDidHide', setTypingFalse);
@@ -184,33 +195,93 @@ export const Main = () => {
         searched();
       }}
     >
-      <Text>{prediction.description}</Text>
+      <Text>{prediction.structured_formatting.main_text}</Text>
+      <Text style={{ color: 'grey' }}>{prediction.description.replace('대한민국 ', '')}</Text>
     </TouchableOpacity>
   ));
 
   const renderRecommendation = () => {
     if (searching) {
+      // {/* <View style={styles.main}>
+      // </View> */}
       return (
-        <View style={styles.main}>
+        <ScrollView keyboardShouldPersistTaps={true} style={{ marginTop: 80, flex: 1, zIndex: 10}}>
           {predictionsList}
+        </ScrollView>
+      );
+    }
+    return (<></>);
+  };
+
+  const scheduleSelecting = (selectedSchedule) => {
+    setClickedTrack(true);
+    console.log('selected Schedule ', selectedSchedule);
+    setSelectedSchedules(selectedSchedule);
+  };
+
+  const addSchedule = () => {
+    navigation.navigate('SchedulerScreen');
+  };
+
+  const renderScheduleList = () => {
+    if (clickedTrack) {
+      return (
+        <View style={{ flex: 4 }}>
+          <ScheduleList schedules={selectedSchedules} />
+        </View>
+      );
+    }
+    return (
+      <View style={styles.addButton}>
+        <TouchableOpacity onPress={addSchedule} style={styles.plusButton}>
+          <Icon style={{ textAlign: 'center', textAlignVertical: 'center' }} name="plus" color="white" size={50} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const startingTab = (e) => {
+    setTabStartPosition({
+      ...tabStartPosition,
+      x: e.nativeEvent.locationX,
+      y: e.nativeEvent.locationY,
+    });
+  };
+
+  const finishedTab = (e) => {
+    const newFinishedLocation = {
+      x: e.nativeEvent.locationX,
+      y: e.nativeEvent.locationY,
+    };
+    setTabFinishedPosition({ ...tabFinishedPosition, ...newFinishedLocation });
+    const distance = Math.sqrt(Math.pow((tabStartPosition.x - newFinishedLocation.x), 2) + Math.pow((tabStartPosition.y - newFinishedLocation.y), 2));
+    if (distance < 40) {
+      setClickedTrack(false);
+    } else {
+      setClickedTrack(clickedTrack);
+    }
+  };
+
+  const renderMainView = () => {
+    if (!searching) {
+      return (
+        <View style={{ flex: 1 }} onTouchStart={startingTab} onTouchEnd={finishedTab}>
+          <TrackMaster
+            mode="scheduleViewer"
+            schedules={schedules}
+            initialCamera={location}
+            moveOnMarkerPress
+            onTrackSelected={scheduleSelecting}
+          />
         </View>
       );
     }
     return (<></>);
   };
 
-  const renderMainView = () => {
-    if (!searching) {
-      return (
-        <TrackMaster mode="scheduleViewer" schedules={schedules} initialCamera={location} moveOnMarkerPress />
-      );
-    }
-    return (<></>);
-  };
-
-  const addSchedule = () => {
-    navigation.navigate('Scheduler');
-  };
+  // const addSchedule = () => {
+  //   navigation.navigate('SchedulerScreen');
+  // };
 
   const usernameInput = () => {
     const { isFirstLogin } = reduxStore.getState().userInfo.user;
@@ -225,13 +296,18 @@ export const Main = () => {
   };
 
   return (
+
     <View style={styles.container}>
-      <View style={styles.main}>
+      <View style={[styles.main, clickedTrack ? { flex: 6 } : null]}>
         <View style={styles.header}>
-          <View style={{ flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3 }}>
+          {usernameInput()}
+          <View style={{
+            flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3,
+          }}
+          >
             <TouchableOpacity
               onPress={() => toggleSideBar({ navigation })}
-              style={{alignItems: 'center', justifyContent: 'center'}}
+              style={{ alignItems: 'center', justifyContent: 'center' }}
             >
               <Image
                 source={{ uri: 'https://reactnativecode.com/wp-content/uploads/2018/04/hamburger_icon.png' }}
@@ -247,36 +323,17 @@ export const Main = () => {
               onSubmitEditing={searched}
             />
           </View>
-          <View style={styles.filterButton}>
-            <FilterModal style={styles.main} />
+
+          <View style={searching ? { display: 'none' } : styles.filterButton}>
+            <FilterModal style={styles.main} setAction={setFilterCondition} />
           </View>
         </View>
         {renderRecommendation()}
         {renderMainView()}
-        {/* <View style={styles.filterButton}>
-          <FilterModal style={styles.main} />
-        </View> */}
-        <View style={styles.addButton}>
-          <TouchableOpacity onPress={addSchedule} style={styles.plusButton}>
-            <Icon style={{textAlign: 'center', textAlignVertical: 'center'}} name="plus" color="white" size={50} />
-          </TouchableOpacity>
-        </View>
       </View>
+      {renderScheduleList()}
     </View>
   );
 };
 
-const Drawer = createDrawerNavigator();
-
-function SideBar() {
-  return (
-    <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="mainBar" component={Main} />
-      <Drawer.Screen name="트랙 관리" component={TrackManager} />
-      <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
-      <Drawer.Screen name="마이페이지" component={MyPage} />
-    </Drawer.Navigator>
-  );
-}
-
-export default SideBar;
+export default Main;

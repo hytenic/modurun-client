@@ -10,7 +10,7 @@ const getUserTracks = async () => {
     }
     return false;
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   }
 };
 

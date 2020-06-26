@@ -253,7 +253,7 @@ const FilterModal = ({ value, setAction }) => {
             <View style={styles.roof} />
             <View style={styles.row}>
               <Text style={styles.filterTitle}>거리</Text>
-              <DistanceButtonComponent dis={5000} />
+              <DistanceButtonComponent dis={50000} />
               <DistanceButtonComponent dis={3000} />
               <DistanceButtonComponent dis={1000} />
               <DistanceButtonComponent dis={500} />

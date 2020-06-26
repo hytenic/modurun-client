@@ -85,14 +85,14 @@ const CreatedScheduleInfo = ({ route }) => {
   const navigation = useNavigation();
 
   const goToMainPage = () => {
-    navigation.navigate('Main');
+    navigation.navigate('MainDrawer');
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.title}>
-          <Text style={styles.scheduleTitle}>{title}</Text>
+          <Text style={styles.scheduleTitle}>{schedule.title}</Text>
         </View>
         <View style={styles.scheduleInfo}>
           <View style={styles.infoDetail}>

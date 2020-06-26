@@ -46,9 +46,11 @@ export const convertDate = (parsedDate, type = 'short') => {
   const date = `${dateObj.getDate()}일`;
   const day = dayToKor(dateObj.getDay());
   const hour = prettyHour(dateObj.getHours());
-  const minute = `${dateObj.getMinutes()}분`;
+  const minute = dateObj.getMinutes();
+  const compactMinute = minute < 10 ? `0${minute}` : minute;
+  const longMin = `${dateObj.getMinutes()}분`;
   // return `${year} ${month} ${date} ${day} ${hour} ${minute}`;
-  if (type === 'compact') return `${dateObj.getFullYear()}.${dateObj.getMonth()}.${dateObj.getDate()}(${day[0]}) ${dateObj.getHours()}:${dateObj.getMinutes()}`;
-  if (type === 'short') return `${month} ${date}(${day[0]}) ${dateObj.getHours()}:${dateObj.getMinutes()}`;
-  return `${month} ${date} ${day} ${hour} ${minute}`;
+  if (type === 'compact') return `${dateObj.getFullYear() === new Date(Date.now()).getFullYear() ? '' : `${dateObj.getFullYear()}.`}${dateObj.getMonth()}.${dateObj.getDate()}(${day[0]}) ${dateObj.getHours()}:${compactMinute}`;
+  if (type === 'short') return `${month} ${date}(${day[0]}) ${dateObj.getHours()}:${compactMinute}`;
+  return `${month} ${date} ${day} ${hour} ${longMin}`;
 };

@@ -28,7 +28,7 @@ export default StyleSheet.create({
   title: {
     paddingLeft: 7,
     paddingRight: 30,
-    fontSize: 15,
+    fontSize: 18,
     color: 'black',
     flex: 75,
     fontWeight: 'bold',

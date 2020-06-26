@@ -23,7 +23,7 @@ const Icon = {
   MaterialCommunity,
 };
 
-const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
+const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation, initialTitle }) => {
   const mapView = useRef();
   const [mapWidth, setMapWidth] = useState(99);
   const [titleInputStyle, setTitleInputStyle] = useState({});
@@ -50,7 +50,7 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
   const [exit, setExit] = useState(false);
 
   // Output data
-  const [trackTitle, setTrackTitle] = useState('');
+  const [trackTitle, setTrackTitle] = useState(initialTitle || '');
   const [track, setTrack] = useState(undefined);
 
   const setTypingFalse = () => setTypingStatus(false);
@@ -329,7 +329,10 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
 
   const exportTrack = () => {
     // 이 부분 모달창으로 바꿔도 좋을 듯.
-    if (!track || !trackTitle) Alert.alert('내용 채워라', '경고한다');
+    if (!track || !trackTitle) {
+      Alert.alert('내용 채워라', '경고한다');
+      return;
+    }
     const { distance } = track.routes[0];
     const postData = {
       origin: routes[0],
@@ -343,6 +346,16 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
     setTrackTitle('');
     Keyboard.dismiss();
     initialize();
+  };
+
+  const renderMapView = () => {
+    if (typingText) return <></>;
+    return (
+      <MapView ref={mapView} {...mapViewProps}>
+        {renderMarkers()}
+        <Route coordinates={routes} />
+      </MapView>
+    );
   };
 
   return (
@@ -377,13 +390,10 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
         </View>
       </View>
 
-      <MapView ref={mapView} {...mapViewProps}>
-        {renderMarkers()}
-        <Route coordinates={routes} />
-      </MapView>
+      {renderMapView()}
 
       <KeyboardAvoidingView style={styles.titleInputContainer(completeVisible, typingText)}>
-        <TextInput onChange={(e) => { setTrackTitle(e.nativeEvent.text); }} value={trackTitle} onLayout={updateTitleInputStyle} style={[styles.titleInput, titleInputStyle]} placeholder="트랙의 이름을 지어주세요" />
+        <TextInput onChange={(e) => { setTrackTitle(e.nativeEvent.text); }} value={trackTitle} onLayout={updateTitleInputStyle} style={[styles.titleInput, titleInputStyle]} placeholder="트랙의 이름을 입력해주세요" />
         <TouchableOpacity onPress={exportTrack} style={styles.editCompleteButton}>
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>제작 완료</Text>
         </TouchableOpacity>
