@@ -23,7 +23,7 @@ const Icon = {
   MaterialCommunity,
 };
 
-const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
+const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation, initialTitle }) => {
   const mapView = useRef();
   const [mapWidth, setMapWidth] = useState(99);
   const [titleInputStyle, setTitleInputStyle] = useState({});
@@ -50,7 +50,7 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
   const [exit, setExit] = useState(false);
 
   // Output data
-  const [trackTitle, setTrackTitle] = useState('');
+  const [trackTitle, setTrackTitle] = useState(initialTitle || '');
   const [track, setTrack] = useState(undefined);
 
   const setTypingFalse = () => setTypingStatus(false);
@@ -348,6 +348,16 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
     initialize();
   };
 
+  const renderMapView = () => {
+    if (typingText) return <></>;
+    return (
+      <MapView ref={mapView} {...mapViewProps}>
+        {renderMarkers()}
+        <Route coordinates={routes} />
+      </MapView>
+    );
+  };
+
   return (
     <View onLayout={updateToolBarParentWidth} style={styles.container}>
       <View>
@@ -380,10 +390,7 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation }) => {
         </View>
       </View>
 
-      <MapView ref={mapView} {...mapViewProps}>
-        {renderMarkers()}
-        <Route coordinates={routes} />
-      </MapView>
+      {renderMapView()}
 
       <KeyboardAvoidingView style={styles.titleInputContainer(completeVisible, typingText)}>
         <TextInput onChange={(e) => { setTrackTitle(e.nativeEvent.text); }} value={trackTitle} onLayout={updateTitleInputStyle} style={[styles.titleInput, titleInputStyle]} placeholder="트랙의 이름을 입력해주세요" />

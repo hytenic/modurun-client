@@ -23,7 +23,6 @@ PrettyProp.defaultProps = {
 PrettyProp.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  color: PropTypes.string.isRequired,
   postComponent: PropTypes.element,
 };
 

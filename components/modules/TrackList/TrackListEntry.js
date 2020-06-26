@@ -53,6 +53,7 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
   const viewTrackOnMap = () => {
     dispatch(actions.setSingleTrack(data));
     navigation.navigate('SingleTrackViewerInDetail');
+    navigation.navigate('SingleTrackViewerScreen');
   };
 
   const askIfDelete = () => {

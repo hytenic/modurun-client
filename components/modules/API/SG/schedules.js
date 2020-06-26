@@ -41,10 +41,13 @@ const createSchedule = (track, schedule) => {
   });
 };
 
+const getCompletedScheduleTracks = () => moduRunApiUtil.request('GET', '/users/schedules/completed');
+
 export default {
   createSchedule,
   getSchedules,
   getMySchdules,
   joinToSchedule,
   exitFromSchedule,
+  getCompletedScheduleTracks,
 };

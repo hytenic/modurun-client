@@ -98,7 +98,7 @@ const MyTrackListEntry = ({
 
   const viewTrackOnMap = () => {
     setSingleTrack(data);
-    navigation.navigate('SingleTrackViewer');
+    navigation.navigate('SingleTrackViewerScreen');
   };
 
   return (
