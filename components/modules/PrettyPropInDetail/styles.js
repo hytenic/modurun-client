@@ -5,7 +5,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 0.5,
+    // borderBottomWidth: 0.5,
     borderColor: 'rgba(0,0,0,0.2)',
   },
   propRowKey: {
@@ -13,12 +13,12 @@ export default StyleSheet.create({
     color: '#03D6A7',
     textAlignVertical: 'center',
     textAlign: 'center',
-    fontSize: 10,
+    fontSize: 12,
     marginRight: 15,
     width: '20%',
   },
   propRowValue: {
-    fontSize: 10,
+    fontSize: 11,
     color: 'black',
   },
   propRowValueContainer: {

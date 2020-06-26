@@ -9,10 +9,11 @@ import googlePlaceApi from './googleapis/place';
 
 const trackInfo = {
   position: 'absolute',
-  width: Dimensions.get('screen').width - 50,
+  width: Dimensions.get('screen').width - 100,
   marginHorizontal: 25,
   height: 220,
   top: 30,
+  left: '6%',
   backgroundColor: 'white',
   borderRadius: 15,
   shadowColor: '#000',
