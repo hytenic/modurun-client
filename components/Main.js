@@ -193,7 +193,7 @@ const Main = () => {
         const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${prediction.place_id}&key=${apiKey}`;
         const result = await fetch(apiUrl);
         const json = await result.json();
-        pickedSearchedLocation(json.rtiesult.geometry.locaon);
+        pickedSearchedLocation(json.result.geometry.location);
         searched();
       }}
     >
@@ -207,7 +207,7 @@ const Main = () => {
       // {/* <View style={styles.main}>
       // </View> */}
       return (
-        <ScrollView style={{ marginTop: 80, flex: 1, zIndex: 10}}>
+        <ScrollView keyboardShouldPersistTaps={true} style={{ marginTop: 80, flex: 1, zIndex: 10}}>
           {predictionsList}
         </ScrollView>
       );
@@ -221,7 +221,7 @@ const Main = () => {
   };
 
   const addSchedule = () => {
-    navigation.navigate('Scheduler');
+    navigation.navigate('SchedulerScreen');
   };
 
   const renderScheduleList = () => {

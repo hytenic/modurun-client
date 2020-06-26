@@ -14,7 +14,6 @@ import styles from './styles';
 import store from '../../../redux/store';
 
 const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
-  // 아 북마크 처리는 api에 안 돼 있네.
   const {
     trackLength,
     trackTitle,
@@ -29,10 +28,6 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
     destination,
     rateValue,
   } = data;
-
-  // getTracks => id가 트랙 테이블에 있는 아이디;
-  // getMyTracks => trackId가 트랙 테이블에 있는 아이디;
-  // getMyTracks => id가 유저 트랙 테이블에 있는 아이디;
 
   const [originInfo, setOriginInfo] = useState('');
   const [destinationInfo, setDestinationInfo] = useState('');
@@ -57,6 +52,7 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
 
   const viewTrackOnMap = () => {
     dispatch(actions.setSingleTrack(data));
+    navigation.navigate('SingleTrackViewerInDetail');
     navigation.navigate('SingleTrackViewerScreen');
   };
 
@@ -147,20 +143,21 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
     padding: 3,
     flexDirection: 'row',
     alignItems: 'center',
+    width: 330,
   };
 
   const compactProp = (name, value, color) => (
     <View style={[compactPropStyle, { backgroundColor: color }]}>
-      <Text style={{ fontSize: 12, marginRight: 5, color: '#03D6A7' }}>{name}</Text>
-      <Text style={{ fontSize: 11 }}>{value}</Text>
+      <Text style={{ fontSize: 16, margin: 5, marginRight: 10, color: '#03D6A7' }}>{name}</Text>
+      <Text style={{ fontSize: 14 }}>{value}</Text>
     </View>
   );
   const compactPropEnd = (name, value, color) => (
     <View style={[compactPropStyle, { backgroundColor: color }]}>
-      <Text style={{ fontSize: 12, marginRight: 5, color: '#ef3832' }}>
+      <Text style={{ fontSize: 16, margin: 5, marginRight: 10, color: '#ef3832' }}>
         {name}
       </Text>
-      <Text style={{ fontSize: 11 }}>{value}</Text>
+      <Text style={{ fontSize: 14 }}>{value}</Text>
     </View>
   );
   

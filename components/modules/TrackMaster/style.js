@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { StyleSheet } from 'react-native';
 
+//
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
   },
   mapStyle: {
-    // height: '100%',
     flex: 1,
   },
   toggleContainer(toggled) {
@@ -117,19 +117,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calloutView: {
-    width: 250,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    width: 180,
     alignContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.95)',
-    borderRadius: 10,
-    borderWidth: 3,
+    borderRadius: 15,
     borderColor: 'rgba(0,0,0,0.4)',
   },
   calloutTitle: {
-    backgroundColor: 'black',
+    backgroundColor: 'dodgerblue',
+    width: 180,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     color: 'white',
-    borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
     alignSelf: 'center',
@@ -141,6 +140,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   callloutPropRow: {
+    padding: 3,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
       color,
     };
   },
-  calloutPropValue(backgroundColor = '#edf0ff', color = 'black') {
+  calloutPropValue(backgroundColor = '#EDF0FF', color = 'black') {
     return {
       padding: 5,
       backgroundColor,
@@ -162,5 +162,4 @@ const styles = StyleSheet.create({
     };
   },
 });
-
 export default styles;

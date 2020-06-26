@@ -2,21 +2,32 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   entryContainer: {
-    // backgroundColor: 'dodgerblue',
     margin: 10,
-    elevation: 2,
-    borderWidth: 0,
+    // elevation: 200,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 5,
   },
   titleContainer: {
+    borderRadius: 15,
+    // borderTopRightRadius: 15,
+    // borderTopLeftRadius: 15,
     padding: 10,
-    backgroundColor: 'dodgerblue',
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
     fontSize: 20,
-    color: 'white',
+    color: 'dodgerblue',
     flex: 8,
   },
   titleButtonContainer: {
@@ -30,7 +41,7 @@ export default StyleSheet.create({
   propRowKey: {
     padding: 5,
     borderRadius: 10,
-    color: 'white',
+    color: 'dodgerblue',
     margin: 5,
   },
   propRowValue: {
@@ -40,11 +51,13 @@ export default StyleSheet.create({
   },
   descContainer: {
     backgroundColor: 'rgba(250,250,250,1)',
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     padding: 5,
   },
   chevron: {
     padding: 5,
-    color: 'white',
+    color: 'dodgerblue',
     alignContent: 'center',
   },
   joinSchedule: {

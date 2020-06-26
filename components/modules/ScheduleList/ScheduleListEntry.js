@@ -14,7 +14,6 @@ const ScheduleListEntry = ({ data }) => {
     if (!showMoreVisible) return <></>;
     return (
       <View style={styles.descContainer}>
-        <PrettyProp name="참가인원" value={`${data.participants}명`} color="rgba(0, 173, 46, 1)" />
         <PrettyProp name="시작일시" value={utils.convertDate(data.from)} color="rgba(30, 102, 179, 1)" />
         <PrettyProp name="종료일시" value={utils.convertDate(data.to)} color="rgba(112, 30, 179, 1)" />
         <PrettyProp name="소요시간" value={utils.convertDuration(data.to - data.from)} color="rgba(179, 30, 114, 1)" />
@@ -29,7 +28,7 @@ const ScheduleListEntry = ({ data }) => {
   return (
     <View style={styles.entryContainer}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>{data.scheduleTitle}</Text>
+        <Text style={styles.title}>{`${data.scheduleTitle} (${data.participants}명)`}</Text>
         <View style={styles.titleButtonContainer}>
           <TouchableOpacity onPress={toggleShowMore}>
             <Icons style={styles.chevron} name={showMoreVisible ? 'chevron-up' : 'chevron-down'} size={20} />
