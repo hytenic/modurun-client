@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     position: 'absolute',
-    top: Dimensions.get('screen').height - 170,
+    bottom: 30,
   },
   suggestion: {
     flex: 1,

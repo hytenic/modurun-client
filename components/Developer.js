@@ -7,6 +7,7 @@ const Developer = ({ navigation }) => {
   const pages = [
     'TestLogin',
     'APITester',
+    'MyInfoManager',
     'Main',
     'TrackMaster',
     'FilterModal',
