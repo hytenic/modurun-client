@@ -70,8 +70,8 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, in
     const decideMarginBottom = (index) => (index < calloutProps.length - 1 ? 10 : 0);
     return calloutProps.map(([key, value, keyBackgroundColor, keyColor, valueBackgroundColor, valueColor], i) => (
       <View style={[styles.callloutPropRow, { marginBottom: decideMarginBottom(i) }]}>
-        <Text style={styles.callloutPropKey(keyBackgroundColor, keyColor)}>{key}</Text>
-        <Text style={styles.calloutPropValue(valueBackgroundColor, valueColor)}>{value}</Text>
+        <Text style={[styles.callloutPropKey(keyBackgroundColor, keyColor), { fontSize: 12 }]}>{key}</Text>
+        <Text style={[styles.calloutPropValue(valueBackgroundColor, valueColor), { fontSize: 12 }]}>{value}</Text>
       </View>
     ));
   };
@@ -80,10 +80,10 @@ const TrackViewer = ({ curPosCamera, onRegionChange, onTrackSelected, tracks, in
     from: 'rgba(148, 87, 255, 1)',
     span: 'rgba(74, 167, 255, 1)',
     trackTitle: 'rgba(42, 176, 82, 1)',
-    trackLength: 'rgba(147, 176, 42, 1)',
+    trackLength: 'rgba(255, 255, 255, 0)',
     participants: 'rgba(247, 149, 57, 1)',
-    maleSpan: 'rgba(169, 39, 179, 1)',
-    femaleSpan: 'rgba(41, 201, 255, 1)',
+    maleSpan: 'rgba(255, 255, 255, 0)',
+    femaleSpan: 'rgba(255, 255, 255, 0)',
   };
 
   const callOut = (track) => {
