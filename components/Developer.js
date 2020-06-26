@@ -8,6 +8,7 @@ const Developer = ({ navigation }) => {
     'ProductionApp',
     'TestLogin',
     'APITester',
+    'MyInfoManager',
     'Main',
     'TrackMaster',
     'FilterModal',

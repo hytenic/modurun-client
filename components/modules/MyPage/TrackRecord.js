@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableHighlight, TextInput } from 'react-native-gesture-handler';
 import * as scheduleUtils from '../ScheduleUtils/utils';
 import Rate from '../Rate';
+import modurunAPI from '../API/index';
+import schedules from '../API/SG/schedules';
 
 const styles = StyleSheet.create({
   trackContainer: {
@@ -17,7 +19,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.4,
     shadowRadius: 3,
-    elevation: 50,
+    elevation: 10,
     width: '90%',
   },
   trackTitles: {
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
   scheduleInfoStyle: {
     color: '#03D6A7',
     fontWeight: 'bold',
-    flexBasis: 70,
+    flexBasis: 30,
     fontSize: 12,
     paddingBottom: 5,
   },
@@ -67,14 +69,34 @@ const TrackRecord = ({ data }) => {
   const [curRate, setCurRate] = useState(5);
   const [reason, setReason] = useState('');
   const [rateVisible, setRateVisible] = useState(false);
+  const [rated, setRated] = useState(false);
+
+  const {
+    userId,
+    scheduleId,
+    title,
+    scheduleFrom: from,
+    scheduleTo: to,
+    trackTitle,
+    origin,
+    destination,
+    route,
+    trackLength,
+    createdAt,
+    updatedAt,
+    trackId,
+    rateValue,
+  } = data;
 
   const submitRate = () => {
-    console.log('여기서 평점 제출하는 액션 이루어져야 함');
+    modurunAPI.tracks.rateTrack(trackId, curRate)
+      .then((res) => {
+        if (res.ok) setRated(true);
+        Alert.alert('등록 완료', '제출하신 리뷰가 등록되었습니다');
+      });
   };
 
-  const {track, schedule} = data;
-  const { trackTitle, origin, destination, route, trackLength } = track;
-  const { scheduleTitle, from, to, participants } = schedule;
+  if (rated) return <></>;
 
   return (
     <View style={styles.trackContainer}>
@@ -82,13 +104,13 @@ const TrackRecord = ({ data }) => {
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.trackTitles}>{trackTitle}</Text>
         </View>
-        <View s={{marginBottom: 10}}>
-          <View style={{ flexDirection: 'row' }}>
+        <View s={{ marginBottom: 10 }}>
+          {/* <View style={{ flexDirection: 'row' }}>
             <Text style={styles.scheduleInfoStyle}>스케줄 이름</Text>
             <Text style={{fontSize: 12, fontWeight: 'bold' }}>{scheduleTitle}</Text>
-          </View>
+          </View> */}
           <View style={{ flexDirection: 'row' }}>
-            <Text style={styles.scheduleInfoStyle}>스케줄 기간</Text>
+            <Text style={styles.scheduleInfoStyle}>기간</Text>
             <Text style={{fontSize: 12, fontWeight: 'bold' }}>{`${scheduleUtils.convertDate(from, 'compact')} ~ ${scheduleUtils.convertDate(to, 'compact')}`}</Text>
           </View>
         </View>
@@ -105,7 +127,7 @@ const TrackRecord = ({ data }) => {
           </View>
           <View style={[styles.buttonContainerStyle, {flexGrow: 2.5, borderWidth: 0, backgroundColor: '#03D6A7'}]}>
             <TouchableHighlight underlayColor="rgba(0,0,0,0.2)" style={styles.buttonStyle} onPress={() => setRateVisible(!rateVisible)}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>후기 남기기</Text>
+              <Text style={{color: 'white', fontWeight: 'bold'}}>{rateVisible ? '접기' : '후기 남기기'}</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -122,20 +144,21 @@ const TrackRecord = ({ data }) => {
               <Rate size={60} onRate={(rate) => { setCurRate(rate); }} />
             </View>
           </View>
-          <View>
+          {/* deactivated following line because api doesn't require review text */}
+          {/* <View>
             <TextInput
               multiline
               style={{
                 backgroundColor: 'rgba(0,0,0,0.1)',
                 borderRadius: 5,
                 padding: 5,
-                paddingLeft: 20,
+                paddingLeft: 10,
               }}
               onChange={(e) => setReason(e.nativeEvent.text)}
               placeholder="이유를 적어주세요"
               value={reason}
             />
-          </View>
+          </View> */}
         </View>
         <View style={{alignSelf: 'center' }}>
           <TouchableHighlight onPress={submitRate} underlayColor="rgba(0,0,0,0.1)" style={styles.submitButtonStyle}>
