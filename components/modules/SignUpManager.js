@@ -129,7 +129,7 @@ const SignUpManager = () => {
   };
 
   const goToSignInPage = () => {
-    navigation.navigate('SignInManager');
+    navigation.navigate('SignInScreen');
   };
 
   const signinBtnRendering = () => {
@@ -242,7 +242,7 @@ const SignUpManager = () => {
                   console.log('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
                   const res = await postSignUp(email, password);
                   if (res) {
-                    navigation.navigate('SignInManager');
+                    navigation.navigate('SignInScreen');
                   } else {
                     console.log('이메일이나 비밀번호가 잘못되었습니다.');
                   }

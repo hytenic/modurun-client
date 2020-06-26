@@ -12,7 +12,7 @@ import utils from './ChatRoom/utils';
 
 const ChatRoom = ({ route, data, offset, dispatch }) => {
   const { params } = route;
-  const { scheduleId, userId, username } = params;
+  const { scheduleId, userId, username, scheduleTitle } = params;
   const [socket, setSocket] = useState(null);
   const [messageListRef, setMessageListRef] = useState(null);
   const [scrollOffset, setScrollOffset] = useState(0);

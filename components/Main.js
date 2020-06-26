@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, KeyboardAvoidingView, ScrollView,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerContent } from '@react-navigation/drawer';
-import { DrawerNavigator } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Entypo';
-import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
@@ -38,8 +36,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   main: {
-    zIndex: 0,
-    flex: 10,
+    zIndex: 1,
+    height: '100%',
   },
   search: {
     backgroundColor: 'white',
@@ -64,19 +62,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     position: 'absolute',
-    top: Dimensions.get('screen').height - 170,
+    bottom: 30,
   },
   suggestion: {
-    flex: 1,
-    // position: 'absolute',
-    // top: 100,
+    height: '15%',
     backgroundColor: 'white',
     borderWidth: 0.5,
-    padding: 5,
+    borderBottomColor: 'lightgray',
+    paddingBottom: 20,
+    paddingTop: 10,
+    paddingLeft: 15,
+    zIndex: 10,
   },
 });
 
-export const Main = () => {
+const Main = () => {
   const navigation = useNavigation();
   const [typing, setTyping] = useState(false);
   const [destination, setDestination] = useState('');
@@ -191,20 +191,23 @@ export const Main = () => {
         const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${prediction.place_id}&key=${apiKey}`;
         const result = await fetch(apiUrl);
         const json = await result.json();
-        pickedSearchedLocation(json.result.geometry.location);
+        pickedSearchedLocation(json.rtiesult.geometry.locaon);
         searched();
       }}
     >
-      <Text>{prediction.description}</Text>
+      <Text>{prediction.structured_formatting.main_text}</Text>
+      <Text style={{ color: 'grey' }}>{prediction.description.replace('대한민국 ', '')}</Text>
     </TouchableOpacity>
   ));
 
   const renderRecommendation = () => {
     if (searching) {
+      // {/* <View style={styles.main}>
+      // </View> */}
       return (
-        <View style={styles.main}>
+        <ScrollView style={{ marginTop: 80, flex: 1, zIndex: 10}}>
           {predictionsList}
-        </View>
+        </ScrollView>
       );
     }
     return (<></>);
@@ -276,6 +279,10 @@ export const Main = () => {
     return (<></>);
   };
 
+  const addSchedule = () => {
+    navigation.navigate('SchedulerScreen');
+  };
+
   const usernameInput = () => {
     const { isFirstLogin } = reduxStore.getState().userInfo.user;
     if (!isFirstLogin) {
@@ -289,6 +296,7 @@ export const Main = () => {
   };
 
   return (
+
     <View style={styles.container}>
       <View style={[styles.main, clickedTrack ? { flex: 6 } : null]}>
         <View style={styles.header}>
@@ -315,7 +323,8 @@ export const Main = () => {
               onSubmitEditing={searched}
             />
           </View>
-          <View style={styles.filterButton}>
+
+          <View style={searching ? { display: 'none' } : styles.filterButton}>
             <FilterModal style={styles.main} setAction={setFilterCondition} />
           </View>
         </View>
@@ -327,17 +336,4 @@ export const Main = () => {
   );
 };
 
-const Drawer = createDrawerNavigator();
-
-function SideBar() {
-  return (
-    <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="mainBar" component={Main} />
-      <Drawer.Screen name="트랙 관리" component={TrackManager} />
-      <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
-      <Drawer.Screen name="마이페이지" component={MyPage} />
-    </Drawer.Navigator>
-  );
-}
-
-export default SideBar;
+export default Main;

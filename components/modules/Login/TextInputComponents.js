@@ -6,7 +6,7 @@ import { StyleSheet, TextInput } from 'react-native';
 const styles = StyleSheet.create({
   textInput: {
     width: 250,
-    margin: 20,
+    marginBottom: 20,
     padding: 10,
     borderWidth: 1,
     borderRadius: 8,

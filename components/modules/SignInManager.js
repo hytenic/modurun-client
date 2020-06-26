@@ -25,20 +25,18 @@ const styles = StyleSheet.create({
     borderRadius: 300,
     width: 700,
     height: 600,
-    marginLeft: -145,
     position: 'absolute',
-    top: -220,
+    top: -200,
     overflow: 'hidden',
+    alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1E90FF',
   },
   body: {
-    flex: 7,
-    marginTop: 25,
+    // marginTop: 25,
   },
   inputArea: {
-    marginBottom: 40,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -52,17 +50,16 @@ const styles = StyleSheet.create({
   },
   buttonArea: {
     alignItems: 'center',
+    marginBottom: 10,
   },
   footer: {
-    flex: 1.2,
     borderTopWidth: 0.5,
-    width: 250,
     borderColor: 'gray',
-    flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'center',
-    paddingBottom: 20,
+    paddingVertical: 10,
+    marginBottom: 10,
   },
   footerText: {
     fontSize: 15,
@@ -101,7 +98,6 @@ const SignInManager = ({ dispatch }) => {
         androidClientId: getEnvVars('dev').clientId,
       });
       if (result.type === 'success') {
-        console.log(result);
         setSignedIn(true);
         setAccessToken(result.accessToken);
       }
@@ -113,18 +109,18 @@ const SignInManager = ({ dispatch }) => {
 
   const emailSignIn = async (inputEmail, inputPassword) => {
     const userInfo = await postEmailLogin(inputEmail, inputPassword);
-    dispatch(actions(userInfo));
+    dispatch(actions(userInfo))
     if (userInfo) {
-      navigation.navigate('Main');
+      navigation.navigate({ name: 'MainDrawer', params: { test: 'test' } });
     }
   };
 
   const goToMain = () => {
-    if (signedIn) navigation.navigate('Main');
+    if (signedIn) navigation.navigate('MainDrawer');
   };
 
   const goToSignUpPage = () => {
-    navigation.navigate('SignUpManager');
+    navigation.navigate('SignUpScreen');
   };
 
   const btnRendering = () => {

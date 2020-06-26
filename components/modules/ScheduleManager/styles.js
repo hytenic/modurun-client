@@ -26,9 +26,10 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   moreButtonContainer: {
-    marginLeft: 40,
-    width: 300,
+    justifyContent: 'space-around',
     flexDirection: 'row',
+    marginVertical: 10,
+    marginBottom: 20,
   },
   propRowContainer: {
     flexDirection: 'row',
@@ -46,13 +47,8 @@ export default StyleSheet.create({
     margin: 5,
   },
   descContainer: {
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
     margin: 10,
-    // marginLeft: 10,
-    // marginRight: 10,
     backgroundColor: 'rgba(250,250,250,1)',
-    padding: 5,
   },
   chevron: {
     padding: 5,
@@ -65,15 +61,12 @@ export default StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginLeft: 30,
-    width: 130,
   },
   cancel: {
     backgroundColor: '#ef3832',
     padding: 10,
     paddingHorizontal: 15,
     alignSelf: 'center',
-    marginBottom: 10,
     borderRadius: 10,
     alignItems: 'center',
   },
