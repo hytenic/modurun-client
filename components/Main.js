@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, StatusBar,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
     position: 'absolute',
-    top: Dimensions.get('screen').height - 170,
+    bottom: 30,
   },
   suggestion: {
     flex: 1,

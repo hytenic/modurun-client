@@ -1,0 +1,5 @@
+const SET_CHATROOM_TITLE = 'SET_CHATROOM_TITLE';
+
+export default {
+  SET_CHATROOM_TITLE,
+};

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { connect } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainDrawer from './navigation/MainDrawer';
 import SignInManager from './modules/SignInManager';
@@ -13,20 +14,24 @@ import MyTrackList from './modules/Scheduler/MyTrackList';
 
 const Stack = createStackNavigator();
 
-const ProductionApp = () => {
+const ProductionApp = ({chatRoomTitle}) => {
   return (
     <Stack.Navigator initialRouteName="SignInScreen">
       <Stack.Screen name="SignInScreen" component={SignInManager} />
       <Stack.Screen name="SignUpScreen" component={SignUpManager} />
-      <Stack.Screen name="MainDrawer" component={MainDrawer} />
-      <Stack.Screen name="SchedulerScreen" component={Scheduler} />
+      <Stack.Screen options={{headerShown: false}} name="MainDrawer" component={MainDrawer} />
+      <Stack.Screen options={{title: '일정 추가'}} name="SchedulerScreen" component={Scheduler} />
       <Stack.Screen name="CreatedTrackInfoScreen" component={CreatedTrackInfo} />
-      <Stack.Screen name="ChatRoomScreen" component={ChatRoom} />
+      <Stack.Screen options={{title: chatRoomTitle}} name="ChatRoomScreen" component={ChatRoom} />
       <Stack.Screen name="SingleTrackViewerScreen" component={SingleTrackViewerInDetail} />
       <Stack.Screen name="CreatedScheduleInfoScreen" component={CreatedScheduleInfo} />
-      <Stack.Screen name="MyTrackListScreen" component={MyTrackList} />
+      <Stack.Screen options={{title: '내 코스'}} name="MyTrackListScreen" component={MyTrackList} />
     </Stack.Navigator>
   );
 };
 
-export default ProductionApp;
+const mapStateToProps = (state) => ({
+  chatRoomTitle: state.productionNav.chatRoomTitle,
+});
+
+export default connect(mapStateToProps, null)(ProductionApp);

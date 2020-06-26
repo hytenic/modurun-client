@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/EvilIcons';
+import { connect } from 'react-redux';
 import { ScheduleValidationModal } from '../Modal';
 import styles from './style';
 import TrackMaster from '../TrackMaster/TrackMaster';
@@ -11,8 +12,9 @@ import { customizingDateAndTime, getScheduleData } from '../utils';
 import DateTimePickerCompoment from '../DateTimePicker';
 import { getUserTracks } from '../API/tracks';
 import { postSchedule } from '../API/schedule';
+import productionAppNavActions from '../../../redux/action/ProductionNav/creator';
 
-const Scheduler = () => {
+const Scheduler = ({dispatch}) => {
   const navigation = useNavigation();
   const [title, setTitle] = useState('');
   const [date, setDate] = useState(new Date());
@@ -71,6 +73,7 @@ const Scheduler = () => {
     try {
       const completeData = await postSchedule(postData);
       if (completeData) {
+        dispatch(productionAppNavActions.setChatRoomTitle(title));
         navigation.navigate('CreatedScheduleInfoScreen', {
           completeData,
         });
@@ -216,4 +219,4 @@ const Scheduler = () => {
   );
 };
 
-export default Scheduler;
+export default connect(null, null)(Scheduler);
