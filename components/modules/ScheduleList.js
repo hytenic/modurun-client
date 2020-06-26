@@ -8,7 +8,7 @@ const ScheduleList = ({schedules}) => {
   if (!schedules.length) return <></>;
 
   return (
-    <ScrollView style={{borderTopWidth:1}}>
+    <ScrollView style={{borderTopWidth:1, backgroundColor: 'dodgerblue'}}>
       {schedules.map((schedule) => <ScheduleListEntry data={schedule} />)}
     </ScrollView>
   );

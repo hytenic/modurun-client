@@ -23,7 +23,16 @@ const ScheduledTrackViewer = ({
 
   const mapView = useRef();
 
-  const reducedSchedules = schedules.reduce((acc, { track, schedule }) => {
+  const reducedSchedules = schedules.reduce((acc, cur) => {
+    const { track } = cur;
+    const schedule = {
+      scheduleTitle: cur.title,
+      from: cur.scheduleFrom,
+      to: cur.schedulTo,
+      participants: cur.participants,
+      userjoined: cur.userjoined,
+      scheduleId: cur.id,
+    };
     const { trackTitle } = track;
     if (!acc[trackTitle]) {
       acc[trackTitle] = {
