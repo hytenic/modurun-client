@@ -11,7 +11,7 @@ import QueryCandidate from './QueryCandidate';
 import modurunAPI from '../API';
 import { color } from 'react-native-reanimated';
 
-const TrackEditor = ({updateCreatedTrack}) => {
+const TrackEditor = ({updateCreatedTrack, getMyTracks}) => {
   const navigation = useNavigation();
   const [typing, setTypingStatus] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -57,7 +57,10 @@ const TrackEditor = ({updateCreatedTrack}) => {
           modurunAPI.tracks.createTrack(track)
             .then((res) => {
               updateCreatedTrack(track);
-              if (res.ok) navigation.navigate('CreatedTrackInfo');
+              if (res.ok) {
+                navigation.navigate('CreatedTrackInfo');
+                getMyTracks();
+              }
             });
         }}
       />
@@ -66,7 +69,7 @@ const TrackEditor = ({updateCreatedTrack}) => {
   const renderRecommendation = () => {
     if (!typing) return <></>;
     return (
-      <ScrollView style={{ backgroundColor: 'white'}}>
+      <ScrollView style={{ backgroundColor: 'white' }}>
         {queryCandidates.map((candidate) => <QueryCandidate data={candidate} onPress={(location) => setMapLocation(location)} />)}
         <View style={{ height: 100 }} />
       </ScrollView>

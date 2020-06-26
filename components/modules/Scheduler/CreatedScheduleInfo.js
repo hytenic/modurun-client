@@ -92,7 +92,7 @@ const CreatedScheduleInfo = ({ route }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.title}>
-          <Text style={styles.scheduleTitle}>{title}</Text>
+          <Text style={styles.scheduleTitle}>{schedule.title}</Text>
         </View>
         <View style={styles.scheduleInfo}>
           <View style={styles.infoDetail}>

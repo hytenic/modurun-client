@@ -77,7 +77,7 @@ const TrackManager = ({ myTracks, foundTracks, dispatch }) => {
     }
     if (menu === 'createTrack') {
       renderTarget = (
-        <TrackEditor />
+        <TrackEditor getMyTracks={getMyTracks} />
       );
     }
 
