@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, StatusBar,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, KeyboardAvoidingView, ScrollView,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   main: {
-    zIndex: 0,
-    flex: 10,
+    zIndex: 1,
+    height: '100%',
   },
   search: {
     backgroundColor: 'white',
@@ -63,12 +63,14 @@ const styles = StyleSheet.create({
     bottom: 30,
   },
   suggestion: {
-    flex: 1,
-    // position: 'absolute',
-    // top: 100,
+    height: '15%',
     backgroundColor: 'white',
     borderWidth: 0.5,
-    padding: 5,
+    borderBottomColor: 'lightgray',
+    paddingBottom: 20,
+    paddingTop: 10,
+    paddingLeft: 15,
+    zIndex: 10,
   },
 });
 
@@ -177,20 +179,23 @@ const Main = () => {
         const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${prediction.place_id}&key=${apiKey}`;
         const result = await fetch(apiUrl);
         const json = await result.json();
-        pickedSearchedLocation(json.result.geometry.location);
+        pickedSearchedLocation(json.rtiesult.geometry.locaon);
         searched();
       }}
     >
-      <Text>{prediction.description}</Text>
+      <Text>{prediction.structured_formatting.main_text}</Text>
+      <Text style={{ color: 'grey' }}>{prediction.description.replace('대한민국 ', '')}</Text>
     </TouchableOpacity>
   ));
 
   const renderRecommendation = () => {
     if (searching) {
+      // {/* <View style={styles.main}>
+      // </View> */}
       return (
-        <View style={styles.main}>
+        <ScrollView style={{ marginTop: 80, flex: 1, zIndex: 10}}>
           {predictionsList}
-        </View>
+        </ScrollView>
       );
     }
     return (<></>);
@@ -222,9 +227,8 @@ const Main = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="dodgerblue" />
-      <View style={styles.main}>
+    <View style={searching ? { height: '100%' } : styles.container}>
+      <View style={searching ? { zIndex: 0, flex: 1 } : styles.main}>
         <View style={styles.header}>
           <View style={{ flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3 }}>
             <TouchableOpacity
@@ -245,7 +249,7 @@ const Main = () => {
               onSubmitEditing={searched}
             />
           </View>
-          <View style={styles.filterButton}>
+          <View style={searching ? { display: 'none' } : styles.filterButton}>
             <FilterModal style={styles.main} />
           </View>
         </View>
