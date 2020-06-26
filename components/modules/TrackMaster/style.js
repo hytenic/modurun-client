@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   mapStyle: {
-    // height: '100%',
     flex: 1,
   },
   toggleContainer(toggled) {
