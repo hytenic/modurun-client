@@ -191,7 +191,7 @@ const Main = () => {
         const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${prediction.place_id}&key=${apiKey}`;
         const result = await fetch(apiUrl);
         const json = await result.json();
-        pickedSearchedLocation(json.result.geometry.location);
+        pickedSearchedLocation(json.rtiesult.geometry.locaon);
         searched();
       }}
     >
