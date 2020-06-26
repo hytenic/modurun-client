@@ -27,8 +27,6 @@ export default StyleSheet.create({
   propRowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 0.5,
-    borderColor: 'rgba(0,0,0,0.2)',
   },
   propRowKey: {
     padding: 5,

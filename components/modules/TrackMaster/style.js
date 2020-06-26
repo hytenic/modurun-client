@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { StyleSheet } from 'react-native';
 
+//
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
   },
   mapStyle: {
-    // height: '100%',
     flex: 1,
   },
   toggleContainer(toggled) {
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
       color,
     };
   },
-  calloutPropValue(backgroundColor = '#edf0ff', color = 'black') {
+  calloutPropValue(backgroundColor = '#EDF0FF', color = 'black') {
     return {
       padding: 5,
       backgroundColor,
@@ -162,5 +162,4 @@ const styles = StyleSheet.create({
     };
   },
 });
-
 export default styles;
