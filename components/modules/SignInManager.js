@@ -109,7 +109,9 @@ const SignInManager = ({ dispatch }) => {
 
   const emailSignIn = async (inputEmail, inputPassword) => {
     const userInfo = await postEmailLogin(inputEmail, inputPassword);
-    dispatch(actions(userInfo))
+    dispatch(actions(userInfo));
+    setEmail('');
+    setPassword('');
     if (userInfo) {
       navigation.navigate({ name: 'MainDrawer', params: { test: 'test' } });
     }
