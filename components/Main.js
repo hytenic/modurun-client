@@ -219,9 +219,9 @@ const Main = () => {
     setSelectedSchedules(selectedSchedule);
   };
 
-  // const addSchedule = () => {
-  //   navigation.navigate('Scheduler');
-  // };
+  const addSchedule = () => {
+    navigation.navigate('SchedulerScreen');
+  };
 
   const renderScheduleList = () => {
     if (clickedTrack) {
@@ -279,9 +279,9 @@ const Main = () => {
     return (<></>);
   };
 
-  const addSchedule = () => {
-    navigation.navigate('SchedulerScreen');
-  };
+  // const addSchedule = () => {
+  //   navigation.navigate('SchedulerScreen');
+  // };
 
   const usernameInput = () => {
     const { isFirstLogin } = reduxStore.getState().userInfo.user;
