@@ -63,10 +63,11 @@ export const convertDate = (parsedDate) => {
   return `${month} ${date} ${day} ${hour} ${minute}`;
 }
 
-export const joinSchedule = (schedule) => {
-  let baseUrl = 'willbeadded';
-  console.log('일정 참가하는 api랑 연결해야 됨')
-  // return axios.post(`${baseUrl}/schedules/user`, {
-  //   scheduleId: schedule.id,
-  // })
-}
+export const joinSchedule = (scheduleId) => {
+  const baseUrl = 'https://modurun.xyz';
+  axios.post(`${baseUrl}/users/schedules`, JSON.stringify({
+    scheduleId,
+  })).then(res =>{
+    console.dir(res.data);
+  });
+};

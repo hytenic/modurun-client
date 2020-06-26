@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
-import FilterModal, { InputUsernameModal } from './modules/Modal';
+import FilterModal, { InputUsernameModal, articipateModal, ParticipateModal } from './modules/Modal';
 import getEnvVars from '../environment';
 import ScheduleManager from './modules/ScheduleManager';
 import { getUserLocation, getFilterCondition } from './modules/utils';
@@ -85,6 +85,8 @@ const Main = () => {
   const [schedules, setSchedules] = useState([]);
   const [selectedSchedules, setSelectedSchedules] = useState([]);
   const [clickedTrack, setClickedTrack] = useState(false);
+  const [ParticipateClicked, setParticipateClicked] = useState(false);
+  const [scheduleId, setscheduleId] = useState(1);
   const [location, setLocation] = useState({
     longitude: 0,
     latitude: 0,
@@ -224,11 +226,11 @@ const Main = () => {
     navigation.navigate('SchedulerScreen');
   };
 
-  const renderScheduleList = () => {
+  const renderScheduleList = (onClickedParticpate) => {
     if (clickedTrack) {
       return (
         <View style={{ flex: 4 }}>
-          <ScheduleList schedules={selectedSchedules} />
+          <ScheduleList schedules={selectedSchedules} onClickedParticpate={onClickedParticpate} />
         </View>
       );
     }
@@ -292,6 +294,12 @@ const Main = () => {
     );
   };
 
+  // 일정 참가가 눌렸을 때
+  const onClickedParticpate = (schId) => {
+    setParticipateClicked(true);
+    setscheduleId(schId);
+  };
+
   return (
 
     <View style={styles.container}>
@@ -324,11 +332,14 @@ const Main = () => {
           <View style={searching ? { display: 'none' } : styles.filterButton}>
             <FilterModal style={styles.main} setAction={setFilterCondition} />
           </View>
+          <View>
+            <ParticipateModal style={styles.main} visible={ParticipateClicked} setVisible={setParticipateClicked} scheduleId={scheduleId} />
+          </View>
         </View>
         {renderRecommendation()}
         {renderMainView()}
       </View>
-      {renderScheduleList()}
+      {renderScheduleList(onClickedParticpate)}
     </View>
   );
 };
