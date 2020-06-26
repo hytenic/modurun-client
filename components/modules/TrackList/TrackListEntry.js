@@ -13,7 +13,7 @@ import modurunAPI from '../API';
 import styles from './styles';
 import store from '../../../redux/store';
 
-const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
+const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) => {
   const {
     trackLength,
     trackTitle,
@@ -69,6 +69,7 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
                 dispatch(trackManagerActions.deleteMyTrack(trackId));
                 setRequestState({ ...requesting, deleteTrack: false });
                 Alert.alert('삭제 완료', '선택한 트랙이 삭제되었습니다');
+                getMyTracks();
               }
             });
         },

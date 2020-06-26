@@ -12,7 +12,7 @@ const anyOfKeyIsFalsy = (object, keys) => {
   return false;
 };
 
-const TrackList = ({ tracks, showBookmark, showAdd }) => {
+const TrackList = ({ tracks, showBookmark, showAdd, getMyTracks }) => {
   if (!tracks) return <></>;
   if (!tracks.length) return <></>;
 
@@ -31,6 +31,7 @@ const TrackList = ({ tracks, showBookmark, showAdd }) => {
           showBookmark={showBookmark}
           showAdd={showAdd}
           data={track}
+          getMyTracks={getMyTracks}
         />
       ))}
       <View style={{ height: 200 }} />

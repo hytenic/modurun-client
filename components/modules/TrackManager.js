@@ -26,8 +26,6 @@ const TrackManager = ({
       });
   };
 
-  // trackId: 30,
-
   const getTracks = (filter) => {
     // if (foundTracks.length) return;
     trackManagerUtils.getUserPos()
@@ -71,7 +69,7 @@ const TrackManager = ({
     let renderTarget;
     if (screenType === 'myTrack') {
       renderTarget = (
-        <TrackList tracks={myTracks} showBookmark />
+        <TrackList tracks={myTracks} getMyTracks={getMyTracks} showBookmark />
       );
     }
     if (screenType === 'findTrack') {
