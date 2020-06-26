@@ -117,15 +117,14 @@ const ScheduledTrackViewer = ({
 
     const calloutProps = [
       ['길이', `${trackLength}m`, colors.trackLength, 'whrgba(0, 214, 167, 1)ite', paleColor(colors.trackLength)],
-      ['시간(남)', '계산해야 됨', colors.maleSpan, 'rgba(0, 214, 167, 1)', paleColor(colors.maleSpan)],
-      ['시간(여)', '계산해야 됨', colors.femaleSpan, 'rgba(0, 214, 167, 1)', paleColor(colors.femaleSpan)],
+      ['시간(남)', utils.predictDuration(trackLength, 'm'), colors.maleSpan, 'rgba(0, 214, 167, 1)', paleColor(colors.maleSpan)],
+      ['시간(여)', utils.predictDuration(trackLength, 'f'), colors.femaleSpan, 'rgba(0, 214, 167, 1)', paleColor(colors.femaleSpan)],
     ];
 
     return (
       <Callout tooltip>
         <View style={styles.calloutView}>
           <Text style={styles.calloutTitle}>{trackTitle}</Text>
-          {/* <View style={styles.calloutSeperator} /> */}
           <View style={{ alignContent: 'space-between' }}>
             {renderCalloutProps(calloutProps)}
           </View>
