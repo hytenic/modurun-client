@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingTop: 10,
     paddingLeft: 15,
-    zIndex: 10,
+    // zIndex: 10,
   },
 });
 
@@ -97,12 +97,11 @@ const Main = () => {
     x: 0,
     y: 0,
   });
-  const [isMoving, setIsMoving] = useState(false);
 
   useEffect(() => {
     async function initializeLocation() {
       try {
-        const { latitude, longitude } = await getUserLocation();
+        const { longitude, latitude } = await getUserLocation();
         setLocation({
           ...location,
           latitude,
@@ -113,6 +112,9 @@ const Main = () => {
       }
     }
     initializeLocation();
+    return (() => {
+      console.log('unmount');
+    });
   }, []);
 
   const setTypingFalse = () => {
@@ -215,7 +217,6 @@ const Main = () => {
 
   const scheduleSelecting = (selectedSchedule) => {
     setClickedTrack(true);
-    console.log('selected Schedule ', selectedSchedule);
     setSelectedSchedules(selectedSchedule);
   };
 
@@ -269,19 +270,15 @@ const Main = () => {
           <TrackMaster
             mode="scheduleViewer"
             schedules={schedules}
-            initialCamera={location}
             moveOnMarkerPress
             onTrackSelected={scheduleSelecting}
+            camera={location}
           />
         </View>
       );
     }
     return (<></>);
   };
-
-  // const addSchedule = () => {
-  //   navigation.navigate('SchedulerScreen');
-  // };
 
   const usernameInput = () => {
     const { isFirstLogin } = reduxStore.getState().userInfo.user;

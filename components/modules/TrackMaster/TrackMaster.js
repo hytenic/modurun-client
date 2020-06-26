@@ -25,6 +25,7 @@ const TrackMaster = ({
   initialCamera,
   moveOnMarkerPress,
   initialTitle,
+  camera,
 }) => {
   // const [editable, setEditable] = useState(false);
   // const [followUser, setFollowUser] = useState(false);
@@ -73,6 +74,7 @@ const TrackMaster = ({
           schedules={schedules}
           initialCamera={initialCamera}
           moveOnMarkerPress={moveOnMarkerPress}
+          camera={camera}
         />
       );
     }
