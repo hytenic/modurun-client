@@ -90,8 +90,8 @@ const ScheduledTrackViewer = ({
       const [key, value, keyBackgroundColor, keyColor, valueBackgroundColor, valueColor] = prop;
       return (
         <View key={key} style={[styles.callloutPropRow, { marginBottom: decideMarginBottom(i) }]}>
-          <Text style={styles.callloutPropKey(keyBackgroundColor, keyColor)}>{key}</Text>
-          <Text style={styles.calloutPropValue(valueBackgroundColor, valueColor)}>{value}</Text>
+          <Text style={[styles.callloutPropKey(keyBackgroundColor, keyColor), { fontSize: 12 }]}>{key}</Text>
+          <Text style={[styles.calloutPropValue(valueBackgroundColor, valueColor), { fontSize: 12 }]}>{value}</Text>
         </View>
       );
     });
@@ -101,10 +101,10 @@ const ScheduledTrackViewer = ({
     from: 'rgba(148, 87, 255, 1)',
     span: 'rgba(74, 167, 255, 1)',
     trackTitle: 'rgba(42, 176, 82, 1)',
-    trackLength: 'rgba(147, 176, 42, 1)',
+    trackLength: 'rgba(255, 255, 255, 0)',
     participants: 'rgba(247, 149, 57, 1)',
-    maleSpan: 'rgba(169, 39, 179, 1)',
-    femaleSpan: 'rgba(41, 201, 255, 1)',
+    maleSpan: 'rgba(255, 255, 255, 0)',
+    femaleSpan: 'rgba(255, 255, 255, 0)',
   };
 
   const callOut = (track) => {
@@ -116,16 +116,16 @@ const ScheduledTrackViewer = ({
     } = track;
 
     const calloutProps = [
-      ['길이', `${trackLength}m`, colors.trackLength, 'white', paleColor(colors.trackLength)],
-      ['시간(남)', '계산해야 됨', colors.maleSpan, 'white', paleColor(colors.maleSpan)],
-      ['시간(여)', '계산해야 됨', colors.femaleSpan, 'white', paleColor(colors.femaleSpan)],
+      ['길이', `${trackLength}m`, colors.trackLength, 'whrgba(0, 214, 167, 1)ite', paleColor(colors.trackLength)],
+      ['시간(남)', '계산해야 됨', colors.maleSpan, 'rgba(0, 214, 167, 1)', paleColor(colors.maleSpan)],
+      ['시간(여)', '계산해야 됨', colors.femaleSpan, 'rgba(0, 214, 167, 1)', paleColor(colors.femaleSpan)],
     ];
 
     return (
       <Callout tooltip>
         <View style={styles.calloutView}>
           <Text style={styles.calloutTitle}>{trackTitle}</Text>
-          <View style={styles.calloutSeperator} />
+          {/* <View style={styles.calloutSeperator} /> */}
           <View style={{ alignContent: 'space-between' }}>
             {renderCalloutProps(calloutProps)}
           </View>

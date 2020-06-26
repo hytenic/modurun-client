@@ -81,7 +81,7 @@ const TrackManager = ({
     }
     if (screenType === 'createTrack') {
       renderTarget = (
-        <TrackEditor setSwipeEnabled={setSwipeEnabled} />
+        <TrackEditor getMyTracks={getMyTracks} setSwipeEnabled={setSwipeEnabled} />
       );
     }
 
