@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import MaskedView from '@react-native-community/masked-view';
@@ -51,31 +51,33 @@ const MyInfoManger = ({userInfo}) => {
   };
 
   return (
-    <View style={{ backgroundColor: 'white', margin: 20, elevation: 3, borderRadius: 10, paddingVertical: 20 }}>
-      <View style={{ margin: 20, marginVertical: 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={{ fontSize: 25 }}>내 정보</Text>
-        <TouchableOpacity style={{padding: 10}}>
-          <Icon name="gear" color="grey" size={20} />
-        </TouchableOpacity>
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 20 }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ backgroundColor: 'lightgrey', borderRadius: 100, padding: 2, marginRight: 10 }}>
-            <MaskedView style={{ backgroundColor: 'transparent' }} maskElement={<View style={{backgroundColor: 'black', width: 40, height: 40, borderRadius: 100 }} />}>
-              <Icon name="user" size={50} color="white" style={{backgroundColor: 'lightgrey', width: 40, height: 40, textAlignVertical: 'center', textAlign: 'center' }} />
-            </MaskedView>
-          </View>
-          {renderName()}
-          <TouchableOpacity onPress={startEdit}>
-            <Icon name="pencil" color="grey" size={18} style={{ padding: 5, backgroundColor: 'transparent' }} />
+    <View style={{ backgroundColor: 'dodgerblue', flex: 1, alignContent: 'center' }}>
+      <View style={{ backgroundColor: 'white', margin: 20, elevation: 3, borderRadius: 10, paddingVertical: 20 }}>
+        <View style={{ margin: 20, marginVertical: 0, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Text style={{ fontSize: 25 }}>내 정보</Text>
+          <TouchableOpacity style={{padding: 10}}>
+            <Icon name="gear" color="grey" size={20} />
           </TouchableOpacity>
         </View>
-        {renderCompleteButton()}
-      </View>
-      <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-        <TouchableOpacity style={{ padding: 10, backgroundColor: 'grey', borderRadius: 10 }}>
-          <Text style={{ color: 'white' }}>회원 탈퇴</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', margin: 20 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ backgroundColor: 'lightgrey', borderRadius: 100, padding: 2, marginRight: 10 }}>
+              <MaskedView style={{ backgroundColor: 'transparent' }} maskElement={<View style={{backgroundColor: 'black', width: 40, height: 40, borderRadius: 100 }} />}>
+                <Icon name="user" size={50} color="white" style={{backgroundColor: 'lightgrey', width: 40, height: 40, textAlignVertical: 'center', textAlign: 'center' }} />
+              </MaskedView>
+            </View>
+            {renderName()}
+            <TouchableOpacity onPress={startEdit}>
+              <Icon name="pencil" color="grey" size={18} style={{ padding: 5, backgroundColor: 'transparent' }} />
+            </TouchableOpacity>
+          </View>
+          {renderCompleteButton()}
+        </View>
+        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+          <TouchableOpacity style={{ padding: 10, backgroundColor: '#ef3832', borderRadius: 10, width: 100, height: 40, alignItems: 'center' }}>
+            <Text style={{ color: 'white' }}>회원 탈퇴</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

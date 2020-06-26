@@ -1,6 +1,7 @@
 import React, { useRef, useState, useContext } from 'react';
 import { StyleSheet, Text, View, Animated, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaskedView from '@react-native-community/masked-view';
 import { TouchableOpacity, TouchableHighlight, FlatList } from 'react-native-gesture-handler';
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
 });
 
 const MyPage = (props) => {
+  const navigation = useNavigation();
   const dummyUser = {
     name: '바보똥개',
     email: 'dummyEmail@gmail.com',
@@ -48,6 +50,10 @@ const MyPage = (props) => {
     return acc.concat(ele);
   }, []);
 
+  const navigateToMyInfoManager = () => {
+    navigation.navigate('MyInfoManager');
+  };
+
   return (
     <ScrollView style={{ flex: 3, backgroundColor: '#1E90FF'}}>
       <View style={{ height: 20 }} />
@@ -62,7 +68,7 @@ const MyPage = (props) => {
             </View>
             <Text style={{ fontSize: 17 }}>{`${dummyUser.name}`}</Text>
           </View>
-          <TouchableHighlight underlayColor="rgba(0,0,0,0.1)" onPressIn={()=>{}} style={{margin: 10, backgroundColor: '#03D6A7', padding: 5, paddingHorizontal: 10, borderRadius: 5 }}>
+          <TouchableHighlight underlayColor="rgba(0,0,0,0.1)" onPress={navigateToMyInfoManager} style={{margin: 10, backgroundColor: '#03D6A7', padding: 5, paddingHorizontal: 10, borderRadius: 5 }}>
             <Text style={{fontSize: 12, color: 'white', fontWeight: 'bold'}}>내 정보 관리</Text>
           </TouchableHighlight>
         </View>
