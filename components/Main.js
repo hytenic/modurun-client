@@ -1,22 +1,20 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, StatusBar,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { DrawerNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
-import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
 import FilterModal, { InputUsernameModal } from './modules/Modal';
 import getEnvVars from '../environment';
 import ScheduleManager from './modules/ScheduleManager';
-import { getUserLocation } from './modules/utils';
-import { getUserSchedules } from './modules/API/schedule';
-import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
+import { getUserLocation, getFilterCondition } from './modules/utils';
+import { getSchedules } from './modules/API/schedule';
 import reduxStore from '../redux/store';
+// import schedules from './modules/API/SG/schedules';
 
 const styles = StyleSheet.create({
   container: {
@@ -74,46 +72,67 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Main = () => {
+const Main = () => {
   const navigation = useNavigation();
   const [typing, setTyping] = useState(false);
   const [destination, setDestination] = useState('');
   const [predictions, setPredictions] = useState([]);
   const [searching, setSearching] = useState(false);
-  const [userSchedules, setUserSchedules] = useState([]);
+  const [schedules, setSchedules] = useState([]);
   const [location, setLocation] = useState({
     longitude: 0,
     latitude: 0,
   });
-  const { apiKey } = getEnvVars('dev');
-  useEffect(() => {
-    console.log('main ', reduxStore.getState().userInfo.user);
-  }, []);
-
-  useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', () => setTyping(false));
-    Keyboard.addListener('keyboardDidShow', () => setTyping(true));
-    return () => {
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(false));
-      Keyboard.removeListener('keyboardDidShow', () => setTyping(true));
-    };
-  }, [typing]);
 
   useEffect(() => {
     async function initializeLocation() {
-      const { latitude, longitude } = await getUserLocation();
-      setLocation({
-        ...location,
-        latitude,
-        longitude,
-      });
+      try {
+        const { latitude, longitude } = await getUserLocation();
+        setLocation({
+          ...location,
+          latitude,
+          longitude,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
     initializeLocation();
   }, []);
 
-  // useEffect(() => {
-  // 위치가 바뀌면 스케줄도 바뀌어야 한다.
-  // }, [location]);
+  const setTypingFalse = () => {
+    setSearching(false);
+  };
+
+  const setTypingTrue = () => {
+    setSearching(true);
+  };
+
+  const filter = getFilterCondition();
+  const [filterCondition, setFilterCondition] = useState(filter);
+  const { apiKey } = getEnvVars('dev');
+
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', setTypingFalse);
+    Keyboard.addListener('keyboardDidShow', setTypingTrue);
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', setTypingFalse);
+      Keyboard.removeListener('keyboardDidShow', setTypingTrue);
+    };
+  }, []);
+
+  useEffect(() => {
+    const getSchedulesAPI = async () => {
+      const scheduleData = await getSchedules(filterCondition, location);
+      if (!scheduleData && scheduleData === false) {
+        setSchedules([]);
+      } else {
+        setSchedules(scheduleData);
+      }
+    };
+    getSchedulesAPI();
+  }, [location, filterCondition]);
 
   const searched = () => {
     Keyboard.dismiss();
@@ -180,19 +199,18 @@ export const Main = () => {
   const renderMainView = () => {
     if (!searching) {
       return (
-        <TrackMaster mode="scheduleViewer" schedules={dummySchedules} initialCamera={location} moveOnMarkerPress />
+        <TrackMaster mode="scheduleViewer" schedules={schedules} initialCamera={location} moveOnMarkerPress />
       );
     }
     return (<></>);
   };
 
   const addSchedule = () => {
-    navigation.navigate('Scheduler');
+    navigation.navigate('SchedulerScreen');
   };
 
   const usernameInput = () => {
     const { isFirstLogin } = reduxStore.getState().userInfo.user;
-    console.log(isFirstLogin);
     if (!isFirstLogin) {
       return (
         <></>
@@ -205,6 +223,7 @@ export const Main = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="dodgerblue" />
       <View style={styles.main}>
         <View style={styles.header}>
           <View style={{ flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3 }}>
@@ -245,17 +264,4 @@ export const Main = () => {
   );
 };
 
-const Drawer = createDrawerNavigator();
-
-function SideBar() {
-  return (
-    <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="메인" component={Main} />
-      <Drawer.Screen name="트랙 관리" component={TrackManager} />
-      <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
-      <Drawer.Screen name="마이페이지" component={MyPage} />
-    </Drawer.Navigator>
-  );
-}
-
-export default SideBar;
+export default Main;

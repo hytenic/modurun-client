@@ -76,8 +76,6 @@ const FilterModal = ({modal}) => {
     } else {
       setDateTo(selectedDate);
     }
-    console.log(dateFrom);
-    console.log(dateTo);
   };
 
   const onChangeTimePicker = (event, selectedTime) => {
@@ -87,8 +85,6 @@ const FilterModal = ({modal}) => {
     } else {
       setTimeTo(selectedTime);
     }
-    console.log(timeFrom);
-    console.log(timeTo);
   };
 
   const DistanceButtonComponent = ({ dis }) => (
@@ -214,7 +210,6 @@ const FilterModal = ({modal}) => {
                   totalLength,
                 };
                 setModalVisible(false);
-                console.log(`거리 ${obj.distance} 날짜 ${obj.dateFrom} ~ ${obj.dateTo} 시간 ${obj.timeFrom} ~ ${obj.timeTo} 길이 ${obj.totalLength}`);
                 initialize();
               }}
             >

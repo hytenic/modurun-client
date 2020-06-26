@@ -40,6 +40,7 @@ import APITester from './components/modules/APITester';
 import TestLogin from './components/modules/TestLogin';
 import Rate from './components/modules/Rate';
 import MyInfoManger from './components/modules/MyInfoManger';
+import ProductionApp from './components/ProductionApp';
 // import SideBar from './components/Main';
 
 navigator.geolocation = Location;
@@ -78,6 +79,7 @@ export default function App() {
           <Stack.Screen options={{ headerShown: false }} name="SingleTrackViewerInDetail" component={SingleTrackViewerInDetail} />
           <Stack.Screen name="Main" component={SideBar} />
           <Stack.Screen name="MyInfoManager" component={MyInfoManger} />
+          <Stack.Screen options={{ headerShown: false }} name="ProductionApp" component={ProductionApp} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

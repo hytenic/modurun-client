@@ -21,7 +21,6 @@ const MainHeader = ({ navigation }) => {
       <TextInput
         style={styles.search}
         onEndEditing={(result) => {
-          console.log(result.nativeEvent.text)
           Location.geocodeAsync(result.nativeEvent.text)
             .then((data) => {
               console.log('hh ',data[0]);

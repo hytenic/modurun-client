@@ -56,8 +56,8 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch }) => {
   const toggleShowMore = () => setShowMoreVisible(!showMoreVisible);
 
   const viewTrackOnMap = () => {
-    setSingleTrack(data);
-    navigation.navigate('SingleTrackViewerInDetail');
+    dispatch(actions.setSingleTrack(data));
+    navigation.navigate('SingleTrackViewerScreen');
   };
 
   const askIfDelete = () => {

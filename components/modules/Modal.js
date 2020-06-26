@@ -5,6 +5,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
+
 import { patchUserName } from './API/user';
 import { customizingDateAndTime } from './utils';
 
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 20,
+    padding: 30,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
@@ -34,6 +35,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  roof: {
+    width: 300,
+    height: 30,
+    backgroundColor: '#2196f3',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   openButton: {
     backgroundColor: '#2196F3',
@@ -46,6 +54,7 @@ const styles = StyleSheet.create({
   searchButton: {
     backgroundColor: '#2196F3',
     marginTop: 30,
+    marginBottom: 30,
     width: 100,
     borderRadius: 10,
     padding: 10,
@@ -101,19 +110,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: 250,
     height: 40,
-    padding: 2,
+    paddingRight: 10,
     margin: 10,
   },
   icon: {
-    // backgroundColor: 'blue',
     width: 25,
     height: 25,
     marginTop: 2,
     marginRight: 10,
   },
   filterTitle: {
-    // backgroundColor: '#FFFFF3',
-    fontSize: 15,
+    color: '#2196f3',
+    fontSize: 16,
     borderRadius: 5,
     padding: 5,
     marginRight: 15,
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const FilterModal = ({ modal }) => {
+const FilterModal = ({ value, setAction }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [distance, setDistance] = useState(0);
   const [buttonPressed, setButtonPressed] = useState(false);
@@ -136,16 +144,26 @@ const FilterModal = ({ modal }) => {
   const [timeTo, setTimeTo] = useState(new Date());
   const [totalLength, setTotalLength] = useState(0);
 
-  const DistanceButtonComponent = ({ dis }) => (
-    <TouchableOpacity
-      style={styles.distanceButton}
-      onPress={() => {
-        setDistance(dis);
-      }}
-    >
-      <Text style={{color: 'white', fontWeight: 'bold'}}>{`${dis}m`}</Text>
-    </TouchableOpacity>
-  );
+  const DistanceButtonComponent = ({ dis }) => {
+    if (dis >= 1000) {
+      return (
+        <TouchableOpacity
+          style={styles.distanceButton}
+          onPress={() => setDistance(dis)}
+        >
+          <Text style={{color: 'white', fontWeight: 'bold'}}>{`${(dis / 1000).toFixed(0)}km`}</Text>
+        </TouchableOpacity>
+      );
+    }
+    return (
+      <TouchableOpacity
+        style={styles.distanceButton}
+        onPress={() => setDistance(dis)}
+      >
+        <Text style={{color: 'white', fontWeight: 'bold'}}>{`${dis}m`}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   const DatePickerComponent = ({
     show, mode, fromTo, value,
@@ -199,6 +217,22 @@ const FilterModal = ({ modal }) => {
     }
   };
 
+  const filtering = async () => {
+    setModalVisible(!modalVisible);
+    const filterCondition = {
+      ...value,
+      maxLength: (totalLength * 1000),
+      distance,
+      date: {
+        from: dateFrom,
+        to: dateTo,
+        timeFrom,
+        timeTo,
+      },
+    };
+    setAction(filterCondition);
+  };
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -216,12 +250,13 @@ const FilterModal = ({ modal }) => {
           }}
         >
           <View style={styles.modalView}>
+            <View style={styles.roof} />
             <View style={styles.row}>
               <Text style={styles.filterTitle}>거리</Text>
+              <DistanceButtonComponent dis={5000} />
+              <DistanceButtonComponent dis={3000} />
               <DistanceButtonComponent dis={1000} />
               <DistanceButtonComponent dis={500} />
-              <DistanceButtonComponent dis={300} />
-              <DistanceButtonComponent dis={100} />
             </View>
             <View style={styles.row}>
               <Text style={styles.filterTitle}>날짜</Text>
@@ -236,9 +271,7 @@ const FilterModal = ({ modal }) => {
                   )
                   : <></>
               }
-              {/* <Text>{customizingDateAndTime(dateFrom, 0)}</Text> */}
               <DatePickerComponent show={datePickerShow} mode="date" fromTo="from" value={customizingDateAndTime(dateFrom, 0)} />
-              {/* <Text>{customizingDateAndTime(dateTo, 0)}</Text> */}
               <DatePickerComponent show={datePickerShow} mode="date" fromTo="to" value={customizingDateAndTime(dateTo, 0)} />
             </View>
 
@@ -267,9 +300,7 @@ const FilterModal = ({ modal }) => {
 
             <TouchableHighlight
               style={styles.searchButton}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
+              onPress={filtering}
             >
               <Text style={styles.textStyle}>검색</Text>
             </TouchableHighlight>
@@ -340,7 +371,7 @@ export const InputUsernameModal = ({}) => {
   );
 };
 
-export const ScheduleValidationModal = ({ visible, setVisible ,value}) => {
+export const ScheduleValidationModal = ({ visible, setVisible, value }) => {
   // const [modalVisible, setModalVisible] = useState(visible);
 
   const closeModal = () => {

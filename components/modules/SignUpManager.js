@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity, Image,
+  StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Keyboard,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { postSignUp, getEmailDupli } from './API/user';
@@ -100,9 +100,25 @@ const SignUpManager = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [justAfterEmail, setJustAfterEmail] = useState(false);
-  // let duplication = false;
+  const [typing, setTyping] = useState(false);
 
-  // eslint-disable-next-line func-names
+  const setTypingFalse = () => {
+    setTyping(false);
+  };
+
+  const setTypingTrue = () => {
+    setTyping(true);
+  };
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidHide', setTypingFalse);
+    Keyboard.addListener('keyboardDidShow', setTypingTrue);
+    return () => {
+      Keyboard.removeListener('keyboardDidHide', setTypingFalse);
+      Keyboard.removeListener('keyboardDidShow', setTypingTrue);
+    };
+  }, []);
+  
   const emailDuplication = async function (emailCheck) {
     const res = await getEmailDupli(emailCheck);
     if (res) {
@@ -113,93 +129,196 @@ const SignUpManager = () => {
   };
 
   const goToSignInPage = () => {
-    navigation.navigate('SignInManager');
+    navigation.navigate('SignInScreen');
+  };
+
+  const signinBtnRendering = () => {
+    if (!typing) {
+      return (
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={[styles.btn, styles.signinPageBtn]}
+            title="회원가입"
+            onPress={goToSignInPage}
+          >
+            <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>로그인</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    return (<></>);
+  };
+
+  const headerRendering = () => {
+    if (!typing) {
+      return (
+        <View style={styles.header}>
+          <View style={styles.circle}>
+            <View style={styles.logo}>
+              <Image
+                source={require('../../assets/zolaman_blue.png')}
+                style={{ weight: 60, height: 60 }}
+                resizeMode="contain"
+              />
+              <Text style={{
+                fontSize: 40, color: '#1E90FF', fontWeight: 'bold', alignSelf: 'center',
+              }}
+              >
+                모두런
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
+    }
+    return (
+      <View style={styles.header}>
+        <View style={[styles.circle, {top: -270}]} />
+      </View>
+    );
+  };
+
+  const bodyRendering = () => {
+    if (!typing) {
+      return (
+        <>
+          <View style={styles.inputArea}>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="이메일"
+              defaultValue={email}
+              onTouchStart={() => {
+                setJustAfterEmail(true);
+                setTyping(true);
+              }}
+              onChangeText={(text) => {
+                setEmail(text);
+              }}
+              onSubmitEditing={() => {
+                setTyping(false);
+              }}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="비밀번호"
+              defaultValue={password}
+              secureTextEntry
+              onTouchStart={() => {
+                if (justAfterEmail) {
+                  emailDuplication(email);
+                  setJustAfterEmail(false);
+                  setTyping(true);
+                }
+              }}
+              onChangeText={(pw) => {
+                setPassword(pw);
+              }}
+              onSubmitEditing={() => {
+                setTyping(false);
+              }}
+            />
+            <TextInput
+              style={styles.inputBox}
+              placeholder="비밀번호 확인"
+              defaultValue={confirmPassword}
+              secureTextEntry
+              onTouchStart={() => {
+                setTyping(true);
+              }}
+              onChangeText={(confirm) => {
+                setConfirmPassword(confirm);
+              }}
+              onSubmitEditing={() => {
+                setTyping(false);
+              }}
+            />
+          </View>
+          <View style={styles.buttonArea}>
+            <TouchableOpacity
+              style={[styles.btn, styles.signUpBtn]}
+              title="회원가입"
+              onPress={async () => {
+                if (password === confirmPassword) {
+                  console.log('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
+                  const res = await postSignUp(email, password);
+                  if (res) {
+                    navigation.navigate('SignInScreen');
+                  } else {
+                    console.log('이메일이나 비밀번호가 잘못되었습니다.');
+                  }
+                } else {
+                  console.log('비밀번호가 다릅니다.');
+                }
+              }}
+            >
+              <Text style={{ color: '#1E90FF', fontSize: 15, fontWeight: 'bold' }}>회원가입</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      );
+    }
+    return (
+      <View style={[styles.inputArea, { justifyContent: 'center', marginBottom: 100 }]}>
+        <TextInput
+          style={styles.inputBox}
+          placeholder="이메일"
+          defaultValue={email}
+          onTouchStart={() => {
+            setJustAfterEmail(true);
+            setTyping(true);
+          }}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+          onSubmitEditing={() => {
+            setTyping(false);
+          }}
+        />
+        <TextInput
+          style={styles.inputBox}
+          placeholder="비밀번호"
+          defaultValue={password}
+          secureTextEntry
+          onTouchStart={() => {
+            if (justAfterEmail) {
+              emailDuplication(email);
+              setJustAfterEmail(false);
+              setTyping(true);
+            }
+          }}
+          onChangeText={(pw) => {
+            setPassword(pw);
+          }}
+          onSubmitEditing={() => {
+            setTyping(false);
+          }}
+        />
+        <TextInput
+          style={styles.inputBox}
+          placeholder="비밀번호 확인"
+          defaultValue={confirmPassword}
+          secureTextEntry
+          onTouchStart={() => {
+            setTyping(true);
+          }}
+          onChangeText={(confirm) => {
+            setConfirmPassword(confirm);
+          }}
+          onSubmitEditing={() => {
+            setTyping(false);
+          }}
+        />
+      </View>
+    );
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.circle}>
-          <View style={styles.logo}>
-            <Image
-              source={require('../../assets/zolaman_blue.png')}
-              style={{ weight: 60, height: 60 }}
-              resizeMode="contain"
-            />
-            <Text style={{ fontSize: 40, color: '#1E90FF', fontWeight: 'bold', alignSelf: 'center' }}>모두런</Text>
-          </View>
-        </View>
-      </View>
+      {headerRendering()}
       <View style={styles.body}>
-        <View style={styles.inputArea}>
-          <TextInput
-            style={styles.inputBox}
-            placeholder="이메일"
-            defaultValue={email}
-            onTouchStart={() => {
-              setJustAfterEmail(true);
-            }}
-            onChangeText={(text) => {
-              setEmail(text);
-            }}
-          />
-          <TextInput
-            style={styles.inputBox}
-            placeholder="비밀번호"
-            defaultValue={password}
-            secureTextEntry
-            onTouchStart={() => {
-              if (justAfterEmail) {
-                emailDuplication(email);
-                setJustAfterEmail(false);
-              }
-            }}
-            onChangeText={(pw) => {
-              setPassword(pw);
-            }}
-          />
-          <TextInput
-            style={styles.inputBox}
-            placeholder="비밀번호 확인"
-            defaultValue={confirmPassword}
-            secureTextEntry
-            onChangeText={(confirm) => {
-              setConfirmPassword(confirm);
-            }}
-          />
-        </View>
-        <View style={styles.buttonArea}>
-          <TouchableOpacity
-            style={[styles.btn, styles.signUpBtn]}
-            title="회원가입"
-            onPress={async () => {
-              if (password === confirmPassword) {
-                console.log('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
-                const res = await postSignUp(email, password);
-                if (res) {
-                  navigation.navigate('SignInManager');
-                } else {
-                  console.log('이메일이나 비밀번호가 잘못되었습니다.');
-                }
-              } else {
-                console.log('비밀번호가 다릅니다.');
-              }
-            }}
-          >
-            <Text style={{ color: '#1E90FF', fontSize: 15, fontWeight: 'bold' }}>회원가입</Text>
-          </TouchableOpacity>
-        </View>
+        {bodyRendering()}
       </View>
-
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.btn, styles.signinPageBtn]}
-          title="회원가입"
-          onPress={goToSignInPage}
-        >
-          <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>로그인</Text>
-        </TouchableOpacity>
-      </View>
+      {signinBtnRendering()}
     </View>
   );
 };
