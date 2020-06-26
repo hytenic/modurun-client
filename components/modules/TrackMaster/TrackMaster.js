@@ -24,6 +24,7 @@ const TrackMaster = ({
   onCompleteEdit,
   initialCamera,
   moveOnMarkerPress,
+  initialTitle,
 }) => {
   // const [editable, setEditable] = useState(false);
   // const [followUser, setFollowUser] = useState(false);
@@ -59,6 +60,7 @@ const TrackMaster = ({
         <TrackEditor
           onCompleteEdit={onCompleteEdit}
           initialLocation={initialCamera}
+          initialTitle={initialTitle}
         />
       );
     }

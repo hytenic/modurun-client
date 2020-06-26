@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MaskedView from '@react-native-community/masked-view';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
@@ -11,17 +11,21 @@ import PrettyPropInDetail from './PrettyPropInDetail/PrettyPropInDetail';
 
 const styles = StyleSheet.create({
   compactTitleStyle: {
-    fontSize: 20,
+    fontSize: 15,
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+    textAlignVertical: 'center',
+    height: '100%',
   },
   trackInfo: {
     position: 'absolute',
     backgroundColor: 'white',
+    width: Dimensions.get('screen').width - 80,
+    top: 20,
+    marginHorizontal: 40,
     paddingBottom: 5,
     borderRadius: 15,
-    margin: '2%',
     shadowColor: '#000',
     shadowOffset: { width: 3, height: 3 },
     shadowOpacity: 0.4,
@@ -30,32 +34,25 @@ const styles = StyleSheet.create({
   },
   trackTitleStyle: {
     backgroundColor: 'dodgerblue',
-    height: '12%',
+    flex: 1,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     padding: 5,
     marginBottom: 5,
-    textAlignVertical: 'center',
-    textAlign: 'center',
   },
-  editCompleteButton: {
+  editCompleteButtonContainer: {
     position: 'absolute',
     top: '85%',
-    left: '25%',
+    alignSelf: 'center',
+    elevation: 10,
+    zIndex: 10,
+  },
+  editCompleteButton: {
     backgroundColor: '#03D6A7',
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
     padding: 18,
     width: 200,
-    shadowColor: '#000',
-    shadowOffset: { width: 3, height: 3 },
-    shadowOpacity: 0.4,
-    shadowRadius: 3,
-    elevation: 10,
     alignItems: 'center',
-    zIndex: 10,
+    borderRadius: 15,
   },
 });
 
@@ -68,7 +65,7 @@ const CreatedTrackInfo = ({ data }) => {
   const navigation = useNavigation();
 
   const confirmTrack = () => {
-    navigation.navigate('TrackManager');
+    navigation.navigate('TrackManagerTabs');
   };
 
   useEffect(() => {
@@ -84,26 +81,17 @@ const CreatedTrackInfo = ({ data }) => {
         <View style={styles.trackTitleStyle}>
           <Text style={styles.compactTitleStyle}>{trackTitle}</Text>
         </View>
-        <View style={{ paddingLeft: 10, paddingRight: 10, width: 180 }}>
+        <View>
           <PrettyPropInDetail name="거리" value="5km" />
-          <PrettyPropInDetail
-            name="길이"
-            value={utils.prettyLength(trackLength)}
-          />
+          <PrettyPropInDetail name="길이" value={utils.prettyLength(trackLength)} />
           <PrettyPropInDetail name="출발점" value={originInfo} />
           <PrettyPropInDetail name="도착점" value={destinationInfo} />
-          <PrettyPropInDetail
-            name="시간(남)"
-            value={utils.predictDuration(trackLength, 'm')}
-          />
-          <PrettyPropInDetail
-            name="시간(여)"
-            value={utils.predictDuration(trackLength, 'f')}
-          />
+          <PrettyPropInDetail name="시간(남)" value={utils.predictDuration(trackLength, 'm')} />
+          <PrettyPropInDetail name="시간(여)" value={utils.predictDuration(trackLength, 'f')} />
         </View>
       </View>
-      <View style={styles.editCompleteButton}>
-        <TouchableOpacity onPress={confirmTrack}>
+      <View style={styles.editCompleteButtonContainer}>
+        <TouchableOpacity onPress={confirmTrack} style={styles.editCompleteButton}>
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>
             확인
           </Text>

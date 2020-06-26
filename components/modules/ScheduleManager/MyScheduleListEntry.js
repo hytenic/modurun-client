@@ -28,7 +28,7 @@ const MyScheduleListEntry = ({ data, onLayout }) => {
   };
 
   const enterChatRoom = () => {
-    navigation.navigate('ChatRoom', {
+    navigation.navigate('ChatRoomScreen', {
       scheduleId: schedule.scheduleId,
       userId: 2 || undefined, // 리덕스로 가져와야 함
       username: '하하하하하하' || undefined, // 리덕스로 가져와야 함

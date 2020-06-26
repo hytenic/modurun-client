@@ -71,7 +71,7 @@ const Scheduler = () => {
     try {
       const completeData = await postSchedule(postData);
       if (completeData) {
-        navigation.navigate('CreatedScheduleInfo', {
+        navigation.navigate('CreatedScheduleInfoScreen', {
           completeData,
         });
       }
@@ -82,7 +82,7 @@ const Scheduler = () => {
 
   const toMyTrackList = async () => {
     const tracks = await getUserTracks();
-    navigation.navigate('MyTrackList', {
+    navigation.navigate('MyTrackListScreen', {
       setAction: setSelectedTrack,
       tracks,
     });

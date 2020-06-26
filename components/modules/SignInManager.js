@@ -101,7 +101,6 @@ const SignInManager = ({ dispatch }) => {
         androidClientId: getEnvVars('dev').clientId,
       });
       if (result.type === 'success') {
-        console.log(result);
         setSignedIn(true);
         setAccessToken(result.accessToken);
       }
@@ -113,18 +112,18 @@ const SignInManager = ({ dispatch }) => {
 
   const emailSignIn = async (inputEmail, inputPassword) => {
     const userInfo = await postEmailLogin(inputEmail, inputPassword);
-    dispatch(actions(userInfo));
+    dispatch(actions(userInfo))
     if (userInfo) {
-      navigation.navigate('Main');
+      navigation.navigate({ name: 'MainDrawer', params: { test: 'test' } });
     }
   };
 
   const goToMain = () => {
-    if (signedIn) navigation.navigate('Main');
+    if (signedIn) navigation.navigate('MainDrawer');
   };
 
   const goToSignUpPage = () => {
-    navigation.navigate('SignUpManager');
+    navigation.navigate('SignUpScreen');
   };
 
   const btnRendering = () => {

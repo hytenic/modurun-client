@@ -45,7 +45,6 @@ const ButtonComponent = ({ type, title, info, onPressAction }) => {
         style={[styles.emailbtn, styles.btn]}
         title={title}
         onPress={() => {
-          console.log(`${email} ${password}`);
           onPressAction(email, password);
         }}
       >

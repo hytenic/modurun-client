@@ -2,11 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import {
   StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { createDrawerNavigator, DrawerContent } from '@react-navigation/drawer';
-import { DrawerNavigator } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Entypo';
-import Scheduler from './modules/Scheduler/Scheduler';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
@@ -15,7 +13,6 @@ import getEnvVars from '../environment';
 import ScheduleManager from './modules/ScheduleManager';
 import { getUserLocation, getFilterCondition } from './modules/utils';
 import { getSchedules } from './modules/API/schedule';
-import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
 import reduxStore from '../redux/store';
 // import schedules from './modules/API/SG/schedules';
 
@@ -75,7 +72,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Main = () => {
+const Main = () => {
   const navigation = useNavigation();
   const [typing, setTyping] = useState(false);
   const [destination, setDestination] = useState('');
@@ -209,7 +206,7 @@ export const Main = () => {
   };
 
   const addSchedule = () => {
-    navigation.navigate('Scheduler');
+    navigation.navigate('SchedulerScreen');
   };
 
   const usernameInput = () => {
@@ -226,6 +223,7 @@ export const Main = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="dodgerblue" />
       <View style={styles.main}>
         <View style={styles.header}>
           <View style={{ flex: 75, flexDirection: 'row', padding: 5, backgroundColor: 'white', borderRadius: 10, elevation: 3 }}>
@@ -266,17 +264,4 @@ export const Main = () => {
   );
 };
 
-const Drawer = createDrawerNavigator();
-
-function SideBar() {
-  return (
-    <Drawer.Navigator initialRouteName="Main">
-      <Drawer.Screen name="mainBar" component={Main} />
-      <Drawer.Screen name="트랙 관리" component={TrackManager} />
-      <Drawer.Screen name="스케줄 관리" component={ScheduleManager} />
-      <Drawer.Screen name="마이페이지" component={MyPage} />
-    </Drawer.Navigator>
-  );
-}
-
-export default SideBar;
+export default Main;
