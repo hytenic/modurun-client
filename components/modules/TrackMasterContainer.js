@@ -87,7 +87,7 @@ function TrackMasterContainer({ mode, updateCreatedTrack }) {
           mode={mode}
           onCompleteEdit={(track) => {
             updateCreatedTrack(track);
-            navigation.navigate('CreatedTrackInfo');
+            navigation.navigate('CreatedTrackInfoScreen');
           }}
         />
       );

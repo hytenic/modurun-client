@@ -6,6 +6,7 @@ import createdTrackInfoReducer from './CreatedTrackInfo';
 import chatRommReducer from './ChatRoom';
 import trackManagerReducer from './TrackManager';
 import userReducer from './User';
+import productionNavReducer from './ProductionNav';
 
 const rootReducer = combineReducers({
   myPage: myPageReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   chatRoom: chatRommReducer,
   trackManager: trackManagerReducer,
   userInfo: userReducer,
+  productionNav: productionNavReducer,
 });
 
 export default rootReducer;

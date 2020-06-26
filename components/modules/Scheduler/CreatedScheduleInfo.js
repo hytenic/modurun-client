@@ -85,7 +85,7 @@ const CreatedScheduleInfo = ({ route }) => {
   const navigation = useNavigation();
 
   const goToMainPage = () => {
-    navigation.navigate('Main');
+    navigation.navigate('MainDrawer');
   };
 
   return (
