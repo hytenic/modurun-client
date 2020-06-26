@@ -3,10 +3,13 @@ import { View, Text, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { connect } from 'react-redux';
 import styles from './styles';
 import * as utils from '../ScheduleUtils/utils';
 import PrettyProp from '../PrettyProp/PrettyProp';
 import ToggleBox from './toggleBox/index';
+import * as actions from '../../../redux/action/SingleTrackViewer/creator';
+import store from '../../../redux/store';
 
 const titleShorter = (title, n) => {
   let shortTitle = '';
@@ -17,7 +20,7 @@ const titleShorter = (title, n) => {
   return title;
 };
 
-const MyScheduleListEntry = ({ data, onLayout }) => {
+const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
   const navigation = useNavigation();
   const { track, schedule } = data;
   const [showMoreVisible, setShowMoreVisible] = useState(false);
@@ -25,6 +28,11 @@ const MyScheduleListEntry = ({ data, onLayout }) => {
 
   const toggleShowMore = () => {
     setShowMoreVisible(!showMoreVisible);
+  };
+
+  const viewDetailTrack = () => {
+    dispatch(actions.setSingleTrack(data.track));
+    navigation.navigate('SingleTrackViewerScreen');
   };
 
   const enterChatRoom = () => {
@@ -68,7 +76,7 @@ const MyScheduleListEntry = ({ data, onLayout }) => {
           <TouchableOpacity onPress={utils.joinSchedule} style={styles.cancel}>
             <Text style={{ color: 'white', fontSize: 16 }}>참가 취소하기</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.showMore}>
+          <TouchableOpacity style={styles.showMore} onPress={viewDetailTrack}>
             <Text style={{ color: 'white', fontSize: 16 }}>자세히 보기</Text>
           </TouchableOpacity>
         </View>
@@ -77,4 +85,4 @@ const MyScheduleListEntry = ({ data, onLayout }) => {
   );
 };
 
-export default MyScheduleListEntry;
+export default connect(null, null)(MyScheduleListEntry);
