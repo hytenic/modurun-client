@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   mapStyle: {
-    // height: '100%',
     flex: 1,
   },
   toggleContainer(toggled) {
@@ -117,31 +116,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calloutView: {
-    width: 180,
-    // paddingVertical: 10,
-    // paddingHorizontal: 10,
+    width: 250,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     alignContent: 'center',
     backgroundColor: 'rgba(255,255,255,0.95)',
-    borderRadius: 15,
-    borderWidth: 1,
+    borderRadius: 10,
+    borderWidth: 3,
     borderColor: 'rgba(0,0,0,0.4)',
   },
   calloutTitle: {
-    backgroundColor: 'rgba(33, 150, 243, 1)',
-    width: 180,
+    backgroundColor: 'black',
     color: 'white',
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+    borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 5,
     alignSelf: 'center',
-    alignContent: 'center',
     fontWeight: 'bold',
   },
   calloutSeperator: {
-    // height: 1,
-    // backgroundColor: 'grey',
-    // marginVertical: 10,
+    height: 1,
+    backgroundColor: 'grey',
+    marginVertical: 10,
   },
   callloutPropRow: {
     flexDirection: 'row',
@@ -156,7 +152,7 @@ const styles = StyleSheet.create({
       color,
     };
   },
-  calloutPropValue(backgroundColor = '#edf0ff', color = 'black') {
+  calloutPropValue(backgroundColor = '#EDF0FF', color = 'black') {
     return {
       padding: 5,
       backgroundColor,
@@ -165,5 +161,4 @@ const styles = StyleSheet.create({
     };
   },
 });
-
 export default styles;
