@@ -293,7 +293,7 @@ const FilterModal = ({ value, setAction }) => {
 
             <View style={styles.row}>
               <Text style={styles.filterTitle}>길이</Text>
-              <TextInput style={{ width: 100, height: 40, paddingLeft: 10, backgroundColor: '#F4F4F4', borderRadius: 10, zIndex: 25 }} placeholder="길이" keyboardType="numeric" onTouchStart={() => {console.log('뭐야')}} onChangeText={(text) => setTotalLength(text)} />
+              <TextInput style={{ width: 100, height: 40, paddingLeft: 10, backgroundColor: '#F4F4F4', borderRadius: 10 }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
               <Text>km 이내</Text>
             </View>
 
