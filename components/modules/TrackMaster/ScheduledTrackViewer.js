@@ -53,10 +53,6 @@ const ScheduledTrackViewer = ({
 
   const syntheticInitialCamera = utils.makeCamera(initialCamera);
 
-  if (mapView.current && camera) {
-    mapView.current.animateCamera(utils.makeCamera(camera));
-  }
-
   const mapViewProps = {
     rotateEnabled: false,
     style: [styles.mapStyle, {
@@ -76,7 +72,7 @@ const ScheduledTrackViewer = ({
       onRegionChange(lastRegion);
     },
     initialCamera: initialCamera ? syntheticInitialCamera : curPosCamera,
-    camera: camera || initialCamera,
+    camera: utils.makeCamera(camera),
   };
 
   const onMarkerPress = ({ schedules: relatedSchedules, track }) => {
