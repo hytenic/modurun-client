@@ -151,7 +151,7 @@ const Main = () => {
   }, [location, filterCondition]);
 
   const searched = () => {
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
     setSearching(false);
     setDestination('');
   };
@@ -203,11 +203,12 @@ const Main = () => {
   ));
 
   const renderRecommendation = () => {
+    console.log('hello');
     if (searching) {
       // {/* <View style={styles.main}>
       // </View> */}
       return (
-        <ScrollView keyboardShouldPersistTaps={true} style={{ marginTop: 80, flex: 1, zIndex: 10}}>
+        <ScrollView keyboardShouldPersistTaps="never" style={{ marginTop: 80, flex: 1 }} onTouchStart={() => { console.log('개빡치네')}}>
           {predictionsList}
         </ScrollView>
       );
