@@ -16,7 +16,7 @@ const ScheduleListEntry = ({ data, onClickedParticpate}) => {
       <View style={styles.descContainer}>
         <PrettyProp name="시작일시" value={utils.convertDate(data.from)} color="rgba(30, 102, 179, 1)" />
         <PrettyProp name="종료일시" value={utils.convertDate(data.to)} color="rgba(112, 30, 179, 1)" />
-        <PrettyProp name="소요시간" value={utils.convertDuration(data.to - data.from)} color="rgba(179, 30, 114, 1)" />
+        <PrettyProp name="소요시간" value={utils.convertDuration(new Date(data.to) - new Date(data.from))} color="rgba(179, 30, 114, 1)" />
         <View style={{ height: 1, backgroundColor: 'rgba(0,0,0,0.3)', marginVertical: 10 }} />
         <TouchableOpacity onPress={()=>{onClickedParticpate(data.scheduleId)}} style={styles.joinSchedule}>
           <Text style={{ color: 'white', fontSize: 16 }}>일정 참가하기</Text>

@@ -29,7 +29,7 @@ const ScheduledTrackViewer = ({
     const schedule = {
       scheduleTitle: cur.title,
       from: cur.scheduleFrom,
-      to: cur.schedulTo,
+      to: cur.scheduleTo,
       participants: cur.participants,
       userjoined: cur.userjoined,
       scheduleId: cur.id,
