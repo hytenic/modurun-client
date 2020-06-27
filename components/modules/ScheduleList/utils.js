@@ -37,12 +37,12 @@ const dayToKor = (dayNum, isShort) => {
 const prettyHour = (hour) => {
   let front;
   let adjust;
-  if (hour >= 2 && hour < 6) front = '새벽'
-  if (hour >= 6 && hour < 12) front = '오전'
-  if (hour >= 12 && hour < 18) front = '오후'
-  if (hour >= 18 && hour < 22) front = '저녁'
-  if (hour >= 22 && hour <= 24) front = '밤'
-  if (hour >= 0 && hour < 2) front = '밤'
+  if (hour >= 2 && hour < 6) front = '새벽 '
+  if (hour >= 6 && hour < 12) front = '오전 '
+  if (hour >= 12 && hour < 18) front = '오후 '
+  if (hour >= 18 && hour < 22) front = '저녁 '
+  if (hour >= 22 && hour <= 24) front = '밤 '
+  if (hour >= 0 && hour < 2) front = '밤 '
   if (hour < 12) adjust = 0;
   if (hour > 12) adjust = -12;
   let adjustedHour = Number(hour) + adjust;
