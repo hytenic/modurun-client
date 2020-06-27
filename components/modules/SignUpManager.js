@@ -100,6 +100,7 @@ const SignUpManager = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [justAfterEmail, setJustAfterEmail] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
   const [typing, setTyping] = useState(false);
 
   const setTypingFalse = () => {
@@ -123,8 +124,10 @@ const SignUpManager = () => {
     const res = await getEmailDupli(emailCheck);
     if (res) {
       console.log('이메일 중복 없음');
+      setDuplicate(false);
     } else {
       console.log('이메일 중복');
+      setDuplicate(true);
     }
   };
 
@@ -184,7 +187,7 @@ const SignUpManager = () => {
         <>
           <View style={styles.inputArea}>
             <TextInput
-              style={styles.inputBox}
+              style={[styles.inputBox, duplicate ? {borderColor: 'red', borderWidth: 1} : null]}
               placeholder="이메일"
               defaultValue={email}
               onTouchStart={() => {
@@ -199,7 +202,7 @@ const SignUpManager = () => {
               }}
             />
             <TextInput
-              style={styles.inputBox}
+              style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
               placeholder="비밀번호"
               defaultValue={password}
               secureTextEntry
@@ -218,7 +221,7 @@ const SignUpManager = () => {
               }}
             />
             <TextInput
-              style={styles.inputBox}
+              style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
               placeholder="비밀번호 확인"
               defaultValue={confirmPassword}
               secureTextEntry
@@ -260,7 +263,7 @@ const SignUpManager = () => {
     return (
       <View style={[styles.inputArea, { justifyContent: 'center', marginBottom: 100 }]}>
         <TextInput
-          style={styles.inputBox}
+          style={[styles.inputBox, duplicate ? {borderColor: 'red', borderWidth: 1} : null]}
           placeholder="이메일"
           defaultValue={email}
           onTouchStart={() => {
@@ -275,7 +278,7 @@ const SignUpManager = () => {
           }}
         />
         <TextInput
-          style={styles.inputBox}
+          style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
           placeholder="비밀번호"
           defaultValue={password}
           secureTextEntry
@@ -294,7 +297,7 @@ const SignUpManager = () => {
           }}
         />
         <TextInput
-          style={styles.inputBox}
+          style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
           placeholder="비밀번호 확인"
           defaultValue={confirmPassword}
           secureTextEntry
