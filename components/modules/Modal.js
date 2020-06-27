@@ -5,9 +5,10 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
-
+import * as utils from './ScheduleList/utils';
 import { patchUserName } from './API/user';
 import { customizingDateAndTime } from './utils';
+import request from './API/SG/utils';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 1,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.2,
     shadowRadius: 3,
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 1,
-      height: 1
+      height: 1,
     },
     shadowOpacity: 0.2,
     shadowRadius: 3,
@@ -127,6 +128,14 @@ const styles = StyleSheet.create({
     color: '#1E90FF',
     fontWeight: 'bold',
   },
+  particpateButton: {
+    borderRadius: 10,
+    paddingTop: 5,
+    // alignItems: 'center',
+    width: 70,
+    height: 30,
+    elevation: 2,
+  },
 });
 
 const FilterModal = ({ value, setAction }) => {
@@ -150,7 +159,7 @@ const FilterModal = ({ value, setAction }) => {
           style={styles.distanceButton}
           onPress={() => setDistance(dis)}
         >
-          <Text style={{color: 'white', fontWeight: 'bold'}}>{`${(dis / 1000).toFixed(0)}km`}</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>{`${(dis / 1000).toFixed(0)}km`}</Text>
         </TouchableOpacity>
       );
     }
@@ -159,7 +168,7 @@ const FilterModal = ({ value, setAction }) => {
         style={styles.distanceButton}
         onPress={() => setDistance(dis)}
       >
-        <Text style={{color: 'white', fontWeight: 'bold'}}>{`${dis}m`}</Text>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>{`${dis}m`}</Text>
       </TouchableOpacity>
     );
   };
@@ -168,7 +177,9 @@ const FilterModal = ({ value, setAction }) => {
     show, mode, fromTo, value,
   }) => (
     <TouchableOpacity
-      style={{ marginRight: 15, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#1E90FF', paddingBottom: 3 }}
+      style={{
+        marginRight: 15, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#1E90FF', paddingBottom: 3,
+      }}
       onPress={() => {
         setDatePickerShow(!show);
         setPickerMode(mode);
@@ -183,7 +194,9 @@ const FilterModal = ({ value, setAction }) => {
     show, mode, fromTo, value,
   }) => (
     <TouchableOpacity
-      style={{ marginRight: 5, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#1E90FF', paddingBottom: 3 }}
+      style={{
+        marginRight: 5, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#1E90FF', paddingBottom: 3,
+      }}
       onPress={() => {
         setTimePickerShow(!show);
         setPickerMode(mode);
@@ -293,7 +306,14 @@ const FilterModal = ({ value, setAction }) => {
 
             <View style={styles.row}>
               <Text style={styles.filterTitle}>길이</Text>
-              <TextInput style={{ width: 100, height: 40, paddingLeft: 10, backgroundColor: '#F4F4F4', borderRadius: 10 }} placeholder="길이" keyboardType="numeric" onChangeText={(text) => setTotalLength(text)} />
+              <TextInput
+                style={{
+                  width: 100, height: 40, paddingLeft: 10, backgroundColor: '#F4F4F4', borderRadius: 10,
+                }}
+                placeholder="길이"
+                keyboardType="numeric"
+                onChangeText={(text) => setTotalLength(text)}
+              />
               <Text>km 이내</Text>
             </View>
 
@@ -395,6 +415,53 @@ export const ScheduleValidationModal = ({ visible, setVisible, value }) => {
             >
               <Text style={styles.textStyle}>확인</Text>
             </TouchableHighlight>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </View>
+  );
+};
+
+export const ParticipateModal = ({
+  visible, setVisible, scheduleId,
+}) => {
+  // const [modalVisible, setModalVisible] = useState(visible);
+
+  const closeModal = () => {
+    setVisible(false);
+  };
+  const participate = () => {
+    console.log('일정에 참가');
+    request.request('POST', '/users/schedules', { scheduleId });
+    setVisible(false);
+  };
+  return (
+    <View style={styles.centeredView}>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={visible}
+      >
+        <TouchableOpacity
+          style={styles.modalBackground}
+          onPress={closeModal}
+        >
+          <View style={[styles.modalView, {padding: 30}]}>
+            <Text style={{fontSize: 20 , paddingBottom: 20}}>스케줄에 참가 하시겠습니까?</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableHighlight
+                style={[styles.particpateButton, { backgroundColor: '#03D6A7', marginRight: 20}]}
+                onPress={participate}
+              >
+                <Text style={styles.textStyle}>확인</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={[styles.particpateButton, { backgroundColor: '#EF3832' }]}
+                onPress={closeModal}
+              >
+                <Text style={styles.textStyle}>취소</Text>
+              </TouchableHighlight>
+            </View>
           </View>
         </TouchableOpacity>
       </Modal>
