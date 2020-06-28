@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, KeyboardAvoidingView, ScrollView,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, KeyboardAvoidingView, ScrollView, StatusBar,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -323,6 +323,7 @@ const Main = () => {
   return (
 
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="dodgerblue" />
       <View style={[styles.main, clickedTrack ? { flex: 6 } : null]}>
         <View style={styles.header}>
           {usernameInput()}
