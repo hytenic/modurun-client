@@ -11,7 +11,7 @@ import ChatRoom from './modules/ChatRoom';
 import SingleTrackViewerInDetail from './modules/SingleTrackViewerInDetail';
 import CreatedScheduleInfo from './modules/Scheduler/CreatedScheduleInfo';
 import MyTrackList from './modules/Scheduler/MyTrackList';
-import MyInfoManager from './modules/MyInfoManger';
+import MyInfoManager from './modules/MyPage/MyInfoManger';
 
 const Stack = createStackNavigator();
 

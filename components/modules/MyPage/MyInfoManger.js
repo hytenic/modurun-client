@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import MaskedView from '@react-native-community/masked-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
-import modurunAPI from './API/'
-import userActions from '../../redux/action/User/creator';
+import modurunAPI from '../API'
+import userActions from '../../../redux/action/User/creator';
 
 const MyInfoManger = ({userInfo, dispatch}) => {
   const { username } = userInfo;
