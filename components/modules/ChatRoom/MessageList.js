@@ -45,7 +45,7 @@ const MessageList = ({
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       {messages.map((message) => <Message data={message} />)}
-      <View style={{ height: 10 }} />
+      <View style={{ height: 15 }} />
     </ScrollView>
   );
 };

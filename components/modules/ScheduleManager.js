@@ -25,7 +25,7 @@ const ScheduleManager = () => {
   );
 
   const alertNoSchedule = () => (
-    <View style={{width: Dimensions.get('screen').width, height: Dimensions.get('screen').height, alignItems: 'center', justifyContent: 'center', backgroundColor: 'dodgerblue' }}>
+    <View style={{width: Dimensions.get('screen').width, height: Dimensions.get('screen').height, alignItems: 'center', justifyContent: 'center', backgroundColor: 'dodgerblue', elevation: 10 }}>
       <View style={{backgroundColor: 'white', width: Dimensions.get('screen').width - 20, marginHorizontal: 10, height: 250, borderRadius: 20, padding: 20 }}>
         <View style={{marginTop: 20}}>
           <Text style={{textAlign: 'center', textAlignVertical: 'center', fontSize: 30, fontWeight: 'bold', color: 'lightgrey'}}>ㅎㅎ</Text>

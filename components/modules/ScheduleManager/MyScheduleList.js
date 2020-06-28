@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, Dimensions } from 'react-native';
 import MyScheduleListEntry from './MyScheduleListEntry';
 
 const MyScheduleList = ({ schedules }) => (
-  <View>
+  <View style={{height: Dimensions.get('window').height}}>
     <ScrollView style={{ backgroundColor: '#2196f3' }}>
       {schedules.map((schedule) => (
         <MyScheduleListEntry key={schedule.id} data={schedule} />

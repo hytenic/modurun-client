@@ -34,7 +34,7 @@ const Message = ({data}) => {
           <View style={{ justifyContent: 'flex-end', marginRight: 5 }}>
             <Text style={{ fontSize: 10 }}>{utils.prettyTime(createdAt)}</Text>
           </View>
-          <View style={{ backgroundColor: '#13bd41', padding: 8, paddingHorizontal: 12, borderRadius: 10, maxWidth: '75%', borderWidth: 1, borderColor: 'rgb(99, 158, 255)' }}>
+          <View style={{ backgroundColor: 'dodgerblue', padding: 8, paddingHorizontal: 12, borderRadius: 10, maxWidth: '75%' }}>
             <Text style={{ color: 'white' }}>{message}</Text>
           </View>
         </View>
