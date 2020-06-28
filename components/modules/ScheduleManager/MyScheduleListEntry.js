@@ -10,7 +10,6 @@ import * as utils from '../ScheduleUtils/utils';
 import PrettyProp from '../PrettyProp/PrettyProp';
 import ToggleBox from './toggleBox/index';
 import * as actions from '../../../redux/action/SingleTrackViewer/creator';
-import store from '../../../redux/store';
 
 const titleShorter = (title, n) => {
   let shortTitle = '';
@@ -21,7 +20,7 @@ const titleShorter = (title, n) => {
   return title;
 };
 
-const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
+const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
   const navigation = useNavigation();
   const { track, schedule } = data;
   const [showMoreVisible, setShowMoreVisible] = useState(false);
@@ -40,8 +39,7 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
     navigation.navigate('ChatRoomScreen', {
       scheduleTitle: schedule.scheduleTitle,
       scheduleId: schedule.scheduleId,
-      userId: 2 || undefined, // 리덕스로 가져와야 함
-      username: '하하하하하하' || undefined, // 리덕스로 가져와야 함
+      username: userInfo.username,
     });
   };
 
@@ -87,4 +85,8 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
   );
 };
 
-export default connect(null, null)(MyScheduleListEntry);
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo.user,
+});
+
+export default connect(mapStateToProps, null)(MyScheduleListEntry);
