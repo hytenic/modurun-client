@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     backgroundColor: 'rgba(255, 255, 255, 1)',
     position: 'absolute',
-    bottom: 25,
-    right: 25,
+    bottom: 40,
+    right: 40,
     elevation: 5,
   },
 });
@@ -148,17 +148,26 @@ const Main = () => {
     };
   }, []);
 
+  const getNearSchedules = async () => {
+    const scheduleData = await getSchedules(filterCondition, location);
+    console.log('get schedules');
+    if (!scheduleData && scheduleData === false) {
+      setSchedules([]);
+    } else {
+      setSchedules(scheduleData);
+    }
+  };
+
   useEffect(() => {
-    const getSchedulesAPI = async () => {
-      const scheduleData = await getSchedules(filterCondition, location);
-      if (!scheduleData && scheduleData === false) {
-        setSchedules([]);
-      } else {
-        setSchedules(scheduleData);
-      }
-    };
-    getSchedulesAPI();
-  }, [location, filterCondition]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getNearSchedules();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    getNearSchedules();
+  }, [filterCondition, location]);
 
   const searched = () => {
     Keyboard.dismiss();
