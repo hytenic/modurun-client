@@ -5,8 +5,8 @@ import MyScheduleListEntry from './MyScheduleListEntry';
 const MyScheduleList = ({ schedules }) => (
   <View>
     <ScrollView style={{ backgroundColor: '#2196f3' }}>
-      {schedules.map((schedule, i) => (
-        <MyScheduleListEntry key={i} data={schedule} />
+      {schedules.map((schedule) => (
+        <MyScheduleListEntry key={schedule.id} data={schedule} />
       ))}
       <View style={{ height: 100 }} />
     </ScrollView>

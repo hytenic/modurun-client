@@ -27,7 +27,7 @@ const TrackList = ({ tracks, showBookmark, showAdd, getMyTracks }) => {
       <StatusBar />
       {filteredTracks.map((track) => (
         <TrackListEntry
-          key={track.trackTitle}
+          key={track.id}
           showBookmark={showBookmark}
           showAdd={showAdd}
           data={track}

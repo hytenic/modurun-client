@@ -14,7 +14,6 @@ import getEnvVars from '../environment';
 import ScheduleManager from './modules/ScheduleManager';
 import { getUserLocation, getFilterCondition } from './modules/utils';
 import { getSchedules } from './modules/API/schedule';
-import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
 import ScheduleList from './modules/ScheduleList';
 import reduxStore from '../redux/store';
 // import schedules from './modules/API/SG/schedules';
