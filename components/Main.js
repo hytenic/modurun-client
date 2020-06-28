@@ -5,6 +5,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Entypo';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
@@ -72,7 +73,18 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingTop: 10,
     paddingLeft: 15,
-    // zIndex: 10,
+  },
+  userLocationBtnView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    position: 'absolute',
+    bottom: 40,
+    right: 40,
+    elevation: 5,
   },
 });
 
@@ -100,31 +112,29 @@ const Main = () => {
     y: 0,
   });
 
-  useEffect(() => {
-    async function initializeLocation() {
-      try {
-        const { longitude, latitude } = await getUserLocation();
-        setLocation({
-          ...location,
-          latitude,
-          longitude,
-        });
-      } catch (e) {
-        console.log(e);
-      }
+  const goUserLocation = async () => {
+    try {
+      const { latitude, longitude } = await getUserLocation();
+      setLocation({
+        ...location,
+        latitude,
+        longitude,
+      });
+    } catch (e) {
+      console.log('get user location func ', e);
     }
-    initializeLocation();
-    return (() => {
-      console.log('unmount');
-    });
+  };
+
+  useEffect(() => {
+    goUserLocation();
   }, []);
 
   const setTypingFalse = () => {
-    setSearching(false);
+    setTyping(false);
   };
 
   const setTypingTrue = () => {
-    setSearching(true);
+    setTyping(true);
   };
 
   const filter = getFilterCondition();
@@ -140,17 +150,26 @@ const Main = () => {
     };
   }, []);
 
+  const getNearSchedules = async () => {
+    const scheduleData = await getSchedules(filterCondition, location);
+    console.log('get schedules');
+    if (!scheduleData && scheduleData === false) {
+      setSchedules([]);
+    } else {
+      setSchedules(scheduleData);
+    }
+  };
+
   useEffect(() => {
-    const getSchedulesAPI = async () => {
-      const scheduleData = await getSchedules(filterCondition, location);
-      if (!scheduleData && scheduleData === false) {
-        setSchedules([]);
-      } else {
-        setSchedules(scheduleData);
-      }
-    };
-    getSchedulesAPI();
-  }, [location, filterCondition]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getNearSchedules();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    getNearSchedules();
+  }, [filterCondition, location]);
 
   const searched = () => {
     Keyboard.dismiss();
@@ -206,10 +225,8 @@ const Main = () => {
 
   const renderRecommendation = () => {
     if (searching) {
-      // {/* <View style={styles.main}>
-      // </View> */}
       return (
-        <ScrollView keyboardShouldPersistTaps={true} style={{ marginTop: 80, flex: 1, zIndex: 10}}>
+        <ScrollView keyboardShouldPersistTaps="always" style={{ marginTop: 80, flex: 1 }}>
           {predictionsList}
         </ScrollView>
       );
@@ -276,6 +293,9 @@ const Main = () => {
             onTrackSelected={scheduleSelecting}
             camera={location}
           />
+          <View style={styles.userLocationBtnView}>
+            <FontAwesomeIcon style={{ marginRight: 2 }} name="location-arrow" color="rgba(30, 124, 255, 0.8)" size={33} onPress={goUserLocation}/>
+          </View>
         </View>
       );
     }

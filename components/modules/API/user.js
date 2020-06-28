@@ -80,9 +80,24 @@ const patchUserName = async (username) => {
   }
 };
 
+const signout = async () => {
+  try {
+    const response = await fetch(`${url}/users/signout`);
+    if (response.status !== 200) {
+      console.log('응답 상태 코드가 200이 아님');
+      return false;
+    }
+    console.log('응답 상태 코드 200');
+    return true;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 module.exports = {
   postEmailLogin,
   postSignUp,
   getEmailDupli,
   patchUserName,
+  signout,
 };
