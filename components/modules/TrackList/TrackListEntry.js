@@ -83,7 +83,7 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
   const askIfAdd = () => {
     Alert.alert(
       '코스 추가',
-      '코스를 추가하시겠습니까?', [
+      '내 코스에 추가하시겠습니까?', [
         {
           text: '예',
           onPress: () => {
