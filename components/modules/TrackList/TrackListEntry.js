@@ -119,7 +119,13 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
     setRequestState({ ...requesting, bookmark: true });
     modurunAPI.tracks.toggleBookmark(trackId)
       .then((res) => (res.ok ? dispatch(trackManagerActions.toggleBookmark(trackId)) : ''))
-      .then(() => setRequestState({ ...requesting, bookmark: false }));
+      .then(() => {
+        setRequestState({
+          ...requesting,
+          bookmark: false
+        });
+        getMyTracks();
+      });
   };
 
   const renderAdd = () => {

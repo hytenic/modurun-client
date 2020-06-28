@@ -115,6 +115,11 @@ const Main = () => {
       const { latitude, longitude } = await getUserLocation();
       setLocation({
         ...location,
+        latitude: 0,
+        longitude: 0,
+      });
+      setLocation({
+        ...location,
         latitude,
         longitude,
       });
