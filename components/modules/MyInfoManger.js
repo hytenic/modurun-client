@@ -30,9 +30,23 @@ const MyInfoManger = ({userInfo, dispatch}) => {
     Alert.alert('이름 바꾸기', '이름을 바꾸시겠습니까?', [okButton, cancelButton]);
   };
 
-  const startEdit = () => {
-    setEditing(true);
-    setInput('');
+  const toggleEdit = () => {
+    if (!editing) {
+      setEditing(true);
+      setInput('');
+    } else {
+      const okButton = {
+        text: '예',
+        onPress: () => {
+          setEditing(false);
+          setInput('');
+        },
+      };
+      const cancelButton = {
+        text: '아니오',
+      };
+      Alert.alert('취소', '이름 변경을 취소하시겠습니까?', [okButton, cancelButton]);
+    }
   };
 
   const renderName = () => {
@@ -66,7 +80,7 @@ const MyInfoManger = ({userInfo, dispatch}) => {
               </MaskedView>
             </View>
             {renderName()}
-            <TouchableOpacity onPress={startEdit}>
+            <TouchableOpacity onPress={toggleEdit}>
               <Icon name="pencil" color="grey" size={18} style={{ padding: 5, backgroundColor: 'transparent' }} />
             </TouchableOpacity>
           </View>
