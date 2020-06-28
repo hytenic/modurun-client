@@ -37,12 +37,12 @@ const dayToKor = (dayNum, isShort) => {
 const prettyHour = (hour) => {
   let front;
   let adjust;
-  if (hour >= 2 && hour < 6) front = '새벽'
-  if (hour >= 6 && hour < 12) front = '오전'
-  if (hour >= 12 && hour < 18) front = '오후'
-  if (hour >= 18 && hour < 22) front = '저녁'
-  if (hour >= 22 && hour <= 24) front = '밤'
-  if (hour >= 0 && hour < 2) front = '밤'
+  if (hour >= 2 && hour < 6) front = '새벽 '
+  if (hour >= 6 && hour < 12) front = '오전 '
+  if (hour >= 12 && hour < 18) front = '오후 '
+  if (hour >= 18 && hour < 22) front = '저녁 '
+  if (hour >= 22 && hour <= 24) front = '밤 '
+  if (hour >= 0 && hour < 2) front = '밤 '
   if (hour < 12) adjust = 0;
   if (hour > 12) adjust = -12;
   let adjustedHour = Number(hour) + adjust;
@@ -63,10 +63,11 @@ export const convertDate = (parsedDate) => {
   return `${month} ${date} ${day} ${hour} ${minute}`;
 }
 
-export const joinSchedule = (schedule) => {
-  let baseUrl = 'willbeadded';
-  console.log('일정 참가하는 api랑 연결해야 됨')
-  // return axios.post(`${baseUrl}/schedules/user`, {
-  //   scheduleId: schedule.id,
-  // })
-}
+export const joinSchedule = (scheduleId) => {
+  const baseUrl = 'https://modurun.xyz';
+  axios.post(`${baseUrl}/users/schedules`, JSON.stringify({
+    scheduleId,
+  })).then(res =>{
+    console.dir(res.data);
+  });
+};

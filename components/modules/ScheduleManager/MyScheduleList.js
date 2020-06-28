@@ -8,7 +8,7 @@ const MyScheduleList = ({ schedules }) => (
       {schedules.map((schedule, i) => (
         <MyScheduleListEntry key={i} data={schedule} />
       ))}
-      <View style={{ height: 100 }} />
+      <View style={{ height: 150 }} />
     </ScrollView>
   </View>
 );

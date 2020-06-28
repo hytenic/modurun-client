@@ -10,7 +10,7 @@ const MyTrackList = ({ showBookmark, showAdd, route }) => {
   if (!tracks) return <></>;
   if (!tracks.length) return <></>;
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#1E90FF'}}>
       <StatusBar />
       {tracks.map((track) => (
         <TrackListEntry

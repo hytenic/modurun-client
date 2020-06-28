@@ -2,9 +2,14 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   entryContainer: {
-    margin: 10,
-    elevation: 2,
-    borderWidth: 0,
+    backgroundColor: 'white',
+    margin: 5,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 5,
   },
   titleContainer: {
     flex: 75,

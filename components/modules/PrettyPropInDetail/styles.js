@@ -13,12 +13,12 @@ export default StyleSheet.create({
     color: '#03D6A7',
     textAlignVertical: 'center',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 13,
     marginRight: 15,
     width: '20%',
   },
   propRowValue: {
-    fontSize: 11,
+    fontSize: 13,
     color: 'black',
   },
   propRowValueContainer: {

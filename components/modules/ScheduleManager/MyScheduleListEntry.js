@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { View, Text, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IconIonicons from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
@@ -36,7 +37,7 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
   };
 
   const enterChatRoom = () => {
-    navigation.navigate('ChatRoom', {
+    navigation.navigate('ChatRoomScreen', {
       scheduleTitle: schedule.scheduleTitle,
       scheduleId: schedule.scheduleId,
       userId: 2 || undefined, // 리덕스로 가져와야 함
@@ -45,26 +46,26 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
   };
 
   const label = (
-    <Text style={{ color: 'dodgerblue', fontSize: 18, padding: 10 }}>
-      <Text style={{ fontWeight: 'bold' }}>{titleShorter(schedule.scheduleTitle, 10)}</Text>
-      <Text style={{ color: 'rgba(33, 150, 243, 0.6)', fontSize: 20, padding: 15 }}>
-        {' '}
-        (
+    <Text style={{ fontSize: 15 }}>
+      <Text style={{ fontWeight: 'bold' }}>{titleShorter(schedule.scheduleTitle, 15)}</Text>
+      <Text style={{ color: '#1E90FF', fontSize: 15, padding: 15, alignContent: 'flex-end'}}>
+        [
+        <IconIonicons name="md-person" size={20} />
         {`${schedule.participants}`}
-        명)
+        ]
       </Text>
     </Text>
   );
 
   const value = (
     <>
-      <Icon name="comments" color="dodgerblue" size={20} onPress={enterChatRoom} />
+      <Icon name="comments" color="#03D6A7" size={20} onPress={enterChatRoom} />
     </>
   );
 
   return (
     <View style={{ marginBottom: 3, padding: 2 }} onLayout={onLayout}>
-      <ToggleBox label={label} value={value} style={{ backgroundColor: 'white', margin: 5, borderRadius: 10 }} arrowSize={35} arrowColor="#2196f3">
+      <ToggleBox label={label} value={value} style={styles.entryContainer} arrowSize={35} arrowColor="#2196f3">
         <View style={styles.descContainer}>
           <View style={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
             <PrettyProp name="시작 일시" value={utils.convertDate(schedule.from)} color="dodgerblue" />

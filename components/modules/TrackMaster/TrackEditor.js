@@ -165,16 +165,23 @@ const TrackEditor = ({ curPosCamera, onCompleteEdit, initialLocation, initialTit
   });
 
   const putMarker = async (markerPos) => {
+    const locationDetectionMode = 'raw';
+
+    const rawLocation = markerPos;
     const nearestPlace = await googlePlaceApi.nearestPlace(markerPos);
     const nearestPlaceLocation = {
       latitude: nearestPlace.geometry.location.lat,
       longitude: nearestPlace.geometry.location.lng,
     };
+
+    const lastMarkerLocation = locationDetectionMode === 'raw' ? rawLocation : nearestPlaceLocation;
+
     if (markers.length && markers[markers.length - 1].chain) return;
     const updatedMarkers = [...markers, {
-      ...nearestPlaceLocation,
+      ...lastMarkerLocation,
       id: markerId,
     }];
+
     pushMarkerHistory(updatedMarkers);
     setMarkers(updatedMarkers);
     setMarkerId(markerId + 1);
