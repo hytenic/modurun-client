@@ -78,7 +78,7 @@ const ChatRoom = ({ route, data, offset, dispatch }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <MessageList
         ref={messageListRef}
         messages={data[scheduleId] || []}
