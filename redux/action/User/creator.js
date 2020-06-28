@@ -5,4 +5,12 @@ const setUserInformation = (userInfo) => ({
   payload: userInfo,
 });
 
-export default setUserInformation;
+const changeUserName = (newName) => ({
+  type: types.CHANGE_USER_NAME,
+  payload: newName,
+});
+
+export default {
+  setUserInformation,
+  changeUserName,
+};

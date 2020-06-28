@@ -109,7 +109,7 @@ const SignInManager = ({ dispatch }) => {
 
   const emailSignIn = async (inputEmail, inputPassword) => {
     const userInfo = await postEmailLogin(inputEmail, inputPassword);
-    dispatch(actions(userInfo));
+    dispatch(actions.setUserInformation(userInfo));
     setEmail('');
     setPassword('');
     if (userInfo) {
