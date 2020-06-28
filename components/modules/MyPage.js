@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaskedView from '@react-native-community/masked-view';
 import { TouchableOpacity, TouchableHighlight, FlatList } from 'react-native-gesture-handler';
-import * as actions from '../../redux/action/myPage';
 import TrackRecord from './MyPage/TrackRecord';
 import modurunAPI from './API/index';
 

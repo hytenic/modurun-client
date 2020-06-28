@@ -5,14 +5,10 @@ import MaskedView from '@react-native-community/masked-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
 import modurunAPI from './API/'
-import user from './API/user';
+import userActions from '../../redux/action/User/creator';
 
-const dummyUser = {
-  username: '바보똥개',
-};
-
-const MyInfoManger = ({userInfo}) => {
-  const { username } = dummyUser;
+const MyInfoManger = ({userInfo, dispatch}) => {
+  const { username } = userInfo;
   const [input, setInput] = React.useState('');
   const [editing, setEditing] = React.useState(false);
 
@@ -20,7 +16,10 @@ const MyInfoManger = ({userInfo}) => {
     const okButton = {
       text: '네',
       onPress: () => {
-        modurunAPI.users.changeMyName(input);
+        modurunAPI.users.changeMyName(input)
+          .then((res) => {
+            if (res.ok) dispatch(userActions.changeUserName(input));
+          });
         setEditing(false);
       },
     };

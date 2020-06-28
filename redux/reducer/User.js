@@ -14,6 +14,9 @@ const reducer = (state = initailState, action) => {
   if (action.type === types.SET_USER_INFORMATION) {
     newState.user = action.payload;
   }
+  if (action.type === types.CHANGE_USER_NAME) {
+    newState.user.username = action.payload;
+  }
   return newState;
 };
 
