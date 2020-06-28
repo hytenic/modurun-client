@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Keyboard, Dimensions,
+  StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Keyboard, Dimensions, Modal, TouchableHighlight, Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { postSignUp, getEmailDupli } from './API/user';
@@ -117,6 +117,7 @@ const SignUpManager = () => {
   const [duplicate, setDuplicate] = useState(false);
   const [pwValidation, setPWValidation] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const setTypingFalse = () => {
     setTyping(false);
@@ -214,6 +215,18 @@ const SignUpManager = () => {
     return (<></>);
   };
 
+  const AlertSignupSubmit = () => {
+    Alert.alert(
+      '',
+      '회원가입이 완료되었습니다',
+      [
+        { text: "OK", onPress: () => navigation.navigate('SignInScreen') }
+      ],
+      { cancelable: false }
+    );
+  };
+
+
   const bodyRendering = () => {
     if (!typing) {
       return (
@@ -295,7 +308,8 @@ const SignUpManager = () => {
                   console.log('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
                   const res = await postSignUp(email, password);
                   if (res) {
-                    navigation.navigate('SignInScreen');
+                    AlertSignupSubmit();
+                    // navigation.navigate('SignInScreen');
                   } else {
                     console.log('이메일이나 비밀번호가 잘못되었습니다.');
                   }
@@ -313,6 +327,7 @@ const SignUpManager = () => {
     }
     return (
       <View style={[styles.inputArea, { justifyContent: 'center' }]}>
+        {/* <AlertSignupSubmit /> */}
         <TextInput
           style={[styles.inputBox, duplicate ? { borderColor: 'red', borderWidth: 1 } : null]}
           placeholder="이메일"
