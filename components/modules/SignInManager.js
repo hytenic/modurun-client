@@ -14,10 +14,10 @@ import getEnvVars from '../../environment';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
   },
   header: {
-    flex: 1,
+    // flex: 1,
     marginBottom: 50,
   },
   circle: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E90FF',
   },
   body: {
-    marginTop: 100,
+    marginTop: 200,
     // flex: 1,
     // backgroundColor: 'red',
   },
@@ -44,17 +44,14 @@ const styles = StyleSheet.create({
   inputBox: {
     backgroundColor: 'white',
     borderWidth: 0,
-    shadowOffset: { width: 0, height: 2 },
     elevation: 10,
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
   buttonArea: {
     alignItems: 'center',
     marginBottom: 10,
   },
   footer: {
-    flex: 1,
+    // flex: 1,
     borderTopWidth: 0.5,
     borderColor: 'gray',
     alignItems: 'center',
