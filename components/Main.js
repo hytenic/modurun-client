@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Dimensions, ScrollView, StatusBar, TouchableHighlight,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Dimensions, ScrollView, StatusBar, TouchableHighlight, Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -97,6 +97,7 @@ const Main = () => {
   const [clickedTrack, setClickedTrack] = useState(false);
   const [ParticipateClicked, setParticipateClicked] = useState(false);
   const [scheduleId, setscheduleId] = useState(1);
+  const [mapViewRef, setMapViewRef] = useState(null);
   const [location, setLocation] = useState({
     longitude: 0,
     latitude: 0,
@@ -124,8 +125,8 @@ const Main = () => {
       });
       setLocation({
         ...location,
-        latitude,
-        longitude,
+        latitude: loca.latitude,
+        longitude: loca.longitude,
       });
       return loca;
     } catch (e) {
@@ -300,6 +301,10 @@ const Main = () => {
             schedules={schedules}
             moveOnMarkerPress
             onTrackSelected={scheduleSelecting}
+            onRefReady={(ref) => {
+              console.log(ref);
+              setMapViewRef(ref);
+            }}
             camera={location}
           />
           <TouchableHighlight style={styles.userLocationBtnView} onPress={goUserLocation} activeOpacity={0.5} underlayColor="#03D6A7">
