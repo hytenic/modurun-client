@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     height: 600,
     marginLeft: -145,
     position: 'absolute',
-    top: -200,
+    top: -130,
     overflow: 'hidden',
     alignSelf: 'center',
     justifyContent: 'center',
@@ -265,7 +265,7 @@ const SignUpManager = () => {
       );
     }
     return (
-      <View style={[styles.inputArea, { justifyContent: 'center' }]}>
+      <View style={[styles.inputArea, { justifyContent: 'center', marginBottom: 70 }]}>
         <TextInput
           style={[styles.inputBox, duplicate ? {borderColor: 'red', borderWidth: 1} : null]}
           placeholder="이메일"
