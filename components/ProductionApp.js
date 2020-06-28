@@ -20,14 +20,14 @@ const ProductionApp = ({chatRoomTitle}) => {
     <Stack.Navigator initialRouteName="SignInScreen">
       <Stack.Screen name="SignInScreen" component={SignInManager} />
       <Stack.Screen name="SignUpScreen" component={SignUpManager} />
-      <Stack.Screen options={{headerShown: false}} name="MainDrawer" component={MainDrawer} />
-      <Stack.Screen options={{title: '일정 추가'}} name="SchedulerScreen" component={Scheduler} />
+      <Stack.Screen options={{ headerShown: false }} name="MainDrawer" component={MainDrawer} />
+      <Stack.Screen options={{ title: '일정 추가' }} name="SchedulerScreen" component={Scheduler} />
       <Stack.Screen name="CreatedTrackInfoScreen" component={CreatedTrackInfo} />
-      <Stack.Screen options={{title: chatRoomTitle}} name="ChatRoomScreen" component={ChatRoom} />
+      <Stack.Screen options={{ title: chatRoomTitle }} name="ChatRoomScreen" component={ChatRoom} />
       <Stack.Screen name="SingleTrackViewerScreen" component={SingleTrackViewerInDetail} />
       <Stack.Screen name="CreatedScheduleInfoScreen" component={CreatedScheduleInfo} />
-      <Stack.Screen options={{title: '내 코스'}} name="MyTrackListScreen" component={MyTrackList} />
-      <Stack.Screen name="MyInfoManager" component={MyInfoManager} />
+      <Stack.Screen options={{ title: '내 코스' }} name="MyTrackListScreen" component={MyTrackList} />
+      <Stack.Screen options={{ title: '내 정보 수정' }} name="MyInfoManager" component={MyInfoManager} />
     </Stack.Navigator>
   );
 };
