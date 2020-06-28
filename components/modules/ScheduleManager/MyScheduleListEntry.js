@@ -11,6 +11,7 @@ import PrettyProp from '../PrettyProp/PrettyProp';
 import ToggleBox from './toggleBox/index';
 import * as actions from '../../../redux/action/SingleTrackViewer/creator';
 import modurunAPI from '../API';
+import productionAppNavActions from '../../../redux/action/ProductionNav/creator';
 
 const titleShorter = (title, n) => {
   let shortTitle = '';
@@ -53,6 +54,7 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
   };
 
   const enterChatRoom = () => {
+    dispatch(productionAppNavActions.setChatRoomTitle(title));
     navigation.navigate('ChatRoomScreen', {
       scheduleTitle: title,
       scheduleId: id,

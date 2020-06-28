@@ -13,7 +13,6 @@ import { customizingDateAndTime, getScheduleData } from '../utils';
 import DateTimePickerCompoment from '../DateTimePicker';
 import { getUserTracks } from '../API/tracks';
 import { postSchedule } from '../API/schedule';
-import productionAppNavActions from '../../../redux/action/ProductionNav/creator';
 
 const Scheduler = ({dispatch}) => {
   const navigation = useNavigation();
@@ -75,12 +74,10 @@ const Scheduler = ({dispatch}) => {
     const scheduleTo = moment(postData.to).format('YYYY-MM-DD HH:mm:ss');
     postData.from = scheduleFrom;
     postData.to = scheduleTo;
-    console.log('post data ', postData);
     try {
       const completeData = await postSchedule(postData);
       // console.log(completeData);
       if (completeData) {
-        dispatch(productionAppNavActions.setChatRoomTitle(title));
         navigation.navigate('CreatedScheduleInfoScreen', {
           completeData,
         });
