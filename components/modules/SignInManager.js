@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Image, Animated, Easing, Keyboard,
+  StyleSheet, Text, View, Image, Animated, Easing, Keyboard, TouchableHighlight, TouchableOpacity, Modal
 } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/native';
@@ -65,6 +65,45 @@ const styles = StyleSheet.create({
     fontSize: 15,
     elevation: 8,
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#808080aa',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  confirmBtn: {
+    backgroundColor: '#2196F3',
+    borderRadius: 10,
+    paddingLeft: 15,
+    width: 60,
+    height: 30,
+    elevation: 2,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    marginTop: 3,
+    paddingLeft: 1,
+  },
 });
 
 const SignInManager = ({ dispatch }) => {
@@ -74,6 +113,7 @@ const SignInManager = ({ dispatch }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [typing, setTyping] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const setTypingFalse = () => {
     setTyping(false);
@@ -114,11 +154,9 @@ const SignInManager = ({ dispatch }) => {
     setPassword('');
     if (userInfo) {
       navigation.navigate({ name: 'MainDrawer', params: { test: 'test' } });
+    } else {
+      setModalVisible(true);
     }
-  };
-
-  const goToMain = () => {
-    if (signedIn) navigation.navigate('MainDrawer');
   };
 
   const goToSignUpPage = () => {
@@ -148,8 +186,46 @@ const SignInManager = ({ dispatch }) => {
     return (<></>);
   };
 
+  const SignInValidationModal = () => {
+    const closeModal = () => {
+      setModalVisible(false);
+    };
+
+    return (
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="fade"
+          transparent
+          visible={modalVisible}
+        >
+          <TouchableOpacity
+            style={styles.modalBackground}
+            onPress={closeModal}
+          >
+            <View style={[styles.modalView, { padding: 30 }]}>
+              <Text style={{ fontSize: 20, paddingBottom: 20, textAlign: 'center' }}>
+                입력하신 이메일이 없거나
+                {'\n'}
+                비밀번호가 틀렸습니다.
+              </Text>
+              <View>
+                <TouchableHighlight
+                  style={[styles.confirmBtn, { backgroundColor: '#03D6A7'}]}
+                  onPress={closeModal}
+                >
+                  <Text style={styles.textStyle}>확인</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
+      <SignInValidationModal />
       <View style={styles.header}>
         <View style={styles.circle}>
           <Image

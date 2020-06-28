@@ -59,6 +59,7 @@ const ScheduledTrackViewer = ({
       width: mapWidth,
     }],
     showsUserLocation: true,
+    showsMyLocationButton: false,
     onMapReady: () => {
       updateMapStyle();
     },
