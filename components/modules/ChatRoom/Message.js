@@ -16,7 +16,7 @@ const Message = ({data}) => {
           <Text style={{fontSize: 11}}>{username}</Text>
         </View>
         <View style={{ flexDirection: 'row', marginTop: 5 }}>
-          <View style={{ backgroundColor: 'white', padding: 8, paddingHorizontal: 12, borderRadius: 18, maxWidth: '75%', borderColor: 'rgb(230, 230, 230)', borderWidth: 1 }}>
+          <View style={{ backgroundColor: '#e5e5ea', padding: 8, paddingHorizontal: 12, borderRadius: 10, maxWidth: '75%', borderColor: 'rgb(230, 230, 230)', borderWidth: 1 }}>
             <Text style={{ color: 'black' }}>{message}</Text>
           </View>
           <View style={{ justifyContent: 'flex-end', marginLeft: 5 }}>
@@ -34,7 +34,7 @@ const Message = ({data}) => {
           <View style={{ justifyContent: 'flex-end', marginRight: 5 }}>
             <Text style={{ fontSize: 10 }}>{utils.prettyTime(createdAt)}</Text>
           </View>
-          <View style={{ backgroundColor: 'dodgerblue', padding: 8, paddingHorizontal: 12, borderRadius: 18, maxWidth: '75%', borderWidth: 1, borderColor: 'rgb(99, 158, 255)' }}>
+          <View style={{ backgroundColor: '#13bd41', padding: 8, paddingHorizontal: 12, borderRadius: 10, maxWidth: '75%', borderWidth: 1, borderColor: 'rgb(99, 158, 255)' }}>
             <Text style={{ color: 'white' }}>{message}</Text>
           </View>
         </View>
