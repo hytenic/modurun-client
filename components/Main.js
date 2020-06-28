@@ -119,8 +119,13 @@ const Main = () => {
       const loca = await getUserLocation();
       setLocation({
         ...location,
-        latitude: loca.latitude,
-        longitude: loca.longitude,
+        latitude: 0,
+        longitude: 0,
+      });
+      setLocation({
+        ...location,
+        latitude,
+        longitude,
       });
       return loca;
     } catch (e) {
