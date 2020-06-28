@@ -18,6 +18,7 @@ const ScheduledTrackViewer = ({
   initialCamera,
   moveOnMarkerPress,
   camera,
+  onRefReady,
 }) => {
   const [mapWidth, setMapWidth] = useState('99%');
   const [selectedTrack, setSelectedTrack] = useState(null);
@@ -62,6 +63,7 @@ const ScheduledTrackViewer = ({
     showsMyLocationButton: false,
     onMapReady: () => {
       updateMapStyle();
+      onRefReady(mapView);
     },
     moveOnMarkerPress: moveOnMarkerPress || false,
     onRegionChange: (region) => {

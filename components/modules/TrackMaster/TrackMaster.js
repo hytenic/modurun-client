@@ -25,6 +25,7 @@ const TrackMaster = ({
   initialCamera,
   moveOnMarkerPress,
   initialTitle,
+  onRefReady,
   camera,
 }) => {
   // const [editable, setEditable] = useState(false);
@@ -75,6 +76,7 @@ const TrackMaster = ({
           initialCamera={initialCamera}
           moveOnMarkerPress={moveOnMarkerPress}
           camera={camera}
+          onRefReady={onRefReady}
         />
       );
     }
