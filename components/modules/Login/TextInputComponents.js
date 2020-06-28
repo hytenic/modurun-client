@@ -23,7 +23,6 @@ const TextInputComponent = ({
         placeholder={placeholder}
         defaultValue={value}
         onChangeText={(text) => {
-          console.log(text);
           setAction(text);
         }}
         onTouchStart={onTouchStart}

@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   inputBox: {
     backgroundColor: 'white',
     width: 250,
-    margin: 13,
+    // margin: 13,
     padding: 10,
     borderWidth: 1.5,
     borderRadius: 8,
@@ -91,6 +91,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#03D6A7',
     marginTop: 20,
   },
+  alertTextView: {
+    height: 30,
+    width: 230,
+    justifyContent: 'flex-start',
+  },
+  alertText: {
+    fontSize: 10,
+    color: 'red',
+    justifyContent: 'flex-start',
+  },
 });
 
 // eslint-disable-next-line react/prop-types
@@ -101,6 +111,7 @@ const SignUpManager = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [justAfterEmail, setJustAfterEmail] = useState(false);
   const [duplicate, setDuplicate] = useState(false);
+  const [pwValidation, setPWValidation] = useState(false);
   const [typing, setTyping] = useState(false);
 
   const setTypingFalse = () => {
@@ -119,7 +130,7 @@ const SignUpManager = () => {
       Keyboard.removeListener('keyboardDidShow', setTypingTrue);
     };
   }, []);
-  
+
   const emailDuplication = async function (emailCheck) {
     const res = await getEmailDupli(emailCheck);
     if (res) {
@@ -176,9 +187,27 @@ const SignUpManager = () => {
     }
     return (
       <View style={styles.header}>
-        <View style={[styles.circle, {top: -270}]} />
+        <View style={[styles.circle, { top: -270 }]} />
       </View>
     );
+  };
+
+  const alertDuplicate = (message) => {
+    if (duplicate) {
+      return (
+        <Text style={styles.alertText}>{message}</Text>
+      );
+    }
+    return (<></>);
+  };
+
+  const alertPasswordValidation = (message) => {
+    if (pwValidation) {
+      return (
+        <Text style={styles.alertText}>{message}</Text>
+      );
+    }
+    return (<></>);
   };
 
   const bodyRendering = () => {
@@ -187,7 +216,7 @@ const SignUpManager = () => {
         <>
           <View style={styles.inputArea}>
             <TextInput
-              style={[styles.inputBox, duplicate ? {borderColor: 'red', borderWidth: 1} : null]}
+              style={[styles.inputBox, duplicate ? { borderColor: 'red', borderWidth: 1 } : null]}
               placeholder="이메일"
               defaultValue={email}
               onTouchStart={() => {
@@ -201,8 +230,11 @@ const SignUpManager = () => {
                 setTyping(false);
               }}
             />
+            <View style={styles.alertTextView}>
+              {alertDuplicate('중복된 이메일입니다.')}
+            </View>
             <TextInput
-              style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
+              style={[styles.inputBox, pwValidation ? { borderColor: 'red', borderWidth: 1 } : null]}
               placeholder="비밀번호"
               defaultValue={password}
               secureTextEntry
@@ -215,13 +247,21 @@ const SignUpManager = () => {
               }}
               onChangeText={(pw) => {
                 setPassword(pw);
+                if (pw === confirmPassword) {
+                  setPWValidation(false);
+                } else {
+                  setPWValidation(true);
+                }
               }}
               onSubmitEditing={() => {
                 setTyping(false);
               }}
             />
+            <View style={styles.alertTextView}>
+              {alertPasswordValidation('비밀번호가 서로 다릅니다.')}
+            </View>
             <TextInput
-              style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
+              style={[styles.inputBox, pwValidation ? { borderColor: 'red', borderWidth: 1 } : null]}
               placeholder="비밀번호 확인"
               defaultValue={confirmPassword}
               secureTextEntry
@@ -230,6 +270,11 @@ const SignUpManager = () => {
               }}
               onChangeText={(confirm) => {
                 setConfirmPassword(confirm);
+                if (password === confirm) {
+                  setPWValidation(false);
+                } else {
+                  setPWValidation(true);
+                }
               }}
               onSubmitEditing={() => {
                 setTyping(false);
@@ -242,6 +287,7 @@ const SignUpManager = () => {
               title="회원가입"
               onPress={async () => {
                 if (password === confirmPassword) {
+                  setPWValidation(false);
                   console.log('입력한 두 비밀번호가 같기 때문에 회원가입을 요청합니다.');
                   const res = await postSignUp(email, password);
                   if (res) {
@@ -250,6 +296,7 @@ const SignUpManager = () => {
                     console.log('이메일이나 비밀번호가 잘못되었습니다.');
                   }
                 } else {
+                  setPWValidation(true);
                   console.log('비밀번호가 다릅니다.');
                 }
               }}
@@ -263,7 +310,7 @@ const SignUpManager = () => {
     return (
       <View style={[styles.inputArea, { justifyContent: 'center', marginBottom: 100 }]}>
         <TextInput
-          style={[styles.inputBox, duplicate ? {borderColor: 'red', borderWidth: 1} : null]}
+          style={[styles.inputBox, duplicate ? { borderColor: 'red', borderWidth: 1 } : null]}
           placeholder="이메일"
           defaultValue={email}
           onTouchStart={() => {
@@ -277,8 +324,11 @@ const SignUpManager = () => {
             setTyping(false);
           }}
         />
+        <View style={styles.alertTextView}>
+          {alertDuplicate('중복된 이메일입니다.')}
+        </View>
         <TextInput
-          style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
+          style={[styles.inputBox, pwValidation ? { borderColor: 'red', borderWidth: 1 } : null]}
           placeholder="비밀번호"
           defaultValue={password}
           secureTextEntry
@@ -291,13 +341,21 @@ const SignUpManager = () => {
           }}
           onChangeText={(pw) => {
             setPassword(pw);
+            if (pw === confirmPassword) {
+              setPWValidation(false);
+            } else {
+              setPWValidation(true);
+            }
           }}
           onSubmitEditing={() => {
             setTyping(false);
           }}
         />
+        <View style={styles.alertTextView}>
+          {alertPasswordValidation('비밀번호가 서로 다릅니다.')}
+        </View>
         <TextInput
-          style={[styles.inputBox, confirmPassword ? {borderColor: 'red', borderWidth: 1} : null]}
+          style={[styles.inputBox, pwValidation ? { borderColor: 'red', borderWidth: 1 } : null]}
           placeholder="비밀번호 확인"
           defaultValue={confirmPassword}
           secureTextEntry
@@ -306,6 +364,12 @@ const SignUpManager = () => {
           }}
           onChangeText={(confirm) => {
             setConfirmPassword(confirm);
+            console.log(confirm);
+            if (password === confirm) {
+              setPWValidation(false);
+            } else {
+              setPWValidation(true);
+            }
           }}
           onSubmitEditing={() => {
             setTyping(false);

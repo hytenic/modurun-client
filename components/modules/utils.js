@@ -63,20 +63,18 @@ const createdScheduleInfo = (data) => {
   return result;
 };
 
-const getFilterCondition = () => {
-  return {
-    maxLength: 3000,
-    distance: 2000,
-    rate: false,
-    recent: true,
-    date: {
-      from: moment().format('YYYY-MM-DD HH:mm:ss'),
-      to: moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
-      timeFrom: moment().format('YYYY-MM-DD HH:mm:ss'),
-      timeTo: moment().set({ hour: 24 }).format('YYYY-MM-DD HH:mm:ss'),
-    },
-  };
-};
+const getFilterCondition = () => ({
+  maxLength: 3000,
+  distance: 2000,
+  rate: false,
+  recent: true,
+  date: {
+    from: moment().format('YYYY-MM-DD HH:mm:ss'),
+    to: moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
+    timeFrom: moment().format('YYYY-MM-DD HH:mm:ss'),
+    timeTo: moment().set({ 'hour': 23, 'minute': 59 }).format('YYYY-MM-DD HH:mm:ss'),
+  },
+});
 
 module.exports = {
   customizingDateAndTime,

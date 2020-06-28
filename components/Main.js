@@ -1,20 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Alert, Dimensions, KeyboardAvoidingView, ScrollView,
+  StyleSheet, View, Text, TouchableOpacity, Image, TextInput, Keyboard, Dimensions, ScrollView, StatusBar, TouchableHighlight,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Entypo';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import TrackManager from './modules/TrackManager';
 import MyPage from './modules/MyPage';
 import TrackMaster from './modules/TrackMaster/TrackMaster';
-import FilterModal, { InputUsernameModal } from './modules/Modal';
+import FilterModal, { InputUsernameModal, ParticipateModal } from './modules/Modal';
 import getEnvVars from '../environment';
 import ScheduleManager from './modules/ScheduleManager';
 import { getUserLocation, getFilterCondition } from './modules/utils';
 import { getSchedules } from './modules/API/schedule';
-import dummySchedules from './modules/TrackMaster/dummyData/dummySchedules.json';
 import ScheduleList from './modules/ScheduleList';
 import reduxStore from '../redux/store';
 // import schedules from './modules/API/SG/schedules';
@@ -136,6 +134,7 @@ const Main = () => {
   };
 
   const filter = getFilterCondition();
+  console.log('filter ', filter);
   const [filterCondition, setFilterCondition] = useState(filter);
   const { apiKey } = getEnvVars('dev');
 
@@ -148,9 +147,11 @@ const Main = () => {
     };
   }, []);
 
-  const getNearSchedules = async () => {
-    const scheduleData = await getSchedules(filterCondition, location);
+  const getNearSchedules = async (loca) => {
+    const scheduleData = await getSchedules(filterCondition, loca);
+    console.log(location);
     console.log('get schedules');
+    console.log(scheduleData.length > 0);
     if (!scheduleData && scheduleData === false) {
       setSchedules([]);
     } else {
@@ -160,13 +161,15 @@ const Main = () => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getNearSchedules();
+      goUserLocation();
+      console.log('요청 보낼 때의 유저 위치 ', location);
+      getNearSchedules(location);
     });
     return unsubscribe;
   }, [navigation]);
 
   useEffect(() => {
-    getNearSchedules();
+    getNearSchedules(location);
   }, [filterCondition, location]);
 
   const searched = () => {
@@ -291,9 +294,9 @@ const Main = () => {
             onTrackSelected={scheduleSelecting}
             camera={location}
           />
-          <View style={styles.userLocationBtnView}>
-            <FontAwesomeIcon style={{ marginRight: 2 }} name="location-arrow" color="rgba(30, 124, 255, 0.8)" size={33} onPress={goUserLocation}/>
-          </View>
+          <TouchableHighlight style={styles.userLocationBtnView} onPress={goUserLocation} activeOpacity={0.5} underlayColor="#03D6A7">
+            <FontAwesomeIcon style={{ marginRight: 2 }} name="location-arrow" color="rgba(30, 124, 255, 0.8)" size={33} />
+          </TouchableHighlight>
         </View>
       );
     }

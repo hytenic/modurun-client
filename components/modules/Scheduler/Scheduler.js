@@ -78,7 +78,7 @@ const Scheduler = ({dispatch}) => {
     console.log('post data ', postData);
     try {
       const completeData = await postSchedule(postData);
-      // console.log(completeData);
+      // console.log('완성 된 일정 ', completeData);
       if (completeData) {
         dispatch(productionAppNavActions.setChatRoomTitle(title));
         navigation.navigate('CreatedScheduleInfoScreen', {
