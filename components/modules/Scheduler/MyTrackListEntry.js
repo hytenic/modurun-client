@@ -2,35 +2,54 @@ import React, { useState, useRef } from 'react';
 import {
   StyleSheet, View, Text,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity,TouchableHighlight } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 // import styles from './styles';
 import * as actions from '../../../redux/action/SingleTrackViewer/creator';
 
 const styles = StyleSheet.create({
   entryContainer: {
-    margin: 10,
-    elevation: 2,
-    borderWidth: 0,
-  },
-  titleContainer: {
     padding: 10,
-    backgroundColor: 'dodgerblue',
+    backgroundColor: 'white',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    margin: 10,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  titleContainer: {
+    padding: 10,
+    paddingBottom: 1,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   detailContainer: {
 
   },
   title: {
-    fontSize: 20,
-    color: 'white',
+    paddingLeft: 7,
+    paddingRight: 30,
+    fontSize: 18,
+    color: 'black',
     flex: 75,
+    fontWeight: 'bold',
   },
   titleButtonContainer: {
-    flex: 25,
+    flex: 38,
     justifyContent: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -56,7 +75,33 @@ const styles = StyleSheet.create({
   chevron: {
     padding: 5,
     color: 'white',
+    borderRadius: 100,
+    margin: 5,
+    backgroundColor: 'lightgrey',
     alignContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  chevronDetail: {
+    padding: 5,
+    color: 'white',
+    borderRadius: 5,
+    backgroundColor: '#1E90FF',
+    alignContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
   delete: {
     padding: 10,
@@ -103,16 +148,15 @@ const MyTrackListEntry = ({
 
   return (
     <View style={styles.entryContainer}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{trackTitle}</Text>
-        <View style={styles.titleButtonContainer}>
-          <TouchableOpacity onPress={selectTrack} style={styles.chevron}>
-            <Text>체크</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={viewTrackOnMap} style={styles.chevron}>
-            <Text>자세히 보기</Text>
-          </TouchableOpacity>
-        </View>
+      <Text style={styles.title}>{trackTitle}</Text>
+      <View style={styles.titleButtonContainer}>
+        <TouchableHighlight underlayColor="#03D6A7" onPress={selectTrack} style={styles.chevron }>
+          {/* <Text style={{color: 'white', fontWeight: 'bold'}}>체크</Text> */}
+          <Icon name="check" color="white" style={{padding: 3}} size={15} />
+        </TouchableHighlight>
+        <TouchableHighlight underlayColor="lightgrey" onPress={viewTrackOnMap} style={{margin: 10}}>
+          <Text style={{fontSize: 12, color: '#1E90FF', fontWeight: 'bold'}}>자세히 보기</Text>
+        </TouchableHighlight>
       </View>
     </View>
   );

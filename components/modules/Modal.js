@@ -45,10 +45,18 @@ const styles = StyleSheet.create({
   },
   openButton: {
     backgroundColor: '#2196F3',
-    borderRadius: 100,
+    borderRadius: 25,
     paddingLeft: 15,
-    width: 55,
-    height: 55,
+    width: 50,
+    height: 50,
+    elevation: 2,
+  },
+  confirmBtn: {
+    backgroundColor: '#2196F3',
+    borderRadius: 10,
+    paddingLeft: 15,
+    width: 60,
+    height: 30,
     elevation: 2,
   },
   searchButton: {
@@ -369,19 +377,19 @@ export const InputUsernameModal = ({}) => {
           style={styles.modalBackground}
           onPress={closeModal}
         >
-          <View style={styles.modalView}>
+          <View style={[styles.modalView, { padding: 30 }]}>
             <TextInput
               placeholder="유저 이름을 입력해 주세요"
               style={{
-                borderWidth: 0.5, width: 200, height: 40, marginBottom: 10,
+                backgroundColor: 'rgba(211, 211, 211, 0.3)', width: 200, height: 40, marginBottom: 20, paddingLeft: 5,
               }}
               onChangeText={setUsername}
             />
             <TouchableHighlight
-              style={styles.openButton}
+              style={[styles.confirmBtn, { justifyContent: 'center' }]}
               onPress={postUsername}
             >
-              <Text style={styles.textStyle}>확인</Text>
+              <Text style={[styles.textStyle, { marginRight: 15 }]}>확인</Text>
             </TouchableHighlight>
           </View>
         </TouchableOpacity>
@@ -407,13 +415,13 @@ export const ScheduleValidationModal = ({ visible, setVisible, value }) => {
           style={styles.modalBackground}
           onPress={closeModal}
         >
-          <View style={styles.modalView}>
-            <Text>{`${value}을 지정해 주세요.`}</Text>
+          <View style={[styles.modalView, { padding: 30 }]}>
+            <Text style={{ paddingBottom: 20 }}>{`${value}을 지정해 주세요.`}</Text>
             <TouchableHighlight
-              style={styles.openButton}
+              style={[styles.openButton, { justifyContent: 'center' }]}
               onPress={closeModal}
             >
-              <Text style={styles.textStyle}>확인</Text>
+              <Text style={[styles.textStyle, { marginRight: 13 }]}>확인</Text>
             </TouchableHighlight>
           </View>
         </TouchableOpacity>
@@ -460,6 +468,41 @@ export const ParticipateModal = ({
                 onPress={closeModal}
               >
                 <Text style={styles.textStyle}>취소</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </View>
+  );
+};
+
+export const SignInValidationModal = ({ modal }) => {
+  const [modalVisible, setModalVisible] = useState(modal);
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  return (
+    <View style={styles.centeredView}>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={modalVisible}
+      >
+        <TouchableOpacity
+          style={styles.modalBackground}
+          onPress={closeModal}
+        >
+          <View style={[styles.modalView, {padding: 30,}]}>
+              <Text style={{fontSize: 20 , paddingBottom: 20, textAlign: 'center' }}>입력하신 이메일이 없거나{"\n"}비밀번호가 틀렸습니다.</Text>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableHighlight
+                style={[styles.particpateButton, { backgroundColor: '#03D6A7', marginRight: 20}]}
+                onPress={closeModal}
+              >
+                <Text style={styles.textStyle}>확인</Text>
               </TouchableHighlight>
             </View>
           </View>

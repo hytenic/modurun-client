@@ -76,7 +76,7 @@ const Scheduler = ({dispatch}) => {
     postData.to = scheduleTo;
     try {
       const completeData = await postSchedule(postData);
-      // console.log(completeData);
+      // console.log('완성 된 일정 ', completeData);
       if (completeData) {
         navigation.navigate('CreatedScheduleInfoScreen', {
           completeData,
@@ -211,7 +211,7 @@ const Scheduler = ({dispatch}) => {
           </View>
           <View style={styles.footer}>
             <ButtonComponent value="코스 선택" pressEvent={toMyTrackList} />
-            <ButtonComponent value="제작 완료" pressEvent={sendScheduleInfo} />
+            <ButtonComponent value="일정 등록" pressEvent={sendScheduleInfo} />
           </View>
         </View>
       </View>

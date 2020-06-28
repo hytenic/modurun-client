@@ -66,7 +66,6 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
     <Text style={{ fontSize: 15, padding: 10 }}>
       <Text style={{ fontWeight: 'bold' }}>{titleShorter(title, 15)}</Text>
       <Text style={{ color: '#1E90FF', fontSize: 15, padding: 15, alignContent: 'flex-end'}}>
-        {' '}
         [
         <IconIonicons name="md-person" size={20} />
         {`${participants}`}

@@ -82,7 +82,7 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
   const askIfAdd = () => {
     Alert.alert(
       '코스 추가',
-      '코스를 추가하시겠습니까?', [
+      '내 코스에 추가하시겠습니까?', [
         {
           text: '예',
           onPress: () => {
@@ -118,7 +118,13 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
     setRequestState({ ...requesting, bookmark: true });
     modurunAPI.tracks.toggleBookmark(trackId)
       .then((res) => (res.ok ? dispatch(trackManagerActions.toggleBookmark(trackId)) : ''))
-      .then(() => setRequestState({ ...requesting, bookmark: false }));
+      .then(() => {
+        setRequestState({
+          ...requesting,
+          bookmark: false
+        });
+        getMyTracks();
+      });
   };
 
   const renderAdd = () => {
