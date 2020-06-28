@@ -46,10 +46,9 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
   };
 
   const label = (
-    <Text style={{ fontSize: 15, padding: 10 }}>
+    <Text style={{ fontSize: 15 }}>
       <Text style={{ fontWeight: 'bold' }}>{titleShorter(schedule.scheduleTitle, 15)}</Text>
       <Text style={{ color: '#1E90FF', fontSize: 15, padding: 15, alignContent: 'flex-end'}}>
-        {' '}
         [
         <IconIonicons name="md-person" size={20} />
         {`${schedule.participants}`}
