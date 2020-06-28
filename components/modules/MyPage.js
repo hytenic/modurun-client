@@ -26,13 +26,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const MyPage = (props) => {
+const MyPage = ({userInfo}) => {
   const navigation = useNavigation();
-  const dummyUser = {
-    name: '바보똥개',
-    email: 'dummyEmail@gmail.com',
-  };
-
   const [completedTracks, setCompletedTracks] = useState([]);
 
   React.useEffect(() => {
@@ -66,16 +61,16 @@ const MyPage = (props) => {
                 <Icon name="user" size={50} color="white" style={{backgroundColor: 'lightgrey', width: 40, height: 40, textAlignVertical: 'center', textAlign: 'center' }} />
               </MaskedView>
             </View>
-            <Text style={{ fontSize: 17 }}>{`${dummyUser.name}`}</Text>
+            <Text style={{ fontSize: 17 }}>{`${userInfo.username}`}</Text>
           </View>
           <TouchableHighlight underlayColor="rgba(0,0,0,0.1)" onPress={navigateToMyInfoManager} style={{margin: 10, backgroundColor: '#03D6A7', padding: 5, paddingHorizontal: 10, borderRadius: 5 }}>
             <Text style={{fontSize: 12, color: 'white', fontWeight: 'bold'}}>내 정보 관리</Text>
           </TouchableHighlight>
         </View>
-        <View style={{padding: 20, flexDirection: 'row', borderBottomColor:'rgba(0,0,0,0.1)', borderBottomWidth: 1 }}>
+        {/* <View style={{padding: 20, flexDirection: 'row', borderBottomColor:'rgba(0,0,0,0.1)', borderBottomWidth: 1 }}>
           <Icon name="envelope" size={15} color="#1E90FF" style={{marginRight: 10}} />
           <Text>{`${dummyUser.email}`}</Text>
-        </View>
+        </View> */}
         <TouchableHighlight onPressIn={()=>{}} underlayColor="rgba(0,0,0,0.1)" style={{borderBottomLeftRadius: 10, borderBottomRightRadius: 10}}>
           <View style={{padding: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
             <View style={{flexDirection: 'row' }}>
@@ -103,16 +98,8 @@ const MyPage = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    exmapleState: state.myPage.exampleKey.exampleKey,
+    userInfo: state.userInfo.user,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatchProp: (num) => {
-      dispatch(actions.exAction1(num));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyPage);
+export default connect(mapStateToProps, null)(MyPage);
