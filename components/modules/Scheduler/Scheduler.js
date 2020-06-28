@@ -5,6 +5,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { ScheduleValidationModal } from '../Modal';
 import styles from './style';
 import TrackMaster from '../TrackMaster/TrackMaster';
@@ -70,8 +71,14 @@ const Scheduler = ({dispatch}) => {
       return;
     }
     const postData = getScheduleData(createdScheduleInfo);
+    const scheduleFrom = moment(postData.from).format('YYYY-MM-DD HH:mm:ss');
+    const scheduleTo = moment(postData.to).format('YYYY-MM-DD HH:mm:ss');
+    postData.from = scheduleFrom;
+    postData.to = scheduleTo;
+    console.log('post data ', postData);
     try {
       const completeData = await postSchedule(postData);
+      // console.log(completeData);
       if (completeData) {
         dispatch(productionAppNavActions.setChatRoomTitle(title));
         navigation.navigate('CreatedScheduleInfoScreen', {

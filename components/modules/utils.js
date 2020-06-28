@@ -70,10 +70,10 @@ const getFilterCondition = () => {
     rate: false,
     recent: true,
     date: {
-      from: new Date(),
-      to: new Date(moment().add(1, 'days')),
-      timeFrom: new Date(),
-      timeTo: new Date(moment().set({ hour: 24 }).toDate()),
+      from: moment().format('YYYY-MM-DD HH:mm:ss'),
+      to: moment().add(1, 'days').format('YYYY-MM-DD HH:mm:ss'),
+      timeFrom: moment().format('YYYY-MM-DD HH:mm:ss'),
+      timeTo: moment().set({ hour: 24 }).format('YYYY-MM-DD HH:mm:ss'),
     },
   };
 };
