@@ -52,7 +52,7 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
 
   const viewTrackOnMap = () => {
     dispatch(actions.setSingleTrack(data));
-    navigation.navigate('SingleTrackViewerInDetail');
+    // navigation.navigate('SingleTrackViewerInDetail');
     navigation.navigate('SingleTrackViewerScreen');
   };
 
