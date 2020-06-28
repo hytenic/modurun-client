@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Keyboard,
+  StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Keyboard, Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { postSignUp, getEmailDupli } from './API/user';
@@ -9,11 +9,10 @@ import { postSignUp, getEmailDupli } from './API/user';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1E90FF',
+    backgroundColor: 'dodgerblue',
   },
   header: {
     flex: 2,
-    backgroundColor: 'yellow',
     justifyContent: 'center',
   },
   circle: {
@@ -22,8 +21,9 @@ const styles = StyleSheet.create({
     height: 600,
     marginLeft: -145,
     position: 'absolute',
-    top: -180,
+    top: -200,
     overflow: 'hidden',
+    alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
@@ -37,27 +37,30 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   body: {
-    flex: 6,
-    marginTop: 25,
+    // flex: 6,
+    // backgroundColor: 'black',
+    // marginTop: 25,
   },
   inputArea: {
-    flex: 6,
+    // flex: 6,
     marginBottom: 40,
     alignItems: 'center',
     justifyContent: 'flex-start',
+    // height: 100,
   },
   buttonArea: {
-    flex: 4,
+    // flex: 4,
     alignItems: 'center',
   },
   footer: {
-    flex: 1.5,
+    // flex: 1.5,
     borderTopWidth: 0.5,
     borderColor: 'rgba(255, 255, 255, 0.8)',
     flexDirection: 'row',
     justifyContent: 'center',
     width: 250,
     alignSelf: 'center',
+    marginBottom: 30,
   },
   inputBox: {
     backgroundColor: 'white',
@@ -84,8 +87,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 8,
-    marginTop: 70,
+    // marginTop: 70,
     elevation: 8,
+    marginBottom: 20,
   },
   signinPageBtn: {
     backgroundColor: '#03D6A7',
@@ -261,7 +265,7 @@ const SignUpManager = () => {
       );
     }
     return (
-      <View style={[styles.inputArea, { justifyContent: 'center', marginBottom: 100 }]}>
+      <View style={[styles.inputArea, { justifyContent: 'center' }]}>
         <TextInput
           style={[styles.inputBox, duplicate ? {borderColor: 'red', borderWidth: 1} : null]}
           placeholder="이메일"
