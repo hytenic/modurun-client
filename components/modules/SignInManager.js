@@ -15,10 +15,9 @@ import getEnvVars from '../../environment';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
-    flex: 2,
+    flex: 1,
     marginBottom: 50,
   },
   circle: {
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
     width: 700,
     height: 600,
     position: 'absolute',
-    top: -200,
+    top: -150,
     overflow: 'hidden',
     alignSelf: 'center',
     justifyContent: 'center',
@@ -34,7 +33,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E90FF',
   },
   body: {
-    // marginTop: 25,
+    marginTop: 100,
+    // flex: 1,
+    // backgroundColor: 'red',
   },
   inputArea: {
     alignItems: 'center',
@@ -53,13 +54,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   footer: {
+    flex: 1,
     borderTopWidth: 0.5,
     borderColor: 'gray',
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingVertical: 10,
+    marginTop: 10,
     marginBottom: 10,
+    // backgroundColor: 'red',
   },
   footerText: {
     fontSize: 15,
@@ -149,7 +153,7 @@ const SignInManager = ({ dispatch }) => {
 
   const emailSignIn = async (inputEmail, inputPassword) => {
     const userInfo = await postEmailLogin(inputEmail, inputPassword);
-    dispatch(actions(userInfo));
+    dispatch(actions.setUserInformation(userInfo));
     setEmail('');
     setPassword('');
     if (userInfo) {

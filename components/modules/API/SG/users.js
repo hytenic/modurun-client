@@ -8,9 +8,12 @@ const changeMyName = (newName) => moduRunApiUtil.request('PATCH', '/users/user/n
 
 const isDuplicateEmail = (email) => moduRunApiUtil.request('GET', `/users/user/exist/?email=${email}`);
 
+const userHateModurun = (password) => moduRunApiUtil.request('POST', '/users/unsubscribe', { password });
+
 export default {
   signIn,
   signUp,
   changeMyName,
   isDuplicateEmail,
+  userHateModurun,
 };

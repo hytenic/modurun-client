@@ -10,13 +10,14 @@ import modurunAPI from '../modules/API/index';
 import SendMessage from './ChatRoom/SendMessage';
 import utils from './ChatRoom/utils';
 
-const ChatRoom = ({ route, data, offset, dispatch }) => {
+const ChatRoom = ({ route, data, offset, dispatch, userInfo }) => {
   const { params } = route;
   const { scheduleId, userId, username, scheduleTitle } = params;
   const [socket, setSocket] = useState(null);
   const [messageListRef, setMessageListRef] = useState(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     modurunAPI.messages.getMessages(scheduleId, offset[scheduleId] || 0)
@@ -28,9 +29,9 @@ const ChatRoom = ({ route, data, offset, dispatch }) => {
   }, [refreshing, offset]);
 
   const sendMessage = (...args) => {
-    const [msgScheduleId, msgUserId, username, message] = args;
+    const [msgScheduleId, username, message] = args;
     const msgObj = { username, message, createdAt: Date.now() };
-    const isMine = userId === msgUserId;
+    const isMine = userInfo.username === username;
     const msgCheckedMine = Object.assign(msgObj, { isMine });
     dispatch(chatRoomActions.addMessage(msgCheckedMine, msgScheduleId));
     setTimeout(() => messageListRef.current.scrollToEnd(), 100);
@@ -73,8 +74,9 @@ const ChatRoom = ({ route, data, offset, dispatch }) => {
 
   const onSend = (message) => {
     if (!message) return;
+    if (!socket) return;
     if (!socket.connected) return;
-    socket.emit('chat message', scheduleId, userId, username, message);
+    socket.emit('chat message', scheduleId, username, message);
   };
 
   return (
@@ -97,6 +99,7 @@ const mapStateToProps = (state) => {
   return {
     data: state.chatRoom.data,
     offset: state.chatRoom.offset,
+    userInfo: state.userInfo.user,
   };
 };
 

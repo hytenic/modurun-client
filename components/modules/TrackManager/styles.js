@@ -1,13 +1,18 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  filterInput: {
-    backgroundColor: 'white',
-    height: 40,
-    paddingLeft: 10,
-    borderRadius: 5,
-    elevation: 2,
+  filterInputContainer: {
     marginBottom: 10,
     flex: 1,
+    flexDirection: 'row',
+    height: 30,
+  },
+  filterInput: {
+    fontSize: 13,
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginVertical: 3,
+    textAlign: 'center',
   },
 });

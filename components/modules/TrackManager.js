@@ -15,7 +15,8 @@ const TrackManager = ({
   foundTracks,
   dispatch,
   type,
-  setSwipeEnabled
+  setSwipeEnabled,
+  setTabIndex,
 }) => {
   const getMyTracks = () => {
     // if (myTracks.length) return;
@@ -27,13 +28,14 @@ const TrackManager = ({
   };
 
   const getTracks = (filter) => {
+    console.log(filter);
     // if (foundTracks.length) return;
     trackManagerUtils.getUserPos()
       .then((userPos) => {
         modurunAPI.tracks.getTracks(filter, userPos, trackManagerUtils.getBigArea(userPos))
-          .then((res) => res.json())
-          .then((json) => {
-            dispatch(trackManagerActions.setFoundTracks(json));
+          .then((res) => {
+            if (res.status === 200) res.json().then((json) => dispatch(trackManagerActions.setFoundTracks(json)));
+            if (res.status === 404) dispatch(trackManagerActions.setFoundTracks(null));
           });
       });
   };
@@ -54,17 +56,6 @@ const TrackManager = ({
     createTrack: '#1E90FF',
   };
 
-  const MenuBarButton = (name, onPress = () => {}) => (
-    <View style={{
-      flex: 1, backgroundColor: selectedMenu === name ? 'white' : 'transparent', zIndex: selectedMenu === name ? 100 : 0,
-    }}
-    >
-      <TouchableOpacity style={{ padding: 10, backgroundColor: selectedMenu === name ? colorForMenu[name] : 'white', alignItems: 'center' }} onPress={onPress}>
-        <Text style={{ fontSize: 18, color: selectedMenu === name ? 'white' : '#1E90FF' }}>{tranlateButtonNameToKor[name]}</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   const renderMenuBody = (screenType) => {
     let renderTarget;
     if (screenType === 'myTrack') {
@@ -74,7 +65,7 @@ const TrackManager = ({
     }
     if (screenType === 'findTrack') {
       renderTarget = (
-        <FindTrack onFilterSet={getTracks} tracks={foundTracks} />
+        <FindTrack onFilterSet={getTracks} setTabIndex={setTabIndex} tracks={foundTracks} />
       );
     }
     if (screenType === 'createTrack') {

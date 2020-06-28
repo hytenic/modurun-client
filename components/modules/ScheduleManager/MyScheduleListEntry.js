@@ -10,7 +10,8 @@ import * as utils from '../ScheduleUtils/utils';
 import PrettyProp from '../PrettyProp/PrettyProp';
 import ToggleBox from './toggleBox/index';
 import * as actions from '../../../redux/action/SingleTrackViewer/creator';
-import store from '../../../redux/store';
+import modurunAPI from '../API';
+import productionAppNavActions from '../../../redux/action/ProductionNav/creator';
 
 const titleShorter = (title, n) => {
   let shortTitle = '';
@@ -21,9 +22,21 @@ const titleShorter = (title, n) => {
   return title;
 };
 
-const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
+const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
+  const {
+    destination,
+    id,
+    origin,
+    participants,
+    route,
+    scheduleFrom,
+    scheduleTo,
+    title,
+    trackId,
+    trackLength,
+    trackTitle
+  } = data;
   const navigation = useNavigation();
-  const { track, schedule } = data;
   const [showMoreVisible, setShowMoreVisible] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(-50));
 
@@ -32,26 +45,30 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
   };
 
   const viewDetailTrack = () => {
-    dispatch(actions.setSingleTrack(data.track));
-    navigation.navigate('SingleTrackViewerScreen');
+    modurunAPI.tracks.getTrack(trackId)
+      .then((res) => res.json())
+      .then((json) => {
+        dispatch(actions.setSingleTrack(json));
+        navigation.navigate('SingleTrackViewerScreen');
+      });
   };
 
   const enterChatRoom = () => {
+    dispatch(productionAppNavActions.setChatRoomTitle(title));
     navigation.navigate('ChatRoomScreen', {
-      scheduleTitle: schedule.scheduleTitle,
-      scheduleId: schedule.scheduleId,
-      userId: 2 || undefined, // 리덕스로 가져와야 함
-      username: '하하하하하하' || undefined, // 리덕스로 가져와야 함
+      scheduleTitle: title,
+      scheduleId: id,
+      username: userInfo.username,
     });
   };
 
   const label = (
-    <Text style={{ fontSize: 15 }}>
-      <Text style={{ fontWeight: 'bold' }}>{titleShorter(schedule.scheduleTitle, 15)}</Text>
+    <Text style={{ fontSize: 15, padding: 10 }}>
+      <Text style={{ fontWeight: 'bold' }}>{titleShorter(title, 15)}</Text>
       <Text style={{ color: '#1E90FF', fontSize: 15, padding: 15, alignContent: 'flex-end'}}>
         [
         <IconIonicons name="md-person" size={20} />
-        {`${schedule.participants}`}
+        {`${participants}`}
         ]
       </Text>
     </Text>
@@ -68,9 +85,9 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
       <ToggleBox label={label} value={value} style={styles.entryContainer} arrowSize={35} arrowColor="#2196f3">
         <View style={styles.descContainer}>
           <View style={{ alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-            <PrettyProp name="시작 일시" value={utils.convertDate(schedule.from)} color="dodgerblue" />
-            <PrettyProp name="소요 시간" value={utils.convertDuration(schedule.to - schedule.from)} color="dodgerblue" />
-            <PrettyProp name="트랙 이름" value={track.trackTitle} color="dodgerblue" />
+            <PrettyProp name="시작 일시" value={utils.convertDate(scheduleFrom)} color="dodgerblue" />
+            <PrettyProp name="소요 시간" value={utils.convertDuration(Date.parse(scheduleTo) - Date.parse(scheduleFrom))} color="dodgerblue" />
+            <PrettyProp name="트랙 이름" value={trackTitle} color="dodgerblue" />
           </View>
         </View>
         <View style={styles.moreButtonContainer}>
@@ -86,4 +103,8 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch }) => {
   );
 };
 
-export default connect(null, null)(MyScheduleListEntry);
+const mapStateToProps = (state) => ({
+  userInfo: state.userInfo.user,
+});
+
+export default connect(mapStateToProps, null)(MyScheduleListEntry);
