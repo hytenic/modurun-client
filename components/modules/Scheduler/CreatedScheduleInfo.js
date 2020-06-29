@@ -78,9 +78,14 @@ const styles = StyleSheet.create({
 const CreatedScheduleInfo = ({ route }) => {
   const { schedule, track } = createdScheduleInfo(route.params.completeData);
 
+  const timeFromArr = schedule.scheduleFrom.toString().split('T');
+  const from = timeFromArr[1].split(':');
+  const timeToArr = schedule.scheduleTo.toString().split('T');
+  const to = timeToArr[1].split(':');
+
   const date = customizingDateAndTime(schedule.scheduleFrom, 0);
-  const timeFrom = customizingDateAndTime(0, schedule.scheduleFrom);
-  const timeTo = customizingDateAndTime(0, schedule.scheduleTo);
+  const timeFrom = `${from[0]}시 ${from[1]}분`;
+  const timeTo = `${to[0]}시 ${to[1]}분`;
   const distance = meterToKilo(track.trackLength);
   const navigation = useNavigation();
 
