@@ -176,7 +176,7 @@ const SignUpManager = () => {
             <View style={styles.logo}>
               <Image
                 source={require('../../assets/zolaman_blue.png')}
-                style={{ weight: 60, height: 60 }}
+                style={{ width: 60, height: 60 }}
                 resizeMode="contain"
               />
               <Text style={{

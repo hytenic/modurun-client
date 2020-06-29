@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, Text, View, Image, Animated, Easing, Keyboard, TouchableHighlight, TouchableOpacity, Modal
+  StyleSheet, Text, View, Image, Animated, Easing, Keyboard, TouchableHighlight, TouchableOpacity, Modal,
 } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import { useNavigation } from '@react-navigation/native';
@@ -137,10 +137,12 @@ const SignInManager = ({ dispatch }) => {
     try {
       const result = await Google.logInAsync({
         androidClientId: getEnvVars('dev').clientId,
+        redirectUrl: 'urn:ietf:wg:oauth:2.0:oob',
       });
       if (result.type === 'success') {
         setSignedIn(true);
         setAccessToken(result.accessToken);
+        navigation.navigate('MainDrawer');
       }
       return { cancelled: true };
     } catch (e) {
@@ -231,7 +233,7 @@ const SignInManager = ({ dispatch }) => {
         <View style={styles.circle}>
           <Image
             source={require('../../assets/zolaman.png')}
-            style={{ weight: 60, height: 60 }}
+            style={{ width: 60, height: 60 }}
             resizeMode="contain"
           />
           <Text style={{ fontSize: 40, color: 'white', fontWeight: 'bold' }}>모두런</Text>
