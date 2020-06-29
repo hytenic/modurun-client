@@ -19,7 +19,7 @@ const TrackManagerTabs = () => {
   ]);
 
   const renderScene = ({route}) => {
-    if (route.key === 'myTrackScreen') return <MyTrack />;
+    if (route.key === 'myTrackScreen') return <MyTrack setTabIndex={setIndex} />;
     if (route.key === 'findTrackScreen') return <FindTrack setTabIndex={setIndex} />;
     if (route.key === 'trackEditorScreen') return <TrackEditor setSwipeEnabled={setSwipeEnabled} />;
   };

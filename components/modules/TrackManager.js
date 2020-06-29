@@ -60,7 +60,7 @@ const TrackManager = ({
     let renderTarget;
     if (screenType === 'myTrack') {
       renderTarget = (
-        <TrackList tracks={myTracks} getMyTracks={getMyTracks} showBookmark />
+        <TrackList setTabIndex={setTabIndex} tracks={myTracks} getMyTracks={getMyTracks} showBookmark />
       );
     }
     if (screenType === 'findTrack') {

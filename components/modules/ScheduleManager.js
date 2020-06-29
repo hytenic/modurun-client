@@ -11,12 +11,14 @@ const ScheduleManager = () => {
   const [loadedSchedules, setLoadedSchedules] = React.useState(false);
 
   React.useEffect(() => {
-    modurunAPI.schedules.getMySchdules()
+    const unsubscribe = navigation.addListener('focus', () => modurunAPI.schedules.getMySchdules()
       .then((res) => {
         if (res.status === 200 || res.status === 404) setLoadedSchedules(true);
+        if (res.status === 404) setMyShedules([]);
         if (res.ok) res.json().then((json) => setMyShedules(json));
-      });
-  }, []);
+      }));
+    return unsubscribe;
+  }, [navigation]);
 
   const alertLoadingData = () => (
     <View style={{width: Dimensions.get('screen').width, height: Dimensions.get('screen').height}}>

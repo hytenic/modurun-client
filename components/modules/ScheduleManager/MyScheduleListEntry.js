@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from 'react';
-import { View, Text, Animated } from 'react-native';
+import { View, Text, Animated, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -39,9 +39,25 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
   const navigation = useNavigation();
   const [showMoreVisible, setShowMoreVisible] = useState(false);
   const [animation, setAnimation] = useState(new Animated.Value(-50));
+  const [deleted, setDeleted] = useState(false);
 
   const toggleShowMore = () => {
     setShowMoreVisible(!showMoreVisible);
+  };
+
+  const askIfExit = () => {
+    const okButton = {
+      text: '예',
+      onPress: () => modurunAPI.schedules.exitFromSchedule(id)
+        .then((res) => {
+          if (res.ok) setDeleted(true);
+          if (res.status === 404) setDeleted(true);
+        }),
+    };
+    const cancelButton = {
+      text: '아니오',
+    };
+    Alert.alert('참가 취소', '일정 참가를 취소하시겠습니까?', [okButton, cancelButton]);
   };
 
   const viewDetailTrack = () => {
@@ -80,6 +96,8 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
     </>
   );
 
+  if (deleted) return <></>;
+
   return (
     <View style={{ marginBottom: 3, padding: 2 }} onLayout={onLayout}>
       <ToggleBox label={label} value={value} style={styles.entryContainer} arrowSize={35} arrowColor="#2196f3">
@@ -91,7 +109,7 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
           </View>
         </View>
         <View style={styles.moreButtonContainer}>
-          <TouchableOpacity onPress={utils.joinSchedule} style={styles.cancel}>
+          <TouchableOpacity onPress={askIfExit} style={styles.cancel}>
             <Text style={{ color: 'white', fontSize: 16 }}>참가 취소하기</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.showMore} onPress={viewDetailTrack}>
