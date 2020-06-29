@@ -14,7 +14,8 @@ export default StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
     fontSize: 13,
-    marginRight: 15,
+    flexBasis: 70,
+    marginRight: 10,
     width: '20%',
   },
   propRowValue: {

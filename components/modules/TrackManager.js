@@ -28,13 +28,16 @@ const TrackManager = ({
   };
 
   const getTracks = (filter) => {
-    console.log(filter);
-    // if (foundTracks.length) return;
     trackManagerUtils.getUserPos()
       .then((userPos) => {
         modurunAPI.tracks.getTracks(filter, userPos, trackManagerUtils.getBigArea(userPos))
           .then((res) => {
-            if (res.status === 200) res.json().then((json) => dispatch(trackManagerActions.setFoundTracks(json)));
+            if (res.status === 200) {
+              res.json().then((json) => {
+                console.log(json);
+                dispatch(trackManagerActions.setFoundTracks(json));
+              });
+            }
             if (res.status === 404) dispatch(trackManagerActions.setFoundTracks(null));
           });
       });
