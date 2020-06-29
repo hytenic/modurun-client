@@ -15,7 +15,7 @@ const joinToSchedule = (scheduleId) => moduRunApiUtil.request('POST', '/users/sc
  * This is used for exiting from a schedule.
  * @param {Number} scheduleId
  */
-const exitFromSchedule = (scheduleId) => moduRunApiUtil.request('DELETE', '/schedules/users', { scheduleId });
+const exitFromSchedule = (scheduleId) => moduRunApiUtil.request('DELETE', '/schedules/user', { scheduleId });
 
 /**
  * @param {filter} filter

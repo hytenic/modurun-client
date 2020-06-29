@@ -10,13 +10,15 @@ const ScheduleManager = () => {
   const [mySchedules, setMyShedules] = React.useState([]);
   const [loadedSchedules, setLoadedSchedules] = React.useState(false);
 
+  const loadSchedules = () => modurunAPI.schedules.getMySchdules()
+    .then((res) => {
+      if (res.status === 200 || res.status === 404) setLoadedSchedules(true);
+      if (res.status === 404) setMyShedules([]);
+      if (res.ok) res.json().then((json) => setMyShedules(json));
+    });
+
   React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => modurunAPI.schedules.getMySchdules()
-      .then((res) => {
-        if (res.status === 200 || res.status === 404) setLoadedSchedules(true);
-        if (res.status === 404) setMyShedules([]);
-        if (res.ok) res.json().then((json) => setMyShedules(json));
-      }));
+    const unsubscribe = navigation.addListener('focus', loadSchedules);
     return unsubscribe;
   }, [navigation]);
 
@@ -45,7 +47,7 @@ const ScheduleManager = () => {
 
   const renderScheduleList = () => (
     <View>
-      <MyScheduleList schedules={mySchedules} />
+      <MyScheduleList loadSchedules={loadSchedules} schedules={mySchedules} />
     </View>
   );
 
