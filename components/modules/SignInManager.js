@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import actions from '../../redux/action/User/creator';
 import TextInputComponent from './Login/TextInputComponents';
 import ButtonComponent from './Login/ButtonComponent';
-import { postEmailLogin } from './API/user';
+import { postEmailLogin, postOauthSignIn } from './API/user';
 import getEnvVars from '../../environment';
 
 const styles = StyleSheet.create({
@@ -136,11 +136,16 @@ const SignInManager = ({ dispatch }) => {
   const googleSignIn = async () => {
     try {
       const result = await Google.logInAsync({
-        androidClientId: getEnvVars('dev').clientId,
+        androidClientId: getEnvVars('dev').googleOauth.client_id,
       });
       if (result.type === 'success') {
         setSignedIn(true);
         setAccessToken(result.accessToken);
+      }
+      const user = await postOauthSignIn(result.idToken);
+      console.log(user);
+      if (user) {
+        navigation.navigate('MainDrawer');
       }
       return { cancelled: true };
     } catch (e) {
