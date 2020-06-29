@@ -22,7 +22,7 @@ const titleShorter = (title, n) => {
   return title;
 };
 
-const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
+const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo, loadSchedules }) => {
   const {
     destination,
     id,
@@ -34,7 +34,7 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
     title,
     trackId,
     trackLength,
-    trackTitle
+    trackTitle,
   } = data;
   const navigation = useNavigation();
   const [showMoreVisible, setShowMoreVisible] = useState(false);
@@ -50,8 +50,7 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo }) => {
       text: '예',
       onPress: () => modurunAPI.schedules.exitFromSchedule(id)
         .then((res) => {
-          if (res.ok) setDeleted(true);
-          if (res.status === 404) setDeleted(true);
+          if (res.ok) loadSchedules();
         }),
     };
     const cancelButton = {

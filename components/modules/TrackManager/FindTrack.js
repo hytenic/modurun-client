@@ -60,6 +60,7 @@ const FindTrack = ({ tracks, onFilterSet, setTabIndex }) => {
 
   const renderTrackList = () => {
     if (!tracks) return alertNoTrack();
+    if (!tracks.length) return alertNoTrack();
     return <TrackList showAdd tracks={tracks} />;
   };
 
