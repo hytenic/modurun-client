@@ -302,7 +302,6 @@ const Main = () => {
             moveOnMarkerPress
             onTrackSelected={scheduleSelecting}
             onRefReady={(ref) => {
-              console.log(ref);
               setMapViewRef(ref);
             }}
             camera={location}

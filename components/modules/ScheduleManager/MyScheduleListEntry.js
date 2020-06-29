@@ -63,7 +63,7 @@ const MyScheduleListEntry = ({ data, onLayout, dispatch, userInfo, loadSchedules
     modurunAPI.tracks.getTrack(trackId)
       .then((res) => res.json())
       .then((json) => {
-        dispatch(actions.setSingleTrack(json));
+        dispatch(actions.setSingleTrack(json[0]));
         navigation.navigate('SingleTrackViewerScreen');
       });
   };
