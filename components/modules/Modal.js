@@ -9,6 +9,9 @@ import * as utils from './ScheduleList/utils';
 import { patchUserName } from './API/user';
 import { customizingDateAndTime } from './utils';
 import request from './API/SG/utils';
+import modurunAPI from './API';
+import userActions from '../../redux/action/User/creator'
+import reduxStore from '../../redux/store';
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -360,7 +363,10 @@ export const InputUsernameModal = ({}) => {
   const postUsername = async () => {
     setModalVisible(false);
     try {
-      await patchUserName(username);
+      modurunAPI.users.changeMyName(username)
+        .then((res) => {
+          if (res.ok) reduxStore.dispatch(userActions.changeUserName(username));
+        });
     } catch (e) {
       console.log('username input modal ', e);
     }
