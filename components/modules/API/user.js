@@ -23,6 +23,26 @@ const postEmailLogin = async (email, password) => {
   }
 };
 
+const postOauthSignIn = async (token) => {
+  try {
+    const response = await fetch(`${url}/oauth/google`, {
+      method: 'POST',
+      //   withCredentials, true,
+      credentials: 'include',
+      body: JSON.stringify({
+        it: token,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (response.status === 200) return true;
+    return false;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const postSignUp = async (email, password) => {
   try {
     const response = await fetch(`${url}/users/signup`, {
@@ -96,6 +116,7 @@ const signout = async () => {
 
 module.exports = {
   postEmailLogin,
+  postOauthSignIn,
   postSignUp,
   getEmailDupli,
   patchUserName,
