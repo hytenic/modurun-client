@@ -13,7 +13,7 @@ import modurunAPI from '../API';
 import styles from './styles';
 import store from '../../../redux/store';
 
-const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) => {
+const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, showDelete, getMyTracks }) => {
   const {
     trackLength,
     trackTitle,
@@ -145,6 +145,15 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
     );
   };
 
+  const renderDelete = () => {
+    if (!showDelete) return <></>;
+    return (
+      <TouchableOpacity onPress={askIfDelete} style={styles.delete}>
+        <Text style={{ color: 'white', fontSize: 16 }}>삭제하기</Text>
+      </TouchableOpacity>
+    );
+  };
+
   const compactPropStyle = {
     padding: 3,
     flexDirection: 'row',
@@ -152,18 +161,10 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
     width: 330,
   };
 
-  const compactProp = (name, value, color) => (
+  const compactProp = (name, value, color, fontColor) => (
     <View style={[compactPropStyle, { backgroundColor: color }]}>
-      <Text style={{ fontSize: 16, margin: 5, marginRight: 10, color: '#03D6A7' }}>{name}</Text>
-      <Text style={{ fontSize: 14 }}>{value}</Text>
-    </View>
-  );
-  const compactPropEnd = (name, value, color) => (
-    <View style={[compactPropStyle, { backgroundColor: color }]}>
-      <Text style={{ fontSize: 16, margin: 5, marginRight: 10, color: '#ef3832' }}>
-        {name}
-      </Text>
-      <Text style={{ fontSize: 14 }}>{value}</Text>
+      <Text style={{ fontSize: 16, margin: 5, marginRight: 10, color: fontColor }}>{name}</Text>
+      <Text style={{ fontSize: 14, flex: 1 }}>{value}</Text>
     </View>
   );
   
@@ -171,8 +172,8 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
     if (showMoreVisible) return <></>;
     return (
       <View style={{ margin: 10, marginTop: 5, flexWrap: 'wrap' }}>
-        {compactProp('출발', originInfo)}
-        {compactPropEnd('도착', destinationInfo)}
+        {compactProp('출발', originInfo, undefined, '#03D6A7')}
+        {compactProp('도착', destinationInfo, undefined, 'red')}
       </View>
     );
   };
@@ -190,13 +191,11 @@ const TrackListEntry = ({ data, showBookmark, showAdd, dispatch, getMyTracks }) 
         </View>
         <View style={{ height: 0, backgroundColor: 'rgba(0,0,0,0.1)', marginVertical: 10 }} />
         <View style={{ alignItems: 'center' }}>
-          <View style={{ flexDirection: 'row', width: '55%', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-around' }}>
             <TouchableOpacity onPress={viewTrackOnMap} style={styles.showDetail}>
               <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>자세히 보기</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={askIfDelete} style={styles.delete}>
-              <Text style={{ color: 'white', fontSize: 16 }}>삭제하기</Text>
-            </TouchableOpacity>
+            {renderDelete()}
           </View>
         </View>
       </View>

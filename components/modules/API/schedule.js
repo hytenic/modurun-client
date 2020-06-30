@@ -27,10 +27,10 @@ const getSchedules = async (filterCondition, userposition) => {
   const encodedFilter = encodeURI(JSON.stringify(filterCondition));
   const encodedPosition = encodeURI(JSON.stringify(userposition));
   const area = {
-    latitude: userposition.latitude - 20,
-    longitude: userposition.longitude - 20,
-    latitudeDelta: 40,
-    longitudeDelta: 40,
+    latitude: userposition.latitude - 50,
+    longitude: userposition.longitude - 50,
+    latitudeDelta: 100,
+    longitudeDelta: 100,
   };
   const encodedArea = encodeURI(JSON.stringify(area));
   try {

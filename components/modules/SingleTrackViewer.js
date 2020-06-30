@@ -21,7 +21,7 @@ const SingleTrackViewer = ({ data }) => {
           <Text style={{ fontSize: 20, padding: 10, color: 'white' }}>{trackTitle}</Text>
         </View>
         <View style={{ padding: 10 }}>
-          <PrettyProp name="거리" value="유저 현 위치랑 오리진 비교해서 구해야 됨" color="rgba(66, 135, 245, 1)" />
+          {/* <PrettyProp name="거리" value="유저 현 위치랑 오리진 비교해서 구해야 됨" color="rgba(66, 135, 245, 1)" /> */}
           <PrettyProp name="길이" value={trackUtils.prettyLength(trackLength)} color="rgba(123, 66, 245, 1)" />
           <PrettyProp name="출발점" value={JSON.stringify(origin)} color="rgba(191, 59, 209, 1)" />
           <PrettyProp name="도착점" value={JSON.stringify(destination)} color="rgba(209, 59, 151, 1)" />
