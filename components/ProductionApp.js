@@ -12,6 +12,8 @@ import SingleTrackViewerInDetail from './modules/SingleTrackViewerInDetail';
 import CreatedScheduleInfo from './modules/Scheduler/CreatedScheduleInfo';
 import MyTrackList from './modules/Scheduler/MyTrackList';
 import MyInfoManager from './modules/MyPage/MyInfoManger';
+// eslint-disable-next-line no-console
+console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 

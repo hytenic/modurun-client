@@ -82,7 +82,6 @@ const CreatedTrackInfo = ({ data }) => {
           <Text style={styles.compactTitleStyle}>{trackTitle}</Text>
         </View>
         <View>
-          <PrettyPropInDetail name="거리" value="5km" />
           <PrettyPropInDetail name="길이" value={utils.prettyLength(trackLength)} />
           <PrettyPropInDetail name="출발점" value={originInfo} />
           <PrettyPropInDetail name="도착점" value={destinationInfo} />

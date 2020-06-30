@@ -57,7 +57,7 @@ const SingleTrackViewerInDetail = ({ data }) => {
           <Text style={{ fontSize: 13, color: 'white', textAlign: 'center', textAlignVertical: 'center', height: '100%', fontWeight: 'bold'}}>{trackTitle}</Text>
         </View>
         <View style={{ flex: 90 }}>
-          <PrettyPropInDetail name="거리" value="5km" />
+          {/* <PrettyPropInDetail name="거리" value="5km" /> */}
           <PrettyPropInDetail name="길이" value={trackUtils.prettyLength(trackLength)} />
           <PrettyPropInDetail name="출발점" value={originInfo} />
           <PrettyPropInDetail name="도착점" value={destinationInfo} />

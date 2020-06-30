@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
   logo: {
     position: 'absolute',
     top: 210,
+    alignItems: 'center',
   },
   headerText: {
     fontSize: 30,

@@ -12,7 +12,7 @@ const anyOfKeyIsFalsy = (object, keys) => {
   return false;
 };
 
-const TrackList = ({ tracks, showBookmark, showAdd, getMyTracks, setTabIndex }) => {
+const TrackList = ({ tracks, showBookmark, showAdd, getMyTracks, setTabIndex, showDelete }) => {
 
   const alertNoTrack = () => (
     <View style={{ margin: 20, backgroundColor: 'white', elevation: 3, borderRadius: 10, height: 200, alignItems: 'center', justifyContent: 'center' }}>
@@ -41,6 +41,7 @@ const TrackList = ({ tracks, showBookmark, showAdd, getMyTracks, setTabIndex }) 
           key={track.id}
           showBookmark={showBookmark}
           showAdd={showAdd}
+          showDelete={showDelete}
           data={track}
           getMyTracks={getMyTracks}
         />
